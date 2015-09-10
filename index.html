@@ -91,7 +91,7 @@ $scope.reloadPage = function() {
    'http://api.easylink.io/v1/device/devices',
    null,{
      headers : {
-       'AUTHORIZATION' : "token " + 'access_token'
+       'AUTHORIZATION' : "token " + access_token
      }
    }
    ).success(function(data) {
