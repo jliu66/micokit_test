@@ -21,6 +21,7 @@
         
         for ( var i in deviceLists ) {
           var device = deviceLists[i];
+          alert(device);
           if ( device[0] === null ) continue;
           var product_id = device[0].split('/')[0];
           var alias = device[3] ? device[3] : device[0];
@@ -89,7 +90,7 @@ $scope.reloadPage = function() {
    'http://api.easylink.io/v1/device/devices',
    null,{
      headers : {
-       'AUTHORIZATION' : "token " + access_token
+       'AUTHORIZATION' : "token " + 'access_token'
      }
    }
    ).success(function(data) {
