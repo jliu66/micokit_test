@@ -15,6 +15,7 @@
     var device_list = [];
     
     var deviceLists = getParameterByName('device_list');
+    var ll = deviceLists;
     if ( deviceLists !== null ){
       try {
         deviceLists = JSON.parse(deviceLists);
@@ -36,7 +37,7 @@
     .controller('MyCtrl', function($scope, $ionicPopup, $ionicListDelegate, $http) {
       $scope.items = device_list;
       $scope.access_token = access_token;
-      
+      $scope.lists = ll;
       $scope.data = {
         showDelete: false
       };
@@ -122,8 +123,9 @@ $scope.reloadPage = function() {
 <ion-item ng-repeat="item in items" 
 item="item"
 href="{{ item.product_id }}.html?device_id={{ item.device_id }}&access_token={{ access_token }}&alias={{ item.alias }}" class="item-remove-animate">
-<i ng-if="item.state==1" class="icon ion-record positive" ></i><i ng-if="item.state==0" class="icon ion-record assertive" ></i> {{ item}}<br>
+<i ng-if="item.state==1" class="icon ion-record positive" ></i><i ng-if="item.state==0" class="icon ion-record assertive" ></i> {{ item.alias }}<br>
 <span class="item-note">ID : {{ item.device_id }}</span>
+
 <ion-option-button class="button-assertive"
 ng-click="showPopup(item)">
 Edit
@@ -131,5 +133,6 @@ Edit
 </ion-item>
 </ion-list>
 </ion-content>
+<div style="margin-top:200px;">{{lists}}</div>
 </body>
 </html>
