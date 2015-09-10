@@ -38,6 +38,7 @@
       $scope.items = device_list;
       $scope.access_token = access_token;
       $scope.lists = ll;
+      $scope.listss = dd;
       $scope.data = {
         showDelete: false
       };
@@ -96,6 +97,7 @@ $scope.reloadPage = function() {
    }
    ).success(function(data) {
     $scope.items = [];
+    var dd=data;
     for ( var i in data ) {
       var device = data[i];
       if ( device === null ) continue;
@@ -133,7 +135,7 @@ Edit
 </ion-item>
 </ion-list>
 </ion-content>
-<div style="margin-top:200px;">{{lists}}</div>
+<div style="margin-top:200px;">{{lists}},{{listss}}</div>
 <a href="http://97256c69-6723-43fb-87dc-167eaf9dc501.app.easylink.io/redirect.php?wxappid=wxb4ee08c8823d1555&airkiss=1" class="button" style="bottom:0px;left:40%; position: fixed;">
   添加设备
 </a>
