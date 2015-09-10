@@ -122,7 +122,7 @@ $scope.reloadPage = function() {
 <ion-item ng-repeat="item in items" 
 item="item"
 href="{{ item.product_id }}.html?device_id={{ item.device_id }}&access_token={{ access_token }}&alias={{ item.alias }}" class="item-remove-animate">
-<i ng-if="item.state==1" class="icon ion-record positive" ></i><i ng-if="item.state==0" class="icon ion-record assertive" ></i> {{ item.alias }}<br>
+<i ng-if="item.state==1" class="icon ion-record positive" ></i><i ng-if="item.state==0" class="icon ion-record assertive" ></i> {{ item}}<br>
 <span class="item-note">ID : {{ item.device_id }}</span>
 <ion-option-button class="button-assertive"
 ng-click="showPopup(item)">
