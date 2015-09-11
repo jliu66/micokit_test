@@ -10,6 +10,7 @@
     <title>我的设备</title>
     <link href="./bootstrap.min.css" rel="stylesheet">
     <script src="./jquery.min.js"></script>
+    <script src="./jquery.mobile.custom.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             var access_token = getParameterByName('access_token');
@@ -18,7 +19,7 @@
             var deviceLists = getParameterByName('device_list');
             $("#console").append("deviceLists:" + deviceLists + "</br>");
 
-            $("#btnDevice").on('click', function () {
+            $("#btnDevice").on('tap', function () {
                 alert('click');
 /*                var data = [{
                     alias: "",
@@ -33,9 +34,11 @@
                     serial: null,
                     ssid: null
                 }];
+                $("#console").append("设备列表：</br>");
                 $.each(data, function (i, _data) {
-                    $("#console").append(JSON.stringify(_data));
-                });*/
+                    $("#console").append(JSON.stringify(_data)+"</br>");
+                });
+ */
                 $.ajax({
                     type: "POST",
                     url: 'http://api.easylink.io/v1/device/devices',
@@ -45,9 +48,33 @@
                     },
                     success: function (data) {
                         console.log(data);
+                        $("#console").append("设备列表：</br>");
                         $.each(data, function (i, _data) {
-                            $("#console").append(JSON.stringify(_data));
+                            $("#console").append(JSON.stringify(_data)+"</br>");
                         });
+                    },
+                    error: function (data) {
+                        console.log(data);
+                        $("#console").append(data.responseText);
+                    }
+                });
+            });
+
+            $("#btnAlias").on('tap',function(){
+                $.ajax({
+                    type: "POST",
+                    url: 'http://api.easylink.io/v1/device/modify',
+                    data:{
+                        device_id : 'b7884af8\/c89346918374',
+                        alias     : $("#name").val()
+                    },
+                    headers: {
+                        'AUTHORIZATION': "token " + access_token
+                    },
+                    success: function (data) {
+                        console.log(data);
+                        $("#console").append(data+"</br>");
+
                     },
                     error: function (data) {
                         console.log(data);
@@ -65,6 +92,11 @@
 </head>
 <body>
 <button id="btnDevice" type="button" class="btn btn-default btn-block">获取设备列表</button>
+<div>
+    <button id="btnAlias" type="button" class="btn btn-default ">修改别名</button>
+    <input type="text" id="name" style="float: left;margin-top: 5px" placeholder="请输入名称">
+</div>
+
 <div id="console">
 
 </div>
