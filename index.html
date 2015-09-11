@@ -21,24 +21,24 @@
 
             $("#btnDevice").on('tap', function () {
                 alert('click');
-/*                var data = [{
-                    alias: "",
-                    bssid: "c89346918374",
-                    created: "2015-09-10 17:09:25",
-                    id: "b7884af8/c89346918374",
-                    ip: "202.241.180.36:2254",
-                    offline_time: "2015-09-10 17:34:58",
-                    online: "0",
-                    online_time: "2015-09-10 17:11:24",
-                    power_time: null,
-                    serial: null,
-                    ssid: null
-                }];
-                $("#console").append("设备列表：</br>");
-                $.each(data, function (i, _data) {
-                    $("#console").append(JSON.stringify(_data)+"</br>");
-                });
- */
+                /*                var data = [{
+                 alias: "",
+                 bssid: "c89346918374",
+                 created: "2015-09-10 17:09:25",
+                 id: "b7884af8/c89346918374",
+                 ip: "202.241.180.36:2254",
+                 offline_time: "2015-09-10 17:34:58",
+                 online: "0",
+                 online_time: "2015-09-10 17:11:24",
+                 power_time: null,
+                 serial: null,
+                 ssid: null
+                 }];
+                 $("#console").append("设备列表：</br>");
+                 $.each(data, function (i, _data) {
+                 $("#console").append(JSON.stringify(_data)+"</br>");
+                 });
+                 */
                 $.ajax({
                     type: "POST",
                     url: 'http://api.easylink.io/v1/device/devices',
@@ -50,7 +50,10 @@
                         console.log(data);
                         $("#console").append("设备列表：</br>");
                         $.each(data, function (i, _data) {
-                            $("#console").append(JSON.stringify(_data)+"</br>");
+                            var product_id = _data.id.split('/')[0];
+                            $("#console").append(JSON.stringify(_data) + "</br>");
+                            var url = product_id + '.html?device_id' + _data.id + '&access_token' + access_token + '&alias=' + _data.alias;
+                            $("#console").append("<a href='"+url+"'>"+_data.alias+"</a></br>");
                         });
                     },
                     error: function (data) {
@@ -60,20 +63,20 @@
                 });
             });
 
-            $("#btnAlias").on('tap',function(){
+            $("#btnAlias").on('tap', function () {
                 $.ajax({
                     type: "POST",
                     url: 'http://api.easylink.io/v1/device/modify',
-                    data:{
-                        device_id : 'b7884af8\/c89346918374',
-                        alias     : $("#name").val()
+                    data: {
+                        device_id: 'b7884af8\/c89346918374',
+                        alias: $("#name").val()
                     },
                     headers: {
                         'AUTHORIZATION': "token " + access_token
                     },
                     success: function (data) {
                         console.log(data);
-                        $("#console").append(data+"</br>");
+                        $("#console").append(data.result + "</br>");
 
                     },
                     error: function (data) {
