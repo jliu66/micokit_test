@@ -32,7 +32,7 @@
         alert(e);
       }
     }
-
+    var devices;
     angular.module('ionicApp', ['ionic'])
     .controller('MyCtrl', function($scope, $ionicPopup, $ionicListDelegate, $http) {
       $scope.items = device_list;
@@ -97,7 +97,7 @@ $scope.reloadPage = function() {
    }
    ).success(function(data) {
     $scope.items = [];
-    var dd=data;
+devices=data;
     for ( var i in data ) {
       var device = data[i];
       if ( device === null ) continue;
