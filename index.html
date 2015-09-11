@@ -14,7 +14,7 @@
             var deviceLists = getParameterByName('device_list');
             $("#console").append("deviceLists:" + deviceLists + "</br>");
 
-            $("#btnDevice").click(function () {
+            $("#btnDevice").on('click',function () {
                 alert('click');
                 $.ajax({
                     type: "POST",
@@ -24,10 +24,12 @@
                         'AUTHORIZATION' : "token " + access_token
                     },
                     success: function (data) {
+                        console.log(data);
                         $("#console").append(data);
                     },
                     error:function(data){
-                        $("#console").append('error:'+data);
+                        console.log(data);
+                        $("#console").append('error');
                     }
                 });
             });
