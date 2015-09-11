@@ -24,6 +24,9 @@
                     },
                     success: function (data) {
                         $("#console").append(data);
+                    },
+                    error:function(data){
+                        $("#console").append('error:'+data);
                     }
                 });
             });
