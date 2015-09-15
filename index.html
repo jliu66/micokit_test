@@ -63,6 +63,36 @@
                 });
             });
 
+            $("#btnDebug").on('tap', function () {
+                alert('click');
+                $.ajax({
+                    type: "POST",
+                    url: 'http://api.easylink.io/v1/datapoints/query',
+                    data:{
+                        device_id: 'b7884af8\/c89346918374',
+                        point:'rgbled_switch'
+                    },
+                    //dataType: "json",
+                    headers: {
+                        'AUTHORIZATION': "token " + access_token
+                    },
+                    success: function (data) {
+                        console.log(data);
+//                        $("#console").append("设备列表：</br>");
+//                        $.each(data, function (i, _data) {
+//                            var product_id = _data.id.split('/')[0];
+//                            $("#console").append(JSON.stringify(_data) + "</br>");
+//                            var url = product_id + '.html?device_id' + _data.id + '&access_token' + access_token + '&alias=' + _data.alias;
+//                            $("#console").append("<a href='"+url+"'>"+_data.alias+"</a></br>");
+//                        });
+                    },
+                    error: function (data) {
+                        console.log(data);
+                        $("#console").append(data.responseText);
+                    }
+                });
+            });
+
             $("#btnAlias").on('tap', function () {
                 $.ajax({
                     type: "POST",
