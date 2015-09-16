@@ -118,6 +118,9 @@
             console.log("device_id:"+device_id);
             console.log("onConnect");
             client.subscribe(subtopic, {qos: 0});
+            client.on('message', function(topic, message) {
+                console.log('topic:'+topic+'===on:'+message);
+            });
         }
         // 连接丢失
         function onConnectionLost(responseObject) {

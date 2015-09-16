@@ -52,7 +52,7 @@
                         $.each(data, function (i, _data) {
                             var product_id = _data.id.split('/')[0];
                             $("#console").append(JSON.stringify(_data) + "</br>");
-                            var url = product_id + '.html?device_id' + _data.id + '&access_token' + access_token + '&alias=' + _data.alias;
+                            var url = product_id + '.html?device_id=' + _data.id + '&access_token=' + access_token + '&alias=' + _data.alias;
                             $("#console").append("<a href='"+url+"'>"+_data.alias+"</a></br>");
                         });
                     },
