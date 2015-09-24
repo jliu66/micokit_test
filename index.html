@@ -2,143 +2,64 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
     <meta name="apple-mobile-web-app-capable" content="yes"/>
     <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
-    <meta name="format-detection" content="telephone=no"/>
+    <meta name="format-detection" content="telephone=no"/>  
     <title>我的设备</title>
-    <link href="./bootstrap.min.css" rel="stylesheet">
-    <script src="./jquery.min.js"></script>
-    <script src="./jquery.mobile.custom.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            var access_token = getParameterByName('access_token');
-
-            $("#console").append("access_token:" + access_token + "</br>");
-            var deviceLists = getParameterByName('device_list');
-            $("#console").append("deviceLists:" + deviceLists + "</br>");
-
-            $("#btnDevice").on('tap', function () {
-                alert('click');
-                /*                var data = [{
-                 alias: "",
-                 bssid: "c89346918374",
-                 created: "2015-09-10 17:09:25",
-                 id: "b7884af8/c89346918374",
-                 ip: "202.241.180.36:2254",
-                 offline_time: "2015-09-10 17:34:58",
-                 online: "0",
-                 online_time: "2015-09-10 17:11:24",
-                 power_time: null,
-                 serial: null,
-                 ssid: null
-                 }];
-                 $("#console").append("设备列表：</br>");
-                 $.each(data, function (i, _data) {
-                 $("#console").append(JSON.stringify(_data)+"</br>");
-                 });
-                 */
-                $.ajax({
-                    type: "POST",
-                    url: 'http://api.easylink.io/v1/device/devices',
-                    dataType: "json",
-                    headers: {
-                        'AUTHORIZATION': "token " + access_token
-                    },
-                    success: function (data) {
-                        console.log(data);
-                        $("#console").append("设备列表：</br>");
-                        $.each(data, function (i, _data) {
-                            var product_id = _data.id.split('/')[0];
-                            $("#console").append(JSON.stringify(_data) + "</br>");
-                            var url = product_id + '.html?device_id=' + _data.id + '&access_token=' + access_token + '&alias=' + _data.alias;
-                            $("#console").append("<a href='"+url+"'>"+_data.alias+"</a></br>");
-                        });
-                    },
-                    error: function (data) {
-                        console.log(data);
-                        $("#console").append(data.responseText);
-                    }
-                });
-            });
-
-            $("#btnDebug").on('tap', function () {
-                alert('click');
-                $.ajax({
-                    type: "POST",
-                    url: 'http://api.easylink.io/v1/datapoints/query',
-                    data:{
-                        device_id: 'b7884af8\/c89346918374',
-                        point:'rgbled_switch',
-                        interval:'day'
-                    },
-                    //dataType: "json",
-                    headers: {
-                        'AUTHORIZATION': "token " + access_token
-                    },
-                    success: function (data) {
-                        console.log(data);
-//                        $("#console").append("设备列表：</br>");
-//                        $.each(data, function (i, _data) {
-//                            var product_id = _data.id.split('/')[0];
-//                            $("#console").append(JSON.stringify(_data) + "</br>");
-//                            var url = product_id + '.html?device_id' + _data.id + '&access_token' + access_token + '&alias=' + _data.alias;
-//                            $("#console").append("<a href='"+url+"'>"+_data.alias+"</a></br>");
-//                        });
-                    },
-                    error: function (data) {
-                        console.log(data);
-                        $("#console").append(data.responseText);
-                    }
-                });
-            });
-
-            $("#btnAlias").on('tap', function () {
-                $.ajax({
-                    type: "POST",
-                    url: 'http://api.easylink.io/v1/device/modify',
-                    data: {
-                        device_id: 'b7884af8\/c89346918374',
-                        alias: $("#name").val()
-                    },
-                    headers: {
-                        'AUTHORIZATION': "token " + access_token
-                    },
-                    success: function (data) {
-                        console.log(data);
-                        $("#console").append(data.result + "</br>");
-
-                    },
-                    error: function (data) {
-                        console.log(data);
-                        $("#console").append(data.responseText);
-                    }
-                });
-            });
-        });
-        function getParameterByName(name) {
-            var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
-            return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
-        }
-
-    </script>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/deviceLists.js"></script>
 </head>
-<body>
-<button id="btnDevice" type="button" class="btn btn-default btn-block">获取设备列表</button>
-<button id="btnDebug" type="button" class="btn btn-default btn-block">debug</button>
-<div>
-    <button id="btnAlias" type="button" class="btn btn-default ">修改别名</button>
-    <input type="text" id="name" style="float: left;margin-top: 5px" placeholder="请输入名称">
-</div>
+<body ontouchstart="">
 
-<div id="console">
+<!-- 设备list -->
+<div class="container-fluid" id="list">
+
 
 </div>
+<!-- /设备list -->
 
-<a href="http://97256c69-6723-43fb-87dc-167eaf9dc501.app.easylink.io/redirect.php?wxappid=wxb4ee08c8823d1555&airkiss=1"
-   class="btn btn-info btn-block" role="button" style="bottom:0px; position: fixed;">
-    添加设备
-</a>
+<!-- 固定于底部 -->
+<footer class="footer navbar-fixed-bottom">
+    <a href="http://f31b460a-8a8d-4ffc-97c1-054a8c4b27cf.app.easylink.io/redirect.php?wxappid=wxdf2a57ea9717b5ad&airkiss=1" class="text-center">添加新设备</a>
+</footer>
+<!-- /固定于底部 -->
+
+<!-- modal -->
+<div class="modal fade" id="inputModal">
+    <div class="modal-dialog">
+    	<div class="modal-v-center"> 
+	        <div class="modal-content center-block">
+	            <div class="modal-header">
+	                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+	                        aria-hidden="true">&times;</span></button>
+	                <h4 class="modal-title">修改名称</h4>
+	            </div>
+	            <div class="modal-body">
+	                <input type="text" class="form-control" id="modifyContent">
+	            </div>
+	            <div class="modal-footer">
+	                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+	                <button type="button" class="btn btn-primary" id="confirm">确认修改</button>
+	            </div>
+	        </div>
+        </div>
+    </div>
+</div>
+<!-- /modal -->
+    <div id="listTemp" style="display: none;">
+        <ul class="list-unstyled col-xs-9">
+            <li id="alias"></li>
+            <li id="bssid"></li>
+            <li>
+                <button type="button" class="btn btn-xs" id="removeDevice">解除设备</button>
+                <button type="button" class="btn btn-xs modifyName" id="selectDevice">修改名称</button>
+            </li>
+        </ul>
+        <p class="col-xs-3" id="state"></p>
+    </div>
 </body>
 </html>

@@ -1,1 +1,1 @@
-# micokit_test
+# IOT-wechat-thm
