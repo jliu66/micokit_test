@@ -6,7 +6,7 @@ $(document).ready(function () {
 	var colors;//保存温度色码的数组
 	var bars;//温度条件面板总div
 	var circle;//指向温度条的红点
-	var setTemperature = 37;//st温度初始值
+	var setTemperature;//st温度初始值
 	var currentTemperature;//ct温度
 	var btnId;//调节温度的btn
 	var rad2deg = 180/Math.PI;
@@ -15,6 +15,7 @@ $(document).ready(function () {
 	var loadingTime=10000;//用于loading时X秒内未链接则弹出提示
 	var timer;
 	var setTimer=2000;//用于调温按钮X秒内无操作则上发数据
+	var count=true;
 	//初始化温度调节面板
 	initializationPanel();
     // 得到设备ID
@@ -82,15 +83,6 @@ $(document).ready(function () {
 		var onOffPower = $(".onOff_Power");
         //显示
         function displayInfo(info) {
-        	if(!!info){
-           		$(".loading").hide();
-            }else{
-//          	loadingTime = setInterval(function(){
-//          		alert("链接未成功，请稍后...");
-//          	},2000);
-//          	clearInterval(loadingTime);
-            }
-            
             //设备开关
             if (_.has(info, "POW")) {
                 console.log(((info.POW == '1') ? "开机" : "关机"));
@@ -105,11 +97,20 @@ $(document).ready(function () {
             //设定水温
             if (_.has(info, "ST")) {
                 console.log(info.ST);
-                temperature.text(info.ST);
-				setTemperature = info.ST;
+                
+            	if(count){
+            		setTemperature = info.ST;
+                	temperature.text(setTemperature);
+                	
+                	count=false;
+                }
+				
             }
             //当前水温
             if (_.has(info, "CT")) {
+            	if(!!info.CT){
+	           		$(".loading").hide();
+	            }   
                 console.log(info.CT);
                 $("#ct").text(info.CT);
                 currentTemperature = info.CT;
@@ -132,25 +133,37 @@ $(document).ready(function () {
             //错误报警
             if (_.has(info, "ERR")) {
                 var msg = ["设备正常", "水泵或电磁阀故障", "温度传感器故障", "水位低", "水温超65度", "水温低于5度"];
-                $("#err").text(msg[info.ERR]);
+          
+               if(info.ERR==0){
+                	$("#err").text(msg[info.ERR]);
+                }else{
+                	$("#err").html('<span></span>'+msg[info.ERR]);
+                }
+                
+                
             }
             temperatureChange();
         }
 
         $(".onOff_Power").on("click", setPow);
-        $(".onOff_sleep").on("click", setSleepMode);
-        $(".onOff_antifreeze").on("click", setFreezeMode);
+//      $(".onOff_sleep").on("click", setSleepMode);
+//      $(".onOff_antifreeze").on("click", setFreezeMode);
+        /*监听温度值数字变化*/
+		temperature.bind('DOMNodeInserted', function(){	
+			temperatureChange();
+		});		
+		$("#tmpLeft").on("touchstart", setTmpLeft);
+	    $("#tmpRight").on("touchstart", setTmpRight);
+//	    $('#finalTime').change(function(){ 
+//			setFinalTime();
+//		})
+//	    $('#finalTime').on('change',setFinalTime);
 
         /* 设置电源开关 */
         function setPow() {
-            //alert($("#power").data("power"));
             var state = onOffPower.data("power");
-            console.log("state="+state);
-            console.log("state="+!state);
             state = !state ? 1 : 0;
-            console.log("state2="+state);
             onOffPower.data("power", state);
-//          alert(state);	
             //下发电源开关
             var topic = device_id + '/in/';
             var commond = '{"POW":' + state.toString() + '}';
@@ -169,38 +182,28 @@ $(document).ready(function () {
 			}
         }
 		
-		/*监听温度值数字变化*/
-		temperature.bind('DOMNodeInserted', function(){	
-			temperatureChange();
-		});
-		
-		$("#tmpLeft").on("touchstart click", setTmpLeft);
-	    $("#tmpRight").on("touchstart click", setTmpRight);
 		/*设置温度减少*/
 		function setTmpLeft(){
-		   	$("#tmpRight span").show();
-				if(setTemperature <= 10){
-					return;
-				}
+			if(setTemperature <= 10){
+				return;
+			}
 			setTemperature--;
 			temperature.text(setTemperature);
-//			setTmp(setTemperature);
-			if(!!timer){
-					clearTimeout(timer);
-				}
-				timer = setTimeout(function(){
-					setTmp(setTemperature);
-				},setTimer);
+			setSendingTime();
 		}
 		
 		/*设置温度增加*/
 		function setTmpRight(){
-			$("#tmpLeft span").show();
+//			$("#tmpLeft span").show();
 			if(setTemperature>=60){//温度大于60度则返回无法继续点击
 				return;
 			}
 			setTemperature++;
 			temperature.text(setTemperature);
+			setSendingTime();
+		}
+		//X秒内对调温按钮无操作则上发数据
+		function setSendingTime(){
 			if(!!timer){
 					clearTimeout(timer);
 				}
@@ -212,17 +215,20 @@ $(document).ready(function () {
         function setTmp(tmp) {
             //下发温度
             var topic = device_id + '/in/';
-            var commond = '{"ST":' + tmp + '}';
+            var commond = '{"ST":"' + tmp + '"}';
             client.publish(topic, commond);
         }
-
         /* 设置定时关机 */
         function setFinalTime() {
-            var time;
-            //下发定时关机
-            var topic = device_id + '/in/';
-            var commond = '{"FT":' + time + '}';
-            client.publish(topic, commond);
+        	var finalTime = $("#finalTime");
+            var time=$('#finalTime').children('option:selected').val();
+            if(time != finalTime.find('option:first').val()){
+            	//下发定时关机
+	            var topic = device_id + '/in/';
+	            var commond = '{"FT":"' + time.charAt(0) + '"}';
+	            client.publish(topic, commond);
+            }
+            
         }
 
         /* 设置睡眠模式 */
@@ -233,7 +239,7 @@ $(document).ready(function () {
             onOffSleep.data("sleepMode", state);
             //睡眠模式下发
             var topic = device_id + '/in/';
-            var commond = '{"SM":' + state + '}';
+            var commond = '{"SM":"' + state + '"}';
             client.publish(topic, commond);
             onOffSwitch(state,onOffSleep);
         }
@@ -246,7 +252,7 @@ $(document).ready(function () {
             onOffAntifreeze.data("freezeMode", state);
             //睡眠防冻下发
             var topic = device_id + '/in/';
-            var commond = '{"FM":' + state + '}';
+            var commond = '{"FM":"' + state + '"}';
             client.publish(topic, commond);
             onOffSwitch(state,onOffAntifreeze);
         }
@@ -299,16 +305,18 @@ $(document).ready(function () {
 	
 	//判断温度值来隐藏调控按钮及温度色条变灰
 	function temperatureChange(){
-		if(temperature.text()>=60){
+		if(setTemperature>=60){
 			$("#tmpRight span").hide();
-		}else if(temperature.text()<=10){
-			console.log(temperature.text());
+		}else if(setTemperature<=10){
 			$("#tmpLeft span").hide();
+		}else{
+			$("#tmpRight span").show();
+			$("#tmpLeft span").show();
 		}
 		var numBars=0;
 		numBars = Math.floor(setTemperature/5);
-		colorBars.removeClass('active').slice(0, numBars-1).addClass('active');
-		circle.removeClass('showRound').slice(numBars-2, numBars-1).addClass('showRound');
+		colorBars.removeClass('active').slice(1, numBars-2).addClass('active');
+		circle.removeClass('showRound').slice(numBars-3, numBars-2).addClass('showRound');
 		
 		$("#progressBars").children().each(function(i){
 			
@@ -318,13 +326,13 @@ $(document).ready(function () {
 			if(temperature.text()>=currentTemperature){
 				$("#jumbotron").removeClass('moreThan_tmpTarget');
 				if(liCliss == 'active'){
-					pbChildren.css('background', 'radial-gradient(transparent 60%, #'+colors[i]+' 35%)');			
+					pbChildren.css('background', '-webkit-radial-gradient(transparent 60%, #'+colors[i]+' 35%)');	
 				}else{					
-					pbChildren.css('background', 'radial-gradient(transparent 60%, #e7eaed 35%)');
+					pbChildren.css('background', '-webkit-radial-gradient(transparent 60%, #e7eaed 35%)');
 				}
-			}else{
+			}else if(temperature.text()<=currentTemperature){
 				$("#jumbotron").addClass('moreThan_tmpTarget');
-				pbChildren.css('background', 'radial-gradient(transparent 60%, #e7eaed 35%)');
+				pbChildren.css('background', '-webkit-radial-gradient(transparent 60%, #e7eaed 35%)');
 			}
 						
 	    });

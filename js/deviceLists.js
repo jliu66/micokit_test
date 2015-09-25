@@ -128,26 +128,41 @@ $(document).ready(function () {
         list.html(template);
         if (state == 0) {
             state = "离线";
-            addDeviceListsData(list,"#list","",state, alias, bssid, "javascript:void(0);");
+            $(list).removeClass("row-online-state");
+//          addDeviceListsData(list,state, alias, bssid, "javascript:void(0);");
+       		addDeviceListsData(list,state, alias, bssid, url);
         } else {
             state = "在线";
-            addDeviceListsData(list,"#list","row-online-state",state, alias, bssid, url);
+            $(list).addClass("row-online-state");
+            addDeviceListsData(list,state, alias, bssid, url);
         }    
     }
-    function addDeviceListsData(divName,FName,className,state, alias, bssid, url){
-    	$(divName).addClass(className);
+    function addDeviceListsData(divName,state, alias, bssid, url){
+//  	$(divName).addClass("row-online-state");
     	$(divName).on('touchstart click',function(e){
-			if($(e.target).attr('id')!="selectDevice")
+			if($(e.target).attr('id')!="selectDevice"&&$(e.target).attr('id')!="removeDevice")
 			{
 				window.location.href=url;
 			}
     	});
-//      $(divName).find("a").attr("href", url);
         $(divName).find("#state").text(state);
         $(divName).find("#alias").text(alias);
         $(divName).find("#bssid").text(bssid);
-        $(FName).append(divName);
+        $("#list").append(divName);
     }
+
+	/**测试*/
+//	$('#listTemp').on('touchstart click',function(e){
+//		console.log("aa");
+//		$('#listTemp').addClass('row-online-state');
+//			if($(e.target).attr('id')!="selectDevice"&&$(e.target).attr('id')!="removeDevice")
+//			{
+//				window.location.href='http://192.168.2.83:8000/device.html?device_id=b7884af8/c89346918374&access_token=ee26e95e-8a5e-49c6-bea9-420de852813d&alias=MiCOKit-3288';
+//			}else{
+//				console.log("aa");
+//				$('#listTemp').removeClass('row-online-state');
+//			}
+//  });
 
     /**
      * 从url中获取某个参数的值
