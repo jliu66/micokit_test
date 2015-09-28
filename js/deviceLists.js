@@ -18,7 +18,7 @@ $(document).ready(function () {
                 var product_id = device_id.split('/')[0];
                 //var time = new Date(parseInt(device[1])*1000).toLocaleString();
                 //var url = product_id + '.html?device_id=' + device_id + '&access_token=' + access_token + '&alias=' + alias;
-                var url = 'device.html?device_id=' + device_id + '&access_token=' + access_token + '&alias=' + alias;
+                var url = 'b7884af8.html?device_id=' + device_id + '&access_token=' + access_token + '&alias=' + alias;
                 var state = device[2];
                 //渲染设备列表
                 addDeviceLists(device_id, state, alias, bssid, url);
@@ -45,7 +45,7 @@ $(document).ready(function () {
                     var bssid = _data.bssid;
                     var alias = _data.alias;
                     //var url = product_id + '.html?device_id=' + device_id + '&access_token=' + access_token + '&alias=' + alias;
-                    var url = 'device.html?device_id=' + device_id + '&access_token=' + access_token + '&alias=' + alias;
+                    var url = 'b7884af8.html?device_id=' + device_id + '&access_token=' + access_token + '&alias=' + alias;
                     var state = _data.online;
                     //移除设备列表
                     $("#list").children().remove();

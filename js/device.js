@@ -75,7 +75,7 @@ $(document).ready(function () {
             try {
         		var info = JSON.parse(message.payloadString);
     		} catch (e) {
-        		alert(e);
+        		//alert(e);
     		}
             displayInfo(info);
         }
