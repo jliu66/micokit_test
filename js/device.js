@@ -166,7 +166,7 @@ $(document).ready(function () {
             onOffPower.data("power", state);
             //下发电源开关
             var topic = device_id + '/in/';
-            var commond = '{"POW":' + state.toString() + '}';
+            var commond = '{"POW":"' + state + '"}';
             client.publish(topic, commond);
             onOffSwitch(state,onOffPower);
         }
