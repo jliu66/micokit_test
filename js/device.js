@@ -112,7 +112,8 @@ $(document).ready(function () {
 	           		$(".loading").hide();
 	            }   
                 console.log(info.CT);
-                $("#ct").text(info.CT);
+                $("#ct").empty().children().remove();
+                $("#ct").append('<span>'+ info.CT +'</span>℃');
                 currentTemperature = info.CT;
             }
             //睡眠模式
