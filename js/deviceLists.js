@@ -2,6 +2,22 @@
  * Created by CJLIU on 2015/9/19.
  */
 $(document).ready(function () {
+    if(window.location.search == ""){
+        alert("null");
+        $.ajax({
+            type: "GET",
+            url: "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxb4ee08c8823d1555&redirect_uri=http://97256c69-6723-43fb-87dc-167eaf9dc501.app.easylink.io/oauth.php%3Fwxappid%3Dwxb4ee08c8823d1555&response_type=code&scope=snsapi_base&state=123&connect_redirect=1#wechat_redirect",
+            //dataType: "json",
+            // headers: {
+            //     "AUTHORIZATION": "token " + access_token
+            // },
+            success: function (data) {
+                alert(data);
+                
+            }
+        })
+    }
+
     var thisDeviceId;
     var access_token = getParameterByName('access_token');
     //初始化设备列表
