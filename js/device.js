@@ -67,19 +67,32 @@ $(document).ready(function () {
             if (responseObject.errorCode !== 0)
                 console.log("onConnectionLost:" + responseObject.errorMessage);
                 alert("连接丢失，请重新连接...");
+//              var alias = device[3] ? device[3] : "TH-1507";
+//               console.log(alias);
         }
 
         // 消息到达
         function onMessageArrived(message) {
             //console.log(message.destinationName + ': ' +  message.payloadString);
-            try {
-        		var info = JSON.parse(message.payloadString);
-    		} catch (e) {
-        		//alert(e);
+            if  (message.destinationName == device_id + '/out/_online') {
+    			if (message.payloadString == '0')  {
+    				//设备离线
+    				displayOffline();
+    			}
+    		}else{
+    			try {
+        			var info = JSON.parse(message.payloadString);
+    			} catch (e) {
+        			//alert(e);
+    			}
+    			displayInfo(info);
     		}
-            displayInfo(info);
         }
 		
+        function displayOffline() {
+			$("#err").html('<span></span>'+"设备已离线");
+        }
+
 		var onOffPower = $(".onOff_Power");
         //显示
         function displayInfo(info) {
