@@ -73,7 +73,7 @@ $(document).ready(function () {
 
         // 消息到达
         function onMessageArrived(message) {
-            //console.log(message.destinationName + ': ' +  message.payloadString);
+            console.log(message.destinationName + ': ' +  message.payloadString);
             if  (message.destinationName == device_id + '/out/_online') {
     			if (message.payloadString == '0')  {
     				//设备离线
@@ -81,10 +81,12 @@ $(document).ready(function () {
     			}
     		}else{
     			try {
-        			var info = JSON.parse(message.payloadString);
+        			var info = JSON.parse(message.payloadString);	
     			} catch (e) {
-        			//alert(e);
+
     			}
+    		}
+    		if(info){
     			displayInfo(info);
     		}
         }
