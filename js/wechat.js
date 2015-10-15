@@ -23,6 +23,7 @@ $(document).ready(function() {
                     'openWXDeviceLib',
                     'closeWXDeviceLib',
                     'getWXDeviceTicket',
+                    'onMenuShareAppMessage'
                 ]
             });
 
