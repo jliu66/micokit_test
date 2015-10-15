@@ -1,0 +1,64 @@
+$(document).ready(function() {
+    var data = {
+        "appId": "wxb4ee08c8823d1555",
+        "nonceStr": "sD3nMC4kx0tkH783",
+        "timestamp": 1444893285,
+        "url": "http:\/\/97256c69-6723-43fb-87dc-167eaf9dc501.app.easylink.io\/sign.php",
+        "signature": "d797b3cdca059f546f752bdbbca88d3d5d2b0cfc",
+        "rawString": "jsapi_ticket=sM4AOVdWfPE4DxkXGEs8VIx0OV_QLWcz5fhkwjsIUkOXlj_YSCPPcG6b0StzCiRQif25MFhg2dnQxQPJDq4O0A&noncestr=sD3nMC4kx0tkH783×tamp=1444893285&url=http:\/\/97256c69-6723-43fb-87dc-167eaf9dc501.app.easylink.io\/sign.php",
+        "jsapiTicket": "sM4AOVdWfPE4DxkXGEs8VIx0OV_QLWcz5fhkwjsIUkOXlj_YSCPPcG6b0StzCiRQif25MFhg2dnQxQPJDq4O0A"
+    };
+
+    wx.config({
+        debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        appId: data.appId, // 必填，公众号的唯一标识
+        timestamp: data.timestamp, // 必填，生成签名的时间戳
+        nonceStr: data.nonceStr, // 必填，生成签名的随机串
+        signature: data.signature, // 必填，签名，见附录1
+        jsApiList: [
+            // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+            'openWXDeviceLib',
+            'closeWXDeviceLib',
+            'getWXDeviceTicket',
+        ]
+    });
+
+    wx.ready(function() {
+        wx.checkJsApi({
+            jsApiList: [
+                'getNetworkType',
+                'previewImage'
+            ],
+            success: function(res) {
+                alert(JSON.stringify(res));
+            }
+        });
+        $('#share').on("click", function() {
+            wx.onMenuShareAppMessage({
+                title: '互联网之子',
+                desc: '在长大的过程中，我才慢慢发现，我身边的所有事，别人跟我说的所有事，那些所谓本来如此，注定如此的事，它们其实没有非得如此，事情是可以改变的。更重要的是，有些事既然错了，那就该做出改变。',
+                link: 'http://movie.douban.com/subject/25785114/',
+                imgUrl: 'http://demo.open.weixin.qq.com/jssdk/images/p2166127561.jpg',
+                trigger: function(res) {
+                    // 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
+                    alert('用户点击发送给朋友');
+                },
+                success: function(res) {
+                    alert('已分享');
+                },
+                cancel: function(res) {
+                    alert('已取消');
+                },
+                fail: function(res) {
+                    alert(JSON.stringify(res));
+                }
+            });
+            alert('已注册获取“发送给朋友”状态事件');
+        })
+    })
+
+    wx.error(function(res) {
+        alert(res.errMsg);
+    });
+
+})

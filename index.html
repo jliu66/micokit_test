@@ -15,50 +15,71 @@
 </head>
 <body ontouchstart="">
 
-<!-- 设备list -->
-<div class="container-fluid" id="list">
-	
+<!-- 设备list -->  
+<div class="container-fluid" id="list"> 
+    <!--<div id="listTemp" class="alert fade in row-online-state row-online-state-shadow">
+        <ul class="list-unstyled col-xs-9">
+            <li id="alias">我的床垫</li>
+            <li>c89346918374</li>
+            <li>
+                <button type="button" class="btn btn-xs removeDevice" data-dismiss="alert">解除设备</button>
+                <button type="button" class="btn btn-xs modifyName">修改名称</button>
+            </li>
+        </ul>
+        <p class="col-xs-3">在线</p>
+    </div>
+    <div id="listTemp" class="alert fade in">
+        <ul class="list-unstyled col-xs-9">
+            <li id="alias">TH-1508</li>
+            <li>c89346918374</li>
+            <li>
+                <button type="button" class="btn btn-xs removeDevice" data-dismiss="alert">解除设备</button>
+                <button type="button" class="btn btn-xs modifyName">修改名称</button>
+            </li>
+        </ul>
+        <p class="col-xs-3">离线</p>
+    </div>    -->
 </div>
 <!-- /设备list -->
 
 <!-- 固定于底部 -->
 <footer class="footer navbar-fixed-bottom">
-    <a href="http://97256c69-6723-43fb-87dc-167eaf9dc501.app.easylink.io/redirect.php?wxappid=wxb4ee08c8823d1555&airkiss=1" class="text-center">添加新设备</a>
+    <a href="#" class="text-center">添加新设备</a>
 </footer>
 <!-- /固定于底部 -->
 
 <!-- modal -->
 <div class="modal fade" id="inputModal">
     <div class="modal-dialog">
-    	<div class="modal-v-center"> 
-	        <div class="modal-content center-block">
-	            <div class="modal-header">
-	                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-	                        aria-hidden="true">&times;</span></button>
-	                <h4 class="modal-title">修改名称</h4>
-	            </div>
-	            <div class="modal-body">
-	                <input type="text" class="form-control" id="modifyContent">
-	            </div>
-	            <div class="modal-footer">
-	                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-	                <button type="button" class="btn btn-primary" id="confirm">确认修改</button>
-	            </div>
-	        </div>
+        <div class="modal-v-center">
+            <div class="modal-content center-block">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">修改名称</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="text" class="form-control" id="modifyContent">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="confirm">确认修改</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 <!-- /modal -->
-    <div id="listTemp" class="alert fade in" style="display: none;">
-        <ul class="list-unstyled col-xs-9">
-            <li id="alias"></li>
-            <li id="bssid"></li>
-            <li>
-                <button type="button" class="btn btn-xs" id="removeDevice">解除设备</button>
-                <button type="button" class="btn btn-xs modifyName" id="selectDevice">修改名称</button>
-            </li>
-        </ul>
-        <p class="col-xs-3" id="state"></p>
-    </div>
+<div id="listTemp" class="alert fade in" style="display: none;">
+    <ul class="list-unstyled col-xs-9">
+        <li id="alias"></li>
+        <li id="bssid"></li>
+        <li>
+            <button type="button" class="btn btn-xs" id="removeDevice">解除设备</button>
+            <button type="button" class="btn btn-xs modifyName" id="selectDevice">修改名称</button>
+        </li>
+    </ul>
+    <p class="col-xs-3" id="state"></p>
+</div>
 </body>
 </html>
