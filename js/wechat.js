@@ -38,6 +38,9 @@ $(document).ready(function() {
                         alert(JSON.stringify(res));
                     }
                 });
+                wx.invoke('openWXDeviceLib', {}, function (res) {
+                    alert("wx.openWXDeviceLib "+JSON.stringify(res));
+                });
                 wx.invoke('getWXDeviceTicket', {
                     'deviceId': 'C68F841A219D452F1411EFD95F22538EEBB4C504E90EF3166F20DE7B5A57F792',
                     'type': '2'
