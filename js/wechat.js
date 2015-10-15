@@ -29,8 +29,7 @@ $(document).ready(function() {
                 //console.log("失败了" + data.result);
                 alert("失败了" + data.result);
             }
-        )
-    }
+        })
 
     wx.ready(function() {
         wx.checkJsApi({
