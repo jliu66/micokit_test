@@ -44,7 +44,8 @@ $(document).ready(function() {
                 
 
                 $('#share').on("click", function() {
-                    wx.invoke('getWXDeviceTicket', {
+                    alert('share');
+                    wx.getWXDeviceTicket({
                     'deviceId': 'C68F841A219D452F1411EFD95F22538EEBB4C504E90EF3166F20DE7B5A57F792',
                     'type': '2'
                 }, function(res) {
@@ -55,8 +56,8 @@ $(document).ready(function() {
                         console.log(ticket);
                     }
                 });
+
                     
-                    alert('share');
                     // wx.onMenuShareAppMessage({
                     //     title: '互联网之子',
                     //     desc: '在长大的过程中，我才慢慢发现，我身边的所有事，别人跟我说的所有事，那些所谓本来如此，注定如此的事，它们其实没有非得如此，事情是可以改变的。更重要的是，有些事既然错了，那就该做出改变。',
