@@ -1,27 +1,36 @@
 $(document).ready(function() {
-    var data = {
-        "appId": "wxb4ee08c8823d1555",
-        "nonceStr": "sD3nMC4kx0tkH783",
-        "timestamp": 1444893285,
-        "url": "http:\/\/97256c69-6723-43fb-87dc-167eaf9dc501.app.easylink.io\/sign.php",
-        "signature": "d797b3cdca059f546f752bdbbca88d3d5d2b0cfc",
-        "rawString": "jsapi_ticket=sM4AOVdWfPE4DxkXGEs8VIx0OV_QLWcz5fhkwjsIUkOXlj_YSCPPcG6b0StzCiRQif25MFhg2dnQxQPJDq4O0A&noncestr=sD3nMC4kx0tkH783×tamp=1444893285&url=http:\/\/97256c69-6723-43fb-87dc-167eaf9dc501.app.easylink.io\/sign.php",
-        "jsapiTicket": "sM4AOVdWfPE4DxkXGEs8VIx0OV_QLWcz5fhkwjsIUkOXlj_YSCPPcG6b0StzCiRQif25MFhg2dnQxQPJDq4O0A"
-    };
-
-    wx.config({
-        debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-        appId: data.appId, // 必填，公众号的唯一标识
-        timestamp: data.timestamp, // 必填，生成签名的时间戳
-        nonceStr: data.nonceStr, // 必填，生成签名的随机串
-        signature: data.signature, // 必填，签名，见附录1
-        jsApiList: [
-            // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-            'openWXDeviceLib',
-            'closeWXDeviceLib',
-            'getWXDeviceTicket',
-        ]
-    });
+    $.ajax({
+            type: 'get',
+            url: 'http://97256c69-6723-43fb-87dc-167eaf9dc501.app.easylink.io/sign.php',
+            headers: {},
+            cache: false,
+            dataType: 'json',
+            success: function(data) {
+                alert("success" + data);
+                //console.log("success" + data);
+                // var d = new Date();
+                // var timestamp = d.getTime();
+                var signature = user.signWechat(data);
+                wx.config({
+                    //debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                    appId: data.appId, // 必填，公众号的唯一标识
+                    timestamp: data.timestamp, // 必填，生成签名的时间戳
+                    nonceStr: data.nonceStr, // 必填，生成签名的随机串
+                    signature: signature, // 必填，签名，见附录1
+                    jsApiList: [
+                        // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+                        'openWXDeviceLib',
+                        'closeWXDeviceLib',
+                        'getWXDeviceTicket',
+                    ]
+                });
+            },
+            error: function(data) {
+                //console.log("失败了" + data.result);
+                alert("失败了" + data.result);
+            }
+        )
+    }
 
     wx.ready(function() {
         wx.checkJsApi({
@@ -60,5 +69,20 @@ $(document).ready(function() {
     wx.error(function(res) {
         alert(res.errMsg);
     });
+
+
+    function signWechat(data) {
+        //var appId = data.appId;
+        var nonceStr = data.nonceStr;
+        var timestamp = data.timestamp;
+        //var timestamp = time;
+        var ticket = data.jsapiTicket;
+        var url = document.location.href.split('#')[0];
+        var rawString = 'jsapi_ticket=' + ticket + '&noncestr=' + nonceStr + '&timestamp=' + timestamp + '&url=' + url;
+        //console.log('rawString: '+rawString);
+        var sign = hex_sha1(rawString);
+        //console.log('sign: '+sign);
+        return sign;
+    }
 
 })
