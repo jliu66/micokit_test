@@ -32,6 +32,8 @@ $(document).ready(function() {
                     jsApiList: [
                         'getNetworkType',
                         'previewImage',
+                        'openWXDeviceLib',
+                        'getWXDeviceTicket',
                         'onMenuShareAppMessage'
                     ],
                     success: function(res) {
