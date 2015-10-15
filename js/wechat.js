@@ -39,10 +39,11 @@ $(document).ready(function() {
                     }
                 });
                 wx.invoke('getWXDeviceTicket', {
-                    'deviceId': 'dev1',
-                    'type': '1'
+                    'deviceId': 'C68F841A219D452F1411EFD95F22538EEBB4C504E90EF3166F20DE7B5A57F792',
+                    'type': '2'
                 }, function(res) {
-                    if (res.err_msg == 'getWXDeviceTicketk') {
+                    alert(res.err_msg);
+                    if (res.err_msg == 'getWXDeviceTicket') {
                         var ticket = res.ticket;
                         alert(ticket);
                         console.log(ticket);
