@@ -26,7 +26,7 @@ $(document).ready(function() {
                     'onMenuShareAppMessage'
                 ]
             });
-            alert.log(JSON.stringify(wx));
+
             wx.ready(function() {
                 wx.checkJsApi({
                     jsApiList: [
