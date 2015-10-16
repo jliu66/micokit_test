@@ -48,7 +48,7 @@ $(document).ready(function() {
                 $('#getTicket').on("click", function() {
                     alert('getTicket');
                     WeixinJSBridge.invoke('getWXDeviceTicket', {
-                        'deviceId': '52FF4DFC6223888A4B37E8C68B269C4B8DB8CD8564EC6AD09DBB5BC2DBBDF590',
+                        'deviceId': 'A8F176A3D2A6DDA721675066E134646ADE50FB59A998A81F0E36C35019EAA5BF',
                         'type': '2'
                     }, function(res) {
                         alert(JSON.stringify(res));
