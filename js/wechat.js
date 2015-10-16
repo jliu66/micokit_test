@@ -40,9 +40,9 @@ $(document).ready(function() {
                         alert('checkJsApi ' + JSON.stringify(res));
                     }
                 });
-                wx.invoke('openWXDeviceLib', {}, function(res) {
-                    alert("wx.openWXDeviceLib " + JSON.stringify(res));
-                });
+                // wx.invoke('openWXDeviceLib', {}, function(res) {
+                //     alert("wx.openWXDeviceLib " + JSON.stringify(res));
+                // });
 
 
                 $('#getTicket').on("click", function() {
