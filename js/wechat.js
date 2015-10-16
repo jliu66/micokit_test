@@ -24,7 +24,8 @@ $(document).ready(function() {
                     'openWXDeviceLib',
                     'closeWXDeviceLib',
                     'getWXDeviceTicket',
-                    'onMenuShareAppMessage'
+                    'onMenuShareAppMessage',
+                    'configWXDeviceWiFi'
                 ]
             });
 
@@ -35,7 +36,8 @@ $(document).ready(function() {
                         'previewImage',
                         'openWXDeviceLib',
                         'getWXDeviceTicket',
-                        'onMenuShareAppMessage'
+                        'onMenuShareAppMessage',
+                        'configWXDeviceWiFi'
                     ],
                     success: function(res) {
                         alert('checkJsApi ' + JSON.stringify(res));
