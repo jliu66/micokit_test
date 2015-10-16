@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    console.log($.md5('f98d773200d3c8e15a52f972656dd4df'+'1444900962'));
     $.ajax({
         type: 'get',
         url: 'http://97256c69-6723-43fb-87dc-167eaf9dc501.app.easylink.io/sign.php',
@@ -44,6 +45,12 @@ $(document).ready(function() {
                     alert("wx.openWXDeviceLib " + JSON.stringify(res));
                 });
 
+				$('#airkiss').on("click", function() {
+                    alert('airkiss');
+                    WeixinJSBridge.invoke('configWXDeviceWiFi', {}, function(res) {
+                        alert(JSON.stringify(res));
+                    });
+                })                
 
                 $('#getTicket').on("click", function() {
                     alert('getTicket');
