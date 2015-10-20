@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    console.log($.md5('f98d773200d3c8e15a52f972656dd4df'+'1444900962'));
+    // console.log($.md5('f98d773200d3c8e15a52f972656dd4df'+'1444900962'));
     $.ajax({
         type: 'get',
         url: 'http://97256c69-6723-43fb-87dc-167eaf9dc501.app.easylink.io/sign.php',
@@ -12,7 +12,7 @@ $(document).ready(function() {
             // var d = new Date();
             // var timestamp = d.getTime();
             var signature = signWechat(data);
-            alert(signature);
+            // alert(signature);
             wx.config({
                 //debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
                 appId: data.appId, // 必填，公众号的唯一标识
@@ -40,11 +40,11 @@ $(document).ready(function() {
                         'configWXDeviceWiFi'
                     ],
                     success: function(res) {
-                        alert('checkJsApi ' + JSON.stringify(res));
+                        // alert('checkJsApi ' + JSON.stringify(res));
                     }
                 });
                 WeixinJSBridge.invoke('openWXDeviceLib', {}, function(res) {
-                    alert("wx.openWXDeviceLib " + JSON.stringify(res));
+                    // alert("wx.openWXDeviceLib " + JSON.stringify(res));
                 });
 
 				$('#airkiss').on("click", function() {
@@ -71,9 +71,9 @@ $(document).ready(function() {
 
                 $('#share').on("click", function() {
                     wx.onMenuShareAppMessage({
-                        title: '互联网之子',
-                        desc: '在长大的过程中，我才慢慢发现，我身边的所有事，别人跟我说的所有事，那些所谓本来如此，注定如此的事，它们其实没有非得如此，事情是可以改变的。更重要的是，有些事既然错了，那就该做出改变。',
-                        link: 'http://movie.douban.com/subject/25785114/',
+                        title: '设备分享',
+                        desc: '设备分享设备分享设备分享',
+                        link: 'http://www.u-gen.net/demo.html',
                         imgUrl: 'http://demo.open.weixin.qq.com/jssdk/images/p2166127561.jpg',
                         trigger: function(res) {
                             // 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
