@@ -198,10 +198,10 @@ $(document).ready(function () {
             getWxDeviceTicket(wxDeviceId, function (err, ticket) {
                 alert('ticket====='+ticket);
                 if (!!err) return;
-                unbindDevice(requestHeader, deviceId, ticket, function (err, res) {
+                unbindDevice(requestHeader, thisDeviceId, ticket, function (err, res) {
                     alert("unbindDevice:" + JSON.stringify(res));
                     if (!err && res.resault == "success") {
-                        $("#" + thisDeviceId).remove();
+                        $("#" + deviceId).remove();
                     } else {
                         alert("删除失败");
                     }
