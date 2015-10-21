@@ -178,6 +178,16 @@ $(document).ready(function () {
         })
     }
 
+    var signInfo = getWechatSignInfo();
+    alert('signInfo: ' + JSON.stringify(signInfo));
+    var wechatSign = getWechatSign(signInfo);
+    alert('wechatSign:'+ wechatSign);
+    wechatConfig(signInfo, wechatSign);
+    wx.ready(function () {
+        openWXDeviceLib();
+        deleteDevice();
+    })
+
     function deleteDevice() {
         $("#deleteDevice").on("click", function () {
             //样式改了之后，这里可能有问题
@@ -185,13 +195,7 @@ $(document).ready(function () {
             thisDeviceId = thisDeviceId.replace(/\//g, "\\\/");
             var wxDeviceId = $("#" + thisDeviceId).data('wxdeviceid');
             alert('wxDeviceId: ' + wxDeviceId);
-            //var signInfo = getWechatSignInfo();
-            //alert('signInfo: ' + JSON.stringify(signInfo));
-            //var wechatSign = getWechatSign(signInfo);
-            //alert('wechatSign:'+ wechatSign);
-            var signInfo = {};
-            var wechatSign = "dsfa";
-            getWxDeviceTicket(signInfo, wechatSign, wxDeviceId, function (err, ticket) {
+            getWxDeviceTicket(wxDeviceId, function (err, ticket) {
                 if (!!err) return;
                 unbindDevice(requestHeader, wxDeviceId, ticket, function (err, res) {
                     alert("unbindDevice:"+SON.stringify(res));
