@@ -196,6 +196,7 @@ $(document).ready(function () {
             var wxDeviceId = $("#" + thisDeviceId).data('wxdeviceid');
             alert('wxDeviceId: ' + wxDeviceId);
             getWxDeviceTicket(wxDeviceId, function (err, ticket) {
+                alert('ticket====='+ticket);
                 if (!!err) return;
                 unbindDevice(requestHeader, wxDeviceId, ticket, function (err, res) {
                     alert("unbindDevice:"+SON.stringify(res));
