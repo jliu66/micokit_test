@@ -199,7 +199,7 @@ function getWxDeviceTicket(deviceId, callback) {
 
 function openWXDeviceLib() {
     WeixinJSBridge.invoke('openWXDeviceLib', {}, function (res) {
-        alert("wx.openWXDeviceLib " + JSON.stringify(res));
+        //alert("wx.openWXDeviceLib " + JSON.stringify(res));
     });
 
 }

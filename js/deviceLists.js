@@ -179,9 +179,9 @@ $(document).ready(function () {
     }
 
     var signInfo = getWechatSignInfo();
-    alert('signInfo: ' + JSON.stringify(signInfo));
+    //alert('signInfo: ' + JSON.stringify(signInfo));
     var wechatSign = getWechatSign(signInfo);
-    alert('wechatSign:'+ wechatSign);
+    //alert('wechatSign:'+ wechatSign);
     wechatConfig(signInfo, wechatSign);
     wx.ready(function () {
         openWXDeviceLib();
@@ -200,7 +200,7 @@ $(document).ready(function () {
                 if (!!err) return;
                 unbindDevice(requestHeader, thisDeviceId, ticket, function (err, res) {
                     alert("unbindDevice:" + JSON.stringify(res));
-                    if (!err && res.resault == "success") {
+                    if (!err && res.result == "success") {
                         $("#" + deviceId).remove();
                     } else {
                         alert("删除失败");
