@@ -183,20 +183,25 @@ function getWxDeviceTicket(signInfo, wechatSign, deviceId, callback) {
     wx.ready(function () {
         WeixinJSBridge.invoke('openWXDeviceLib', {}, function (res) {
             alert("wx.openWXDeviceLib " + JSON.stringify(res));
-        });
-        WeixinJSBridge.invoke('getWXDeviceTicket', {
-            'deviceId': deviceId,
-            'type': '2'
-        }, function (res) {
-            if (res.err_msg == 'getWXDeviceTicket:ok') {
-                var ticket = res.ticket;
-                alert('ticket: ', ticket);
-                callback(null, ticket);
-            } else {
+            if(res.err_msg == "openWXDeviceLib:ok"){
+                WeixinJSBridge.invoke('getWXDeviceTicket', {
+                    'deviceId': deviceId,
+                    'type': '2'
+                }, function (res) {
+                    if (res.err_msg == 'getWXDeviceTicket:ok') {
+                        var ticket = res.ticket;
+                        alert('ticket: '+ ticket);
+                        callback(null, ticket);
+                    } else {
+                        callback('err', null);
+                        console.log(JSON.stringify(res));
+                    }
+                });
+            }else{
                 callback('err', null);
-                console.log(JSON.stringify(res));
             }
         });
+
     })
 }
 

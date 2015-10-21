@@ -188,11 +188,11 @@ $(document).ready(function () {
             var signInfo = getWechatSignInfo();
             alert('signInfo: ' + JSON.stringify(signInfo));
             var wechatSign = getWechatSign(signInfo);
-            alert('wechatSign:', wechatSign);
+            alert('wechatSign:'+ wechatSign);
             getWxDeviceTicket(signInfo, wechatSign, wxDeviceId, function (err, ticket) {
                 if (!!err) return;
                 unbindDevice(requestHeader, wxDeviceId, ticket, function (err, res) {
-                    alert("unbindDevice:", JSON.stringify(res));
+                    alert("unbindDevice:"+SON.stringify(res));
                     if (!err && res.resault == "success") {
                         $("#" + thisDeviceId).alert();
                     } else {
