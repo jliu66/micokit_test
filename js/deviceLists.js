@@ -192,13 +192,13 @@ $(document).ready(function () {
         $("#deleteDevice").on("click", function () {
             //样式改了之后，这里可能有问题
             thisDeviceId = $(this).parents()[2].id;
-            thisDeviceId = thisDeviceId.replace(/\//g, "\\\/");
-            var wxDeviceId = $("#" + thisDeviceId).data('wxdeviceid');
+            var deviceId = thisDeviceId.replace(/\//g, "\\\/");
+            var wxDeviceId = $("#" + deviceId).data('wxdeviceid');
             alert('wxDeviceId: ' + wxDeviceId);
             getWxDeviceTicket(wxDeviceId, function (err, ticket) {
                 alert('ticket====='+ticket);
                 if (!!err) return;
-                unbindDevice(requestHeader, wxDeviceId, ticket, function (err, res) {
+                unbindDevice(requestHeader, deviceId, ticket, function (err, res) {
                     alert("unbindDevice:" + JSON.stringify(res));
                     if (!err && res.resault == "success") {
                         $("#" + thisDeviceId).remove();
