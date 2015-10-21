@@ -199,9 +199,9 @@ $(document).ready(function () {
                 alert('ticket====='+ticket);
                 if (!!err) return;
                 unbindDevice(requestHeader, wxDeviceId, ticket, function (err, res) {
-                    alert("unbindDevice:"+SON.stringify(res));
+                    alert("unbindDevice:" + JSON.stringify(res));
                     if (!err && res.resault == "success") {
-                        $("#" + thisDeviceId).alert();
+                        $("#" + thisDeviceId).remove();
                     } else {
                         alert("删除失败");
                     }

@@ -121,11 +121,11 @@ function unbindDevice(requestHeader, deviceId, ticket, callback) {
         data: {"ticket": ticket, "app_id": appId, "device_id": deviceId},
         headers: requestHeader,
         success: function (data) {
-            alert('unbind:'+ data);
+            alert('unbind:'+  JSON.stringify(data));
             callback(null, data);
         },
         error: function (data) {
-            alert('unbind:'+ data);
+            alert('unbind:'+  JSON.stringify(data));
             callback("err", null);
             console.log(data);
         }
