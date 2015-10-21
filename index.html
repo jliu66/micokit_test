@@ -8,16 +8,22 @@
     <meta name="format-detection" content="telephone=no"/>  
     <title>我的设备</title>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <link rel="stylesheet" type="text/css" href="css/index.css?version=0.0.3">
     <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery.md5.js"></script>
+    <script type="text/javascript" src="js/sha1.js"></script>
+    <script type="text/javascript" src="js/underscore-min.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="js/deviceLists.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script type="text/javascript" src="js/config.js"></script>
+    <script type="text/javascript" src="js/public.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/deviceLists.js?version=0.0.3"></script>
 </head>
 <body ontouchstart="">
 
 <!-- 设备list -->  
 <div class="container-fluid" id="list"> 
-<a href="wechat.html?v=0.0.1" class="text-center">添加新设备</a>
     <!--<div id="listTemp" class="alert fade in row-online-state row-online-state-shadow">
         <ul class="list-unstyled col-xs-9">
             <li id="alias">我的床垫</li>
@@ -45,7 +51,9 @@
 
 <!-- 固定于底部 -->
 <footer class="footer navbar-fixed-bottom">
-    <a href="#" class="text-center">添加新设备</a>
+    <!--<a href="http://97256c69-6723-43fb-87dc-167eaf9dc501.app.easylink.io/redirect.php?wxappid=wxb4ee08c8823d1555&airkiss=1" class="text-center">测试号设备配网</a>-->
+    <a href="http://f31b460a-8a8d-4ffc-97c1-054a8c4b27cf.app.easylink.io/redirect.php?wxappid=wxdf2a57ea9717b5ad&airkiss=1"
+       class="text-center">设备配网</a>
 </footer>
 <!-- /固定于底部 -->
 
@@ -76,7 +84,8 @@
         <li id="alias"></li>
         <li id="bssid"></li>
         <li>
-            <button type="button" class="btn btn-xs" id="removeDevice">解除设备</button>
+            <button type="button" class="btn btn-xs" id="manageDevice">管理设备</button>
+            <button type="button" class="btn btn-xs" id="deleteDevice">解除设备</button>
             <button type="button" class="btn btn-xs modifyName" id="selectDevice">修改名称</button>
         </li>
     </ul>

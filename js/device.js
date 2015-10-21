@@ -101,7 +101,7 @@ $(document).ready(function () {
         function onConnectionLost(responseObject) {
             if (responseObject.errorCode !== 0)
                 console.log("onConnectionLost:" + responseObject.errorMessage);
-            alert("连接丢失，请重新连接...");
+
 			connect = false;
             var reconnectNum = 0;
             var connectTimer = setInterval(function(){
@@ -112,12 +112,14 @@ $(document).ready(function () {
                 }else{
                     clearInterval(connectTimer);
                 }
-                if(reconnectNum >2){
-
+                if(reconnectNum >100){
                     clearInterval(connectTimer);
+                    alert("连接丢失，请重新连接...");
+                    client = new Paho.MQTT.Client(wsbroker, wsport, "v1-web-" + parseInt(Math.random() * 1000000, 12));
+                    init();
                 }
                 reconnectNum++;
-            },5000);
+            },6000);
         }
 
         // 消息到达
@@ -153,6 +155,7 @@ $(document).ready(function () {
         var onOffSleep = $(".onOff_sleep");
         var onOffAntifreeze = $(".onOff_antifreeze");
         var onOffTime = $(".onOff_time");
+        var onFinesleep = $(".onOff_finesleep");
         //显示
         function displayInfo(info) {
             //设备开关
@@ -220,7 +223,6 @@ $(document).ready(function () {
                     $("#err").html('<span></span>' + msg[intERR]);
                 }
 
-
             }
             temperatureChange();
         }
@@ -234,6 +236,8 @@ $(document).ready(function () {
         });
         $("#tmpLeft").on("touchstart", setTmpLeft);
         $("#tmpRight").on("touchstart", setTmpRight);
+        
+        $("#finalTime").get(0).selectedIndex=-1;//设置预约定时下拉框默认为无选择
 	    $('#finalTime').change(function(){
 	    	var r = confirm("确定"+$("#finalTime").children('option:selected').val()+"?")
 	    	if(r==true){
@@ -336,18 +340,18 @@ $(document).ready(function () {
         /**控制开关状态*/
         function onOffSwitch(state, switchName) {
             if (state == '0') {
-                switchName.removeClass('switch_on_state');
+                switchName.parent().removeClass('switch_on_state');
             } else {
-                switchName.addClass('switch_on_state');
+                switchName.parent().addClass('switch_on_state');
             }
         } 
         
         /* 电源关闭后的蒙版*/
         function mask(power){
         	if(power==0){
-        		$("#mask").show();
+				$("#control_panel").addClass('powerSwitch_off_state');
         	}else{
-        		$("#mask").hide();
+				$("#control_panel").removeClass('powerSwitch_off_state');
         	}
         }
     }
@@ -393,7 +397,6 @@ $(document).ready(function () {
         ];
         //设置温度数值初始值
         temperature.text(setTemperature);
-
         colorBars = $("#progressBars li span");
         circle = $("#progressBars li");
         temperatureChange();

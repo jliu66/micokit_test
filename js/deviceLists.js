@@ -2,13 +2,21 @@
  * Created by CJLIU on 2015/9/19.
  */
 $(document).ready(function () {
+    //当前设备ID
     var thisDeviceId;
-//  var equipmentName;
+    // 得到请求的sign
+    var requestSign = getRequestSign();
     var access_token = getParameterByName('access_token');
-    //初始化设备列表
+    // 请求头部参数
+    var requestHeader = {
+        'Authorization': 'token ' + access_token,
+        'X-Application-Id': appId,
+        'X-Request-Sign': requestSign
+    };
+
+    // 初始化设备列表
     var deviceLists = getParameterByName('device_list');
-    //自动刷新列表间隔时间
-    var reloadInterval = 5000;
+
     if (deviceLists !== null) {
         try {
             deviceLists = JSON.parse(deviceLists);
@@ -17,116 +25,182 @@ $(document).ready(function () {
                 if (device[0] === null) continue;
                 var device_id = device[0];
                 var bssid = device_id.split('/')[1];
-                var alias = device[3] ? device[3] : 'TH-1507';
-                var product_id = device_id.split('/')[0];
-                //var time = new Date(parseInt(device[1])*1000).toLocaleString();
-                //var url = product_id + '.html?device_id=' + device_id + '&access_token=' + access_token + '&alias=' + alias;
+                var alias = device[3] ? device[3] : device_id;
                 var url = 'device.html?device_id=' + device_id + '&access_token=' + access_token + '&alias=' + alias;
-                var createTime = device[1];
-                var now = Math.round(new Date().getTime() / 1000);
-                console.log(now);
                 var state = device[2];
-                if ((now - createTime) < 60) {
-                    state = 1;
-                }
                 //渲染设备列表
                 addDeviceLists(device_id, state, alias, bssid, url);
+                onModifyName();
+                manageDevice();
+                deleteDevice();
+                modifyDeviceName();
+                autoReloadPage();
             }
         } catch (e) {
             alert(e);
         }
+    } else {
+        alert('请扫描设备二维码');
     }
 
-    var reloadTimer = setInterval(function(){reloadPage()},reloadInterval);
 
-    /**
-     * 刷新列表
-     */
+    /* 自动刷新列表 */
+    function autoReloadPage() {
+        // 初始刷新列表次数
+        var reloadTimers = 0;
+        var reloadTimer = setInterval(function () {
+            reloadTimers++;
+            reloadPage();
+            if (reloadTimers == maxReloadTimers) {
+                clearInterval(reloadTimer);
+            }
+        }, reloadInterval);
+    }
+
+    /* 刷新列表 */
     function reloadPage() {
         $.ajax({
             type: "POST",
             url: "http://api.easylink.io/v1/device/devices",
-            //dataType: "json",
-            headers: {
-                "AUTHORIZATION": "token " + access_token
-            },
+            headers: requestHeader,
             success: function (data) {
                 console.log(data);
+                //移除设备列表
+                $("#list").children().remove();
                 $.each(data, function (i, _data) {
                     var device_id = _data.id;
                     var product_id = device_id.split('/')[0];
                     var bssid = _data.bssid;
                     var alias = _data.alias;
-                    //var url = product_id + '.html?device_id=' + device_id + '&access_token=' + access_token + '&alias=' + alias;
                     var url = 'device.html?device_id=' + device_id + '&access_token=' + access_token + '&alias=' + alias;
                     var state = _data.online;
-                    //移除设备列表
-                    $("#list").children().remove();
+                    var wxDevice_id = _data.wx_device_id;
+
+
                     //渲染设备列表
-                    addDeviceLists(device_id, state, alias, bssid, url);
-                    //移除修改名称click事件
-                    offModifyName();
+                    addDeviceLists(device_id, state, alias, bssid, url, wxDevice_id);
+                    //移除设备管理click事件
+                    offClickEvent();
+                    //添加设备管理click事件
+                    manageDevice();
+                    deleteDevice();
                     //添加修改名称click事件
                     onModifyName();
                 });
             },
             error: function (data) {
-                //alert("修改名称失败");
                 console.log(data);
             }
         });
     }
 
-
     /* 修改名称 */
-    onModifyName();
-    $("#confirm").on("click", function () {
-        var modifyContent = $("#modifyContent").val();
-        if (!modifyContent) {
-            alert('写点什么吧');
-        } else if (getByteLen(modifyContent) > 16) {
-            alert('超过字数咯');
-        } else {
+    function modifyDeviceName() {
+        $("#confirm").on("click", function () {
+            var modifyContent = $("#modifyContent").val();
+            console.log('modifyContent:', modifyContent);
+            if (!modifyContent) {
+                alert('写点什么吧');
+            } else if (getByteLen(modifyContent) > 16) {
+                alert('超过字数咯');
+            } else {
 //      	alert(thisDeviceId);
-            $.ajax({
-                type: "POST",
-                url: "http://api.easylink.io/v1/device/modify",
-                data: {
-                    "device_id": thisDeviceId,
-                    "alias": modifyContent
-                },
-                headers: {
-                    "AUTHORIZATION": "token " + access_token
-                },
-                success: function () {
-                    thisDeviceId = thisDeviceId.replace(/\//g, "\\\/");
-                    $("#" + thisDeviceId + " #alias").html(modifyContent);
-                },
-                error: function (data) {
-                    alert("修改名称失败");
-                    console.log(data);
-                }
-            });
-            //模态框隐藏
-            $("#inputModal").modal("hide");
-            //清除输入框内容
-            $("#modifyContent").val('');
-        }
-    });
+                $.ajax({
+                    type: "POST",
+                    url: "http://api.easylink.io/v1/device/modify",
+                    data: {
+                        "device_id": thisDeviceId,
+                        "alias": modifyContent
+                    },
+                    headers: {
+                        "AUTHORIZATION": "token " + access_token
+                    },
+                    success: function () {
+                        thisDeviceId = thisDeviceId.replace(/\//g, "\\\/");
+                        $("#" + thisDeviceId + " #alias").html(modifyContent);
+                    },
+                    error: function (data) {
+                        alert("修改名称失败");
+                        console.log(data);
+                    }
+                });
+                //模态框隐藏
+                $("#inputModal").modal("hide");
+                //清除输入框内容
+                $("#modifyContent").val('');
+            }
+        });
+    }
 
     /* 添加修改名称的click事件 */
     function onModifyName() {
         $(".modifyName").on("click", function (e) {
             //模态框显示
             $("#inputModal").modal("show");
+            //样式改了之后，这里可能有问题
             thisDeviceId = $(this).parents()[2].id;
 
         });
     }
 
-    /* 移除修改名称的click事件 */
-    function offModifyName() {
+    /* 移除click事件 刷新页面需要 */
+    function offClickEvent() {
         $(".modifyName").off("click");
+        $("#deleteDevice").off("click");
+        $("#manageDevice").off("click");
+    }
+
+    /* 设备管理 */
+    function manageDevice() {
+        $("#manageDevice").on("click", function () {
+            var userName = getUserName(access_token, requestHeader);
+            //样式改了之后，这里可能有问题
+            thisDeviceId = $(this).parents()[2].id;
+            var role = getDeviceUser(thisDeviceId, requestHeader, userName);
+            var customRole = getDeviceProperties(thisDeviceId, requestHeader, 'customRole');
+            // 设备主人
+            if (role == "owner") {
+                //按钮 4个 （移除 修改 用户管理 设备分享）
+
+            } else if (role == "share") {
+                // 用户有权限
+                if (!!customRole && _.indexOf(customRole, userName) != -1) {
+                    //按钮2个 移除 修改
+
+                } else {
+                    //按钮1个 移除
+
+                }
+            }
+
+            // 得到微信access_token 用户管理中需要用到
+            var accessToken = getWechatAccessToken(requestHeader);
+        })
+    }
+
+    function deleteDevice() {
+        $("#deleteDevice").on("click", function () {
+            //样式改了之后，这里可能有问题
+            thisDeviceId = $(this).parents()[2].id;
+            thisDeviceId = thisDeviceId.replace(/\//g, "\\\/");
+            var wxDeviceId = $("#" + thisDeviceId).data('wxdeviceid');
+            alert('wxDeviceId: ' + wxDeviceId);
+            var signInfo = getWechatSignInfo();
+            alert('signInfo: ' + JSON.stringify(signInfo));
+            var wechatSign = getWechatSign(signInfo);
+            alert('wechatSign:', wechatSign);
+            getWxDeviceTicket(signInfo, wechatSign, wxDeviceId, function (err, ticket) {
+                if (!!err) return;
+                unbindDevice(requestHeader, wxDeviceId, ticket, function (err, res) {
+                    alert("unbindDevice:", JSON.stringify(res));
+                    if (!err && res.resault == "success") {
+                        $("#" + thisDeviceId).alert();
+                    } else {
+                        alert("删除失败");
+                    }
+                });
+            });
+        })
     }
 
     /**
@@ -137,26 +211,26 @@ $(document).ready(function () {
      * @param bssid
      * @param url
      */
-    function addDeviceLists(device_id, state, alias, bssid, url) {
+    function addDeviceLists(device_id, state, alias, bssid, url, wxDeviceId) {
         //填充列表
         var template = $("#listTemp").html();
-        var list = $("<div id='" + device_id + "'class='alert fade in'>");
+        var list = $("<div id='" + device_id + "' data-wxDeviceId='" + wxDeviceId + "' class='alert fade in'>");
         list.html(template);
         if (state == 0) {
             state = "离线";
             $(list).removeClass("row-online-state");
-            addDeviceListsData(list, state, alias, bssid, url);
+            addDeviceListsData(list, state, alias, bssid, url, wxDeviceId);
         } else {
             state = "在线";
             $(list).addClass("row-online-state");
-            addDeviceListsData(list, state, alias, bssid, url);
+            addDeviceListsData(list, state, alias, bssid, url, wxDeviceId);
         }
     }
 
     function addDeviceListsData(divName, state, alias, bssid, url) {
         var equipmentName;
         $(divName).on('click', function (e) {
-            if ($(e.target).attr('id') != "selectDevice" && $(e.target).attr('id') != "removeDevice") {
+            if ($(e.target).attr('id') != "selectDevice" && $(e.target).attr('id') != "deleteDevice" && $(e.target).attr('id') != "manageDevice") {
                 $(e.target).parents('.fade').addClass('row-online-state-shadow');
                 equipmentName = $(e.target).parents('.fade').find('ul #alias').text();
                 console.log(equipmentName);
@@ -173,33 +247,6 @@ $(document).ready(function () {
         $(divName).find("#alias").text(alias);
         $(divName).find("#bssid").text(bssid);
         $("#list").append(divName);
-    }
-
-    /**
-     * 从url中获取某个参数的值
-     * @param name
-     * @returns {Array|{index: number, input: string}|string}
-     */
-    function getParameterByName(name) {
-        var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
-        return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
-    }
-
-    /**
-     * 返回字符的字节长度（汉字算2个字节）
-     * @param val
-     * @returns {number}
-     */
-    var getByteLen = function (val) {
-        var len = 0;
-        for (var i = 0; i < val.length; i++) {
-            if (val[i].match(/[^x00-xff]/ig) != null) //全角
-                len += 2;
-            else
-                len += 1;
-        }
-        ;
-        return len;
     }
 
 });
