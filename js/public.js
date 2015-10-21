@@ -113,6 +113,7 @@ function getDeviceProperties(deviceId, requestHeader, property) {
 }
 
 function unbindDevice(requestHeader, deviceId, ticket, callback) {
+    alert('unbindDevice=====');
     $.ajax({
         type: "POST",
         async: true,

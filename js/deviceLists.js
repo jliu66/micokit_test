@@ -185,10 +185,12 @@ $(document).ready(function () {
             thisDeviceId = thisDeviceId.replace(/\//g, "\\\/");
             var wxDeviceId = $("#" + thisDeviceId).data('wxdeviceid');
             alert('wxDeviceId: ' + wxDeviceId);
-            var signInfo = getWechatSignInfo();
-            alert('signInfo: ' + JSON.stringify(signInfo));
-            var wechatSign = getWechatSign(signInfo);
-            alert('wechatSign:'+ wechatSign);
+            //var signInfo = getWechatSignInfo();
+            //alert('signInfo: ' + JSON.stringify(signInfo));
+            //var wechatSign = getWechatSign(signInfo);
+            //alert('wechatSign:'+ wechatSign);
+            var signInfo = {};
+            var wechatSign = "dsfa";
             getWxDeviceTicket(signInfo, wechatSign, wxDeviceId, function (err, ticket) {
                 if (!!err) return;
                 unbindDevice(requestHeader, wxDeviceId, ticket, function (err, res) {
