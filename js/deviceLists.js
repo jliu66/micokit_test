@@ -233,8 +233,9 @@ $(document).ready(function () {
             var requestHeader = {
                 'Authorization': 'token ' + devAccessToken
             };
-            var ticket = getDeviceQrcode(requestHeader, thisDeviceId);
-            console.log('ticket: ' + ticket);
+            var ticket =  getDeviceQrcode(requestHeader,thisDeviceId);
+            alert('ticket: '+ticket);
+            shareAppMessage(ticket);
         })
     }
 
