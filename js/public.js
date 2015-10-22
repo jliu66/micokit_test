@@ -151,11 +151,11 @@ function getDeviceQrcode(requestHeader, deviceId) {
         data: {"product_id": product_id, 'app_id': appId, 'mac': mac},
         headers: requestHeader,
         success: function (data) {
-            console.log(data[mac].ticket);
+            alert(data[mac].ticket);
             ticket = data[mac].ticket;
         },
         error: function (data) {
-            console.log(data);
+            alert(JSON.stringify(data));
         }
     })
     if (!!ticket) {
