@@ -20,8 +20,8 @@ $(document).ready(function () {
     wechatConfig(signInfo, wechatSign);
     wx.ready(function () {
         openWXDeviceLib();
-        deleteDevice();
-        shareDevice();
+        onRemoveDevice();
+        onShareDevice();
     })
 
     // 初始化设备列表
@@ -48,11 +48,13 @@ $(document).ready(function () {
         alert('请扫描设备二维码');
     }
     onModifyName();
-    manageDevice();
-    //deleteDevice();
-    //shareDevice();
+    onManageDevice();
+    onRemoveDevice();
+    onShareDevice();
+    //onPermission();
     modifyDeviceName();
     autoReloadPage();
+
     /* 自动刷新列表 */
     function autoReloadPage() {
         // 初始刷新列表次数
@@ -68,7 +70,6 @@ $(document).ready(function () {
 
     /* 刷新列表 */
     function reloadPage() {
-        alert('reload');
         $.ajax({
             type: "POST",
             url: "http://api.easylink.io/v1/device/devices",
@@ -91,9 +92,10 @@ $(document).ready(function () {
                     //移除设备管理click事件
                     offClickEvent();
                     //添加设备管理click事件
-                    manageDevice();
-                    deleteDevice();
-                    shareDevice();
+                    onManageDevice();
+                    onRemoveDevice();
+                    onShareDevice();
+                    onPermission();
                     //添加修改名称click事件
                     onModifyName();
                 });
@@ -148,39 +150,42 @@ $(document).ready(function () {
             //模态框显示
             $("#inputModal").modal("show");
             //样式改了之后，这里可能有问题
-            thisDeviceId = $(this).parents()[2].id;
-
+            thisDeviceId = $(this).parents('.fade')[0].id;
         });
     }
 
     /* 移除click事件 刷新页面需要 */
     function offClickEvent() {
         $(".modifyName").off("click");
-        $(".deleteDevice").off("click");
-        $(".manageDevice").off("click");
+        $(".removeDevice").off("click");
+        $(".setUp").off("click");
     }
 
     /* 设备管理 */
-    function manageDevice() {
-        $(".manageDevice").on("click", function () {
-            console.log('mange');
+    function onManageDevice() {
+        $(".setUp").on("click", function () {
+            $(this).next().children("#setUpContent").collapse('toggle');
             var userName = getUserName(access_token, requestHeader);
             //样式改了之后，这里可能有问题
-            thisDeviceId = $(this).parents()[2].id;
+            thisDeviceId = $(this).parents('.fade')[0].id;
             var role = getDeviceUser(thisDeviceId, requestHeader, userName);
             var customRole = getDeviceProperties(thisDeviceId, requestHeader, 'customRole');
+            console.log("role =" + role);
             // 设备主人
             if (role == "owner") {
                 //按钮 4个 （移除 修改 用户管理 设备分享）
-
+                for (var i = 0; i < 4; i++) {
+                    $(this).next().find(".btn-group").eq(i).removeClass('disabled');
+                }
             } else if (role == "share") {
                 // 用户有权限
                 if (!customRole || _.indexOf(customRole, userName) == -1) {
                     //按钮2个 移除 修改
-
+                    $(this).next().find(".btn-group").eq(0).removeClass('disabled');
+                    $(this).next().find(".btn-group").eq(1).removeClass('disabled');
                 } else {
                     //按钮1个 移除
-
+                    $(this).next().find(".btn-group").eq(0).removeClass('disabled');
                 }
             }
 
@@ -190,10 +195,10 @@ $(document).ready(function () {
     }
 
     /* 移除设备 */
-    function deleteDevice() {
-        $(".eleteDevice").on("click", function () {
+    function onRemoveDevice() {
+        $(".removeDevice").on("click", function () {
             //样式改了之后，这里可能有问题
-            thisDeviceId = $(this).parents()[2].id;
+            thisDeviceId = $(this).parents('.fade')[0].id;
             var deviceId = thisDeviceId.replace(/\//g, "\\\/");
             var wxDeviceId = $("#" + deviceId).data('wxdeviceid');
             getWxDeviceTicket(wxDeviceId, function (err, ticket) {
@@ -211,18 +216,15 @@ $(document).ready(function () {
     }
 
     /* 设备分享 */
-    function shareDevice() {
-        alert("share");
-        $(".deleteDevice").on("click", function () {
+    function onShareDevice() {
+        $(".share").on("click", function () {
             //样式改了之后，这里可能有问题
-            thisDeviceId = $(this).parents()[2].id;
-            alert(thisDeviceId);
+            thisDeviceId = $(this).parents('.fade')[0].id;
             var requestHeader = {
                 'Authorization': 'token ' + devAccessToken
             };
-            var ticket =  getDeviceQrcode(requestHeader,thisDeviceId);
-            alert('ticket: '+ticket);
-            shareAppMessage(ticket);
+            var ticket = getDeviceQrcode(requestHeader, thisDeviceId);
+            console.log('ticket: ' + ticket);
         })
     }
 
@@ -253,10 +255,11 @@ $(document).ready(function () {
     function addDeviceListsData(divName, state, alias, bssid, url) {
         var equipmentName;
         $(divName).on('click', function (e) {
-            if ($(e.target).attr('id') != "selectDevice" && $(e.target).attr('id') != "deleteDevice" && $(e.target).attr('id') != "manageDevice") {
+//          if ($(e.target).attr('id') != "removeDevice" && $(e.target).attr('id') != "modifyName" && $(e.target).attr('id') != "permission" && $(e.target).attr('id') != "share" && $(e.target).attr('id') != "porject") {
+            if ($(e.target).attr('id') == "alias") {
                 $(e.target).parents('.fade').addClass('row-online-state-shadow');
                 equipmentName = $(e.target).parents('.fade').find('ul #alias').text();
-                console.log(equipmentName);
+                console.log($(e.target));
                 setTimeout(function () {
                     $(e.target).parents('.fade').removeClass('row-online-state-shadow');
                 }, 200);

@@ -10,6 +10,6 @@ var appId = '97256c69-6723-43fb-87dc-167eaf9dc501';
 var appKey = 'f98d773200d3c8e15a52f972656dd4df';
 
 //自动刷新列表间隔时间
-var reloadInterval = 1000;
+var reloadInterval = 2000000;
 // 刷新列表次数
 var maxReloadTimers = 2;

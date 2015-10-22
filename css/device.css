@@ -2,6 +2,22 @@
   font-family: myFont;
   src: url('../font/number.TTF') format('truetype');
 }
+@font-face {
+  font-family: 'iconfont';
+  src: url('//at.alicdn.com/t/font_1445415139_5233579.eot');
+  src: url('//at.alicdn.com/t/font_1445415139_5233579.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */ url('//at.alicdn.com/t/font_1445415139_5233579.woff') format('woff'), /* chrome、firefox */ url('//at.alicdn.com/t/font_1445415139_5233579.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/ url('//at.alicdn.com/t/font_1445415139_5233579.svg#iconfont') format('svg');
+  
+  /* IE9*/
+  /* iOS 4.1- */
+}
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-stroke-width: 0.2px;
+  -moz-osx-font-smoothing: grayscale;
+}
 .modal .modal-dialog {
   width: 100%;
   height: 100%;
@@ -189,7 +205,7 @@ body {
   display: inline-block;
   vertical-align: bottom;
 }
-.jumbotron p {
+.jumbotron div p:nth-child(1) {
   margin: 0 auto;
   width: 40px;
   height: 40px;
@@ -197,21 +213,21 @@ body {
   background-size: cover;
   -webkit-background-size: cover;
 }
-.jumbotron p span {
+.jumbotron div p:nth-child(1) span {
   display: inline-block;
   margin-top: 7px;
   width: 25px;
   height: 25px;
   background: url("../img/power_icon.png") no-repeat;
-  background-size: 53px 27px;
-  -webkit-background-size: 53px 27px;
+  background-size: 79px 27px;
+  -webkit-background-size: 79px 27px;
   background-position: -1px -1px;
 }
-.jumbotron p.switch_on_state {
+.jumbotron div.switch_on_state p:nth-child(1) {
   background-image: url("../img/switch_on_bg.png");
 }
-.jumbotron p.switch_on_state span {
-  background-position: -27px -1px;
+.jumbotron div.switch_on_state p:nth-child(1) span {
+  background-position: -53px -1px;
 }
 .jumbotron.moreThan_tmpTarget {
   background-color: #8fb9df;
@@ -226,6 +242,10 @@ body {
   text-align: center;
   color: #808080;
 }
+.container-fluid .btn-group-justified .btn-group:nth-child(1) {
+  position: relative;
+  z-index: 3;
+}
 .container-fluid .btn-group-justified .btn-group:nth-child(1) p:nth-child(1) {
   margin: 0 auto;
   width: 40px;
@@ -234,25 +254,21 @@ body {
   background-size: cover;
   -webkit-background-size: cover;
 }
-.container-fluid .btn-group-justified .btn-group:nth-child(1){
-	position: relative;
-	z-index: 3;
-}
 .container-fluid .btn-group-justified .btn-group:nth-child(1) p:nth-child(1) span {
   display: inline-block;
   margin-top: 7px;
   width: 25px;
   height: 25px;
   background: url("../img/antifreeze_icon.png") no-repeat;
-  background-size: 53px 27px;
-  -webkit-background-size: 53px 27px;
+  background-size: 79px 27px;
+  -webkit-background-size: 79px 27px;
   background-position: -1px -1px;
 }
-.container-fluid .btn-group-justified .btn-group:nth-child(1) p:nth-child(1).switch_on_state {
+.container-fluid .btn-group-justified .btn-group:nth-child(1).switch_on_state p:nth-child(1) {
   background-image: url("../img/switch_on_bg.png");
 }
-.container-fluid .btn-group-justified .btn-group:nth-child(1) p:nth-child(1).switch_on_state span {
-  background-position: -27px -1px;
+.container-fluid .btn-group-justified .btn-group:nth-child(1).switch_on_state p:nth-child(1) span {
+  background-position: -53px -1px;
 }
 .container-fluid .btn-group-justified .btn-group:nth-child(2) p:nth-child(1) {
   margin: 0 auto;
@@ -268,15 +284,15 @@ body {
   width: 25px;
   height: 25px;
   background: url("../img/time_icon.png") no-repeat;
-  background-size: 53px 27px;
-  -webkit-background-size: 53px 27px;
+  background-size: 79px 27px;
+  -webkit-background-size: 79px 27px;
   background-position: -1px -1px;
 }
-.container-fluid .btn-group-justified .btn-group:nth-child(2) p:nth-child(1).switch_on_state {
+.container-fluid .btn-group-justified .btn-group:nth-child(2).switch_on_state p:nth-child(1) {
   background-image: url("../img/switch_on_bg.png");
 }
-.container-fluid .btn-group-justified .btn-group:nth-child(2) p:nth-child(1).switch_on_state span {
-  background-position: -27px -1px;
+.container-fluid .btn-group-justified .btn-group:nth-child(2).switch_on_state p:nth-child(1) span {
+  background-position: -53px -1px;
 }
 .container-fluid .btn-group-justified .btn-group:nth-child(3) p:nth-child(1) {
   margin: 0 auto;
@@ -292,15 +308,15 @@ body {
   width: 25px;
   height: 25px;
   background: url("../img/sleep_icon.png") no-repeat;
-  background-size: 53px 27px;
-  -webkit-background-size: 53px 27px;
+  background-size: 79px 27px;
+  -webkit-background-size: 79px 27px;
   background-position: -1px -1px;
 }
-.container-fluid .btn-group-justified .btn-group:nth-child(3) p:nth-child(1).switch_on_state {
+.container-fluid .btn-group-justified .btn-group:nth-child(3).switch_on_state p:nth-child(1) {
   background-image: url("../img/switch_on_bg.png");
 }
-.container-fluid .btn-group-justified .btn-group:nth-child(3) p:nth-child(1).switch_on_state span {
-  background-position: -27px -1px;
+.container-fluid .btn-group-justified .btn-group:nth-child(3).switch_on_state p:nth-child(1) span {
+  background-position: -53px -1px;
 }
 .container-fluid .btn-group-justified .btn-group:nth-child(4) p:nth-child(1) {
   margin: 0 auto;
@@ -316,22 +332,22 @@ body {
   width: 25px;
   height: 25px;
   background: url("../img/finesleep_icon.png") no-repeat;
-  background-size: 53px 27px;
-  -webkit-background-size: 53px 27px;
+  background-size: 79px 27px;
+  -webkit-background-size: 79px 27px;
   background-position: -1px -1px;
 }
-.container-fluid .btn-group-justified .btn-group:nth-child(4) p:nth-child(1).switch_on_state {
+.container-fluid .btn-group-justified .btn-group:nth-child(4).switch_on_state p:nth-child(1) {
   background-image: url("../img/switch_on_bg.png");
 }
-.container-fluid .btn-group-justified .btn-group:nth-child(4) p:nth-child(1).switch_on_state span {
-  background-position: -27px -1px;
+.container-fluid .btn-group-justified .btn-group:nth-child(4).switch_on_state p:nth-child(1) span {
+  background-position: -53px -1px;
 }
 .container-fluid .btn-group-justified .btn-group select {
   position: absolute;
   top: 0;
-  bottom: 0;
   left: 0;
-  right: 0;
+  width: 100%;
+  height: 100%;
   opacity: 0;
 }
 .container-fluid .tmpTargetBox {
@@ -515,13 +531,29 @@ body {
 .container-fluid .tmpTargetBox .tmpTargetProgressbar li.showRound:after {
   display: block;
 }
-
-.mask{
-	position: absolute;
-	top: 190px;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	background-color: transparent;
-	z-index: 2;
+.container-fluid .mask {
+  position: absolute;
+  top: 190px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: transparent;
+  z-index: 2;
+  display: none;
+}
+.container-fluid.powerSwitch_off_state .btn-group-justified .btn-group:nth-child(2),
+.container-fluid.powerSwitch_off_state .btn-group-justified .btn-group:nth-child(3),
+.container-fluid.powerSwitch_off_state .btn-group-justified .btn-group:nth-child(4) {
+  color: #b9b9b9;
+}
+.container-fluid.powerSwitch_off_state .btn-group-justified .btn-group:nth-child(2) p:nth-child(1) span,
+.container-fluid.powerSwitch_off_state .btn-group-justified .btn-group:nth-child(3) p:nth-child(1) span,
+.container-fluid.powerSwitch_off_state .btn-group-justified .btn-group:nth-child(4) p:nth-child(1) span {
+  background-position: -27px -1px;
+}
+.container-fluid.powerSwitch_off_state .tmpTargetBox .tmpTargetPanel li:nth-child(2) {
+  color: #b9b9b9;
+}
+.container-fluid.powerSwitch_off_state .mask {
+  display: block;
 }

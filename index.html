@@ -18,7 +18,15 @@
     <script type="text/javascript" src="js/config.js"></script>
     <script type="text/javascript" src="js/public.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="js/deviceLists.js?version=0.0.4"></script>
+    <script type="text/javascript" src="js/deviceLists.js?version=0.0.3"></script>
+    <script type="text/javascript">
+    $(document).ready(function(){
+        //删除设备
+//      $(".removeDevice").click(function(){
+//          $("#listTemp").alert();
+//      });
+    })    
+    </script>
 </head>
 <body ontouchstart="">
 
@@ -80,16 +88,45 @@
 </div>
 <!-- /modal -->
 <div id="listTemp" class="alert fade in" style="display: none;">
-    <ul class="list-unstyled col-xs-9">
-        <li id="alias"></li>
+	<p class="text-center col-xs-2 setUp">
+        <i id="porject" class="iconfont">&#xe600;</i>  
+    </p>
+    <ul class="list-unstyled col-xs-10 rowRight">
+        <li id="alias" class="deviceName"></li>
         <li id="bssid"></li>
-        <li>
-            <button type="button" class="btn btn-xs manageDevice" id="manageDevice">管理设备</button>
-            <button type="button" class="btn btn-xs deleteDevice" id="deleteDevice">解除设备</button>
-            <button type="button" class="btn btn-xs modifyName" id="selectDevice">修改名称</button>
+        <li id="setUpContent" class="collapse">
+            <ul class="list-unstyled btn-group-justified list_parent">
+                <li class="btn-group disabled">
+                    <p class="removeDevice" >
+                        <i id="removeDevice" class="iconfont">&#xe601;</i>
+                        <span>删除</span>
+                    </p>
+                    <p></p>
+                </li>
+                <li class="btn-group disabled">
+                    <p class="modifyName">
+                        <i id="modifyName" class="iconfont">&#xe602;</i>
+                        <span>改名</span>
+                    </p>
+                    <p></p>
+                </li>
+                <li class="btn-group disabled">
+                    <p class="permission">
+                        <i id="permission" class="iconfont">&#xe603;</i>
+                        <span>权限</span>
+                    </p>
+                    <p></p>
+                </li>
+                <li class="btn-group disabled">
+                    <p class="share">
+                        <i id="share" class="iconfont">&#xe604;</i>
+                        <span>分享</span>
+                    </p>
+                    <p></p>
+                </li>
+            </ul>
         </li>
     </ul>
-    <p class="col-xs-3" id="state"></p>
 </div>
 </body>
 </html>
