@@ -3,7 +3,7 @@
  */
 
 /**
- * ·µ»ØÇëÇóµÄÇ©Ãû
+ * è¿”å›è¯·æ±‚çš„ç­¾å
  */
 function getRequestSign() {
     var now = Math.round(new Date().getTime() / 1000);
@@ -12,7 +12,7 @@ function getRequestSign() {
 }
 
 /**
- * µÃµ½Î¢ĞÅopenID
+ * å¾—åˆ°å¾®ä¿¡openID
  * @param access_token
  * @param requestHeader
  */
@@ -36,7 +36,7 @@ function getUserName(access_token, requestHeader) {
 }
 
 /**
- * µÃµ½Î¢ĞÅaccess_token
+ * å¾—åˆ°å¾®ä¿¡access_token
  * @param requestHeader
  * @returns {string}
  */
@@ -62,7 +62,7 @@ function getWechatAccessToken(requestHeader) {
 
 }
 /**
- * µÃµ½Éè±¸µÄÓÃ»§
+ * å¾—åˆ°è®¾å¤‡çš„ç”¨æˆ·
  * @param deviceId
  * @param requestHeader
  * @param userName
@@ -112,6 +112,7 @@ function getDeviceProperties(deviceId, requestHeader, property) {
 
 }
 
+
 function unbindDevice(requestHeader, deviceId, ticket, callback) {
     alert('unbindDevice=====');
     $.ajax({
@@ -121,27 +122,48 @@ function unbindDevice(requestHeader, deviceId, ticket, callback) {
         data: {"ticket": ticket, "app_id": appId, "device_id": deviceId},
         headers: requestHeader,
         success: function (data) {
-            alert('unbind:'+  JSON.stringify(data));
+            alert('unbind:' + JSON.stringify(data));
             callback(null, data);
         },
         error: function (data) {
-            alert('unbind:'+  JSON.stringify(data));
+            alert('unbind:' + JSON.stringify(data));
             callback("err", null);
             console.log(data);
         }
     });
 
 }
+
+/**
+ * å¾—åˆ°è®¾å¤‡äºŒç»´ç 
+ * @param requestHeader
+ * @param deviceId
+ * @returns {*}
+ */
+function getDeviceQrcode(requestHeader, deviceId) {
+    var product_id = deviceId.split('/')[0];
+    var mac = deviceId.split('/')[1];
+    var ticket;
+    $.ajax({
+        type: "POST",
+        async: false,
+        url: "http://api.easylink.io/v1/wechat/device/create",
+        data: {"product_id": product_id, 'app_id': appId, 'mac': mac},
+        headers: requestHeader,
+        success: function (data) {
+            console.log(data[mac].ticket);
+            ticket = data[mac].ticket;
+        },
+        error: function (data) {
+            console.log(data);
+        }
+    })
+    if (!!ticket) {
+        return ticket;
+    }
+}
+
 function getWechatSignInfo() {
-    //var signInfo = {
-    //    "appId": "wxb4ee08c8823d1555",
-    //    "nonceStr": "i76FhrCbUXj66Bgj",
-    //    "timestamp": 1445408599,
-    //    "url": "http:\/\/97256c69-6723-43fb-87dc-167eaf9dc501.app.easylink.io\/sign.php?callback=jQuery1910879160191398114_1445408640647&_=1445408640648",
-    //    "signature": "6d17acbd04e13315b369802fcded94503cc826fa",
-    //    "rawString": "jsapi_ticket=sM4AOVdWfPE4DxkXGEs8VIx0OV_QLWcz5fhkwjsIUkPVzKepACTAeNoWrb6_uHo2JNYRmuaw71YKrUDAGSDbfw&noncestr=i76FhrCbUXj66Bgj&timestamp=1445408599&url=http:\/\/97256c69-6723-43fb-87dc-167eaf9dc501.app.easylink.io\/sign.php?callback=jQuery1910879160191398114_1445408640647&_=1445408640648",
-    //    "jsapiTicket": "sM4AOVdWfPE4DxkXGEs8VIx0OV_QLWcz5fhkwjsIUkPVzKepACTAeNoWrb6_uHo2JNYRmuaw71YKrUDAGSDbfw"
-    //};
     var signInfo = "";
     $.ajax({
         type: "GET",
@@ -166,7 +188,7 @@ function getWechatSignInfo() {
 }
 
 /**
- * µÃµ½Î¢ĞÅÇ©Ãû
+ * å¾—åˆ°å¾®ä¿¡ç­¾å
  * @param data
  * @returns {*}
  */
@@ -201,25 +223,48 @@ function openWXDeviceLib() {
     WeixinJSBridge.invoke('openWXDeviceLib', {}, function (res) {
         //alert("wx.openWXDeviceLib " + JSON.stringify(res));
     });
+}
 
+function shareAppMessage(ticket) {
+    wx.onMenuShareAppMessage({
+        title: 'è®¾å¤‡åˆ†äº«',
+        desc: 'è®¾å¤‡åˆ†äº«è®¾å¤‡åˆ†äº«è®¾å¤‡åˆ†äº«',
+        link: 'http://www.u-gen.net/demo.html?ticket=' + ticket,
+        imgUrl: 'http://demo.open.weixin.qq.com/jssdk/images/p2166127561.jpg',
+        trigger: function (res) {
+            // ä¸è¦å°è¯•åœ¨triggerä¸­ä½¿ç”¨ajaxå¼‚æ­¥è¯·æ±‚ä¿®æ”¹æœ¬æ¬¡åˆ†äº«çš„å†…å®¹ï¼Œå› ä¸ºå®¢æˆ·ç«¯åˆ†äº«æ“ä½œæ˜¯ä¸€ä¸ªåŒæ­¥æ“ä½œï¼Œè¿™æ—¶å€™ä½¿ç”¨ajaxçš„å›åŒ…ä¼šè¿˜æ²¡æœ‰è¿”å›
+            alert('ç”¨æˆ·ç‚¹å‡»å‘é€ç»™æœ‹å‹:' + JSON.stringify(res));
+        },
+        success: function (res) {
+            alert('å·²åˆ†äº«:' + JSON.stringify(res));
+        },
+        cancel: function (res) {
+            alert('å·²å–æ¶ˆ:' + JSON.stringify(res));
+        },
+        fail: function (res) {
+            alert(JSON.stringify(res));
+        }
+    });
+    alert("å»å³ä¸Šè§’åˆ†äº«è®¾å¤‡");
 }
 function wechatConfig(signInfo, wechatSign) {
     wx.config({
-        debug: true, // ¿ªÆôµ÷ÊÔÄ£Ê½,µ÷ÓÃµÄËùÓĞapiµÄ·µ»ØÖµ»áÔÚ¿Í»§¶Ëalert³öÀ´£¬ÈôÒª²é¿´´«ÈëµÄ²ÎÊı£¬¿ÉÒÔÔÚpc¶Ë´ò¿ª£¬²ÎÊıĞÅÏ¢»áÍ¨¹ılog´ò³ö£¬½öÔÚpc¶ËÊ±²Å»á´òÓ¡¡£
-        appId: signInfo.appId, // ±ØÌî£¬¹«ÖÚºÅµÄÎ¨Ò»±êÊ¶
-        timestamp: signInfo.timestamp, // ±ØÌî£¬Éú³ÉÇ©ÃûµÄÊ±¼ä´Á
-        nonceStr: signInfo.nonceStr, // ±ØÌî£¬Éú³ÉÇ©ÃûµÄËæ»ú´®
-        signature: wechatSign, // ±ØÌî£¬Ç©Ãû£¬¼û¸½Â¼1
+        debug: true, // å¼€å¯è°ƒè¯•æ¨¡å¼,è°ƒç”¨çš„æ‰€æœ‰apiçš„è¿”å›å€¼ä¼šåœ¨å®¢æˆ·ç«¯alertå‡ºæ¥ï¼Œè‹¥è¦æŸ¥çœ‹ä¼ å…¥çš„å‚æ•°ï¼Œå¯ä»¥åœ¨pcç«¯æ‰“å¼€ï¼Œå‚æ•°ä¿¡æ¯ä¼šé€šè¿‡logæ‰“å‡ºï¼Œä»…åœ¨pcç«¯æ—¶æ‰ä¼šæ‰“å°ã€‚
+        appId: signInfo.appId, // å¿…å¡«ï¼Œå…¬ä¼—å·çš„å”¯ä¸€æ ‡è¯†
+        timestamp: signInfo.timestamp, // å¿…å¡«ï¼Œç”Ÿæˆç­¾åçš„æ—¶é—´æˆ³
+        nonceStr: signInfo.nonceStr, // å¿…å¡«ï¼Œç”Ÿæˆç­¾åçš„éšæœºä¸²
+        signature: wechatSign, // å¿…å¡«ï¼Œç­¾åï¼Œè§é™„å½•1
         jsApiList: [
-            // ±ØÌî£¬ĞèÒªÊ¹ÓÃµÄJS½Ó¿ÚÁĞ±í£¬ËùÓĞJS½Ó¿ÚÁĞ±í¼û¸½Â¼2
+            // å¿…å¡«ï¼Œéœ€è¦ä½¿ç”¨çš„JSæ¥å£åˆ—è¡¨ï¼Œæ‰€æœ‰JSæ¥å£åˆ—è¡¨è§é™„å½•2
             'openWXDeviceLib',
-            'getWXDeviceTicket'
+            'getWXDeviceTicket',
+            'onMenuShareAppMessage'
         ]
     });
 }
 
 /**
- * ´ÓurlÖĞ»ñÈ¡Ä³¸ö²ÎÊıµÄÖµ
+ * ä»urlä¸­è·å–æŸä¸ªå‚æ•°çš„å€¼
  * @param name
  * @returns {Array|{index: number, input: string}|string}
  */
@@ -229,14 +274,14 @@ function getParameterByName(name) {
 }
 
 /**
- * ·µ»Ø×Ö·ûµÄ×Ö½Ú³¤¶È£¨ºº×ÖËã2¸ö×Ö½Ú£©
+ * è¿”å›å­—ç¬¦çš„å­—èŠ‚é•¿åº¦ï¼ˆæ±‰å­—ç®—2ä¸ªå­—èŠ‚ï¼‰
  * @param val
  * @returns {number}
  */
 var getByteLen = function (val) {
     var len = 0;
     for (var i = 0; i < val.length; i++) {
-        if (val[i].match(/[^x00-xff]/ig) != null) //È«½Ç
+        if (val[i].match(/[^x00-xff]/ig) != null) //å…¨è§’
             len += 2;
         else
             len += 1;

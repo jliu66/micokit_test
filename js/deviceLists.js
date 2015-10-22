@@ -14,6 +14,15 @@ $(document).ready(function () {
         'X-Request-Sign': requestSign
     };
 
+    //微信jssdk配置 正式需打开
+    //var signInfo = getWechatSignInfo();
+    //var wechatSign = getWechatSign(signInfo);
+    //wechatConfig(signInfo, wechatSign);
+    //wx.ready(function () {
+    //    openWXDeviceLib();
+    //    deleteDevice();
+    //})
+
     // 初始化设备列表
     var deviceLists = getParameterByName('device_list');
 
@@ -30,11 +39,7 @@ $(document).ready(function () {
                 var state = device[2];
                 //渲染设备列表
                 addDeviceLists(device_id, state, alias, bssid, url);
-                onModifyName();
-                manageDevice();
-                deleteDevice();
-                modifyDeviceName();
-                autoReloadPage();
+
             }
         } catch (e) {
             alert(e);
@@ -42,8 +47,11 @@ $(document).ready(function () {
     } else {
         alert('请扫描设备二维码');
     }
-
-
+    onModifyName();
+    manageDevice();
+    deleteDevice();
+    modifyDeviceName();
+    autoReloadPage();
     /* 自动刷新列表 */
     function autoReloadPage() {
         // 初始刷新列表次数
@@ -76,7 +84,6 @@ $(document).ready(function () {
                     var state = _data.online;
                     var wxDevice_id = _data.wx_device_id;
 
-
                     //渲染设备列表
                     addDeviceLists(device_id, state, alias, bssid, url, wxDevice_id);
                     //移除设备管理click事件
@@ -84,6 +91,7 @@ $(document).ready(function () {
                     //添加设备管理click事件
                     manageDevice();
                     deleteDevice();
+                    shareDevice();
                     //添加修改名称click事件
                     onModifyName();
                 });
@@ -152,7 +160,8 @@ $(document).ready(function () {
 
     /* 设备管理 */
     function manageDevice() {
-        $("#manageDevice").on("click", function () {
+        $(".manageDevice").on("click", function () {
+            console.log('mange');
             var userName = getUserName(access_token, requestHeader);
             //样式改了之后，这里可能有问题
             thisDeviceId = $(this).parents()[2].id;
@@ -164,7 +173,7 @@ $(document).ready(function () {
 
             } else if (role == "share") {
                 // 用户有权限
-                if (!!customRole && _.indexOf(customRole, userName) != -1) {
+                if (!customRole || _.indexOf(customRole, userName) == -1) {
                     //按钮2个 移除 修改
 
                 } else {
@@ -178,35 +187,38 @@ $(document).ready(function () {
         })
     }
 
-    var signInfo = getWechatSignInfo();
-    //alert('signInfo: ' + JSON.stringify(signInfo));
-    var wechatSign = getWechatSign(signInfo);
-    //alert('wechatSign:'+ wechatSign);
-    wechatConfig(signInfo, wechatSign);
-    wx.ready(function () {
-        openWXDeviceLib();
-        deleteDevice();
-    })
-
+    /* 移除设备 */
     function deleteDevice() {
-        $("#deleteDevice").on("click", function () {
+        $(".deleteDevice").on("click", function () {
             //样式改了之后，这里可能有问题
             thisDeviceId = $(this).parents()[2].id;
             var deviceId = thisDeviceId.replace(/\//g, "\\\/");
             var wxDeviceId = $("#" + deviceId).data('wxdeviceid');
-            alert('wxDeviceId: ' + wxDeviceId);
             getWxDeviceTicket(wxDeviceId, function (err, ticket) {
-                alert('ticket====='+ticket);
                 if (!!err) return;
                 unbindDevice(requestHeader, thisDeviceId, ticket, function (err, res) {
-                    alert("unbindDevice:" + JSON.stringify(res));
                     if (!err && res.result == "success") {
-                        $("#" + deviceId).remove();
+                        $("#" + deviceId).alert();
+                        alert("删除成功");
                     } else {
                         alert("删除失败");
                     }
                 });
             });
+        })
+    }
+
+    /* 设备分享 */
+    function shareDevice() {
+        $("#shareDevice").on("click", function () {
+            //样式改了之后，这里可能有问题
+            thisDeviceId = $(this).parents()[2].id;
+            var requestHeader = {
+                'Authorization': 'token ' + devAccessToken
+            };
+            var ticket =  getDeviceQrcode(requestHeader,thisDeviceId);
+            console.log('ticket: '+ticket);
+            shareAppMessage(ticket);
         })
     }
 
