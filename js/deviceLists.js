@@ -16,14 +16,14 @@ $(document).ready(function () {
     var wx_access_token = getWechatAccessToken(access_token);
     var userName =getUserName (access_token, requestHeader);
     //微信jssdk配置 正式需打开
-    //var signInfo = getWechatSignInfo();
-    //var wechatSign = getWechatSign(signInfo);
-    //wechatConfig(signInfo, wechatSign);
-    //wx.ready(function () {
-    //    openWXDeviceLib();
-    //    onRemoveDevice();
-    //    onShareDevice();
-    //})
+    var signInfo = getWechatSignInfo();
+    var wechatSign = getWechatSign(signInfo);
+    wechatConfig(signInfo, wechatSign);
+    wx.ready(function () {
+        openWXDeviceLib();
+        onRemoveDevice();
+        onShareDevice();
+    })
 
     // 初始化设备列表
     var deviceLists = getParameterByName('device_list');
