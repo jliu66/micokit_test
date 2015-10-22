@@ -20,7 +20,8 @@ $(document).ready(function () {
     wechatConfig(signInfo, wechatSign);
     wx.ready(function () {
         openWXDeviceLib();
-        deleteDevice();
+        //deleteDevice();
+         shareDevice();
     })
 
     // 初始化设备列表
@@ -215,6 +216,7 @@ $(document).ready(function () {
             alert('share');
             //样式改了之后，这里可能有问题
             thisDeviceId = $(this).parents()[2].id;
+            alert(thisDeviceId);
             var requestHeader = {
                 'Authorization': 'token ' + devAccessToken
             };
