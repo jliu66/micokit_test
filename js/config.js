@@ -4,12 +4,12 @@
 
 //var appId = 'f31b460a-8a8d-4ffc-97c1-054a8c4b27cf';
 //var appKey = 'b7d892afa90fa5be97e424e0c6d70a2e';
-
-// 测试环境
+var devAccessToken = 'f60459b2-9542-4980-8fbc-c6f8737aecf1';
+// 娴嬭瘯鐜
 var appId = '97256c69-6723-43fb-87dc-167eaf9dc501';
 var appKey = 'f98d773200d3c8e15a52f972656dd4df';
 
-//自动刷新列表间隔时间
+//鑷姩鍒锋柊鍒楄〃闂撮殧鏃堕棿
 var reloadInterval = 1000;
-// 刷新列表次数
+// 鍒锋柊鍒楄〃娆℃暟
 var maxReloadTimers = 2;
