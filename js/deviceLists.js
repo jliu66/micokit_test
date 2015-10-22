@@ -15,13 +15,13 @@ $(document).ready(function () {
     };
 
     //微信jssdk配置 正式需打开
-    //var signInfo = getWechatSignInfo();
-    //var wechatSign = getWechatSign(signInfo);
-    //wechatConfig(signInfo, wechatSign);
-    //wx.ready(function () {
-    //    openWXDeviceLib();
-    //    deleteDevice();
-    //})
+    var signInfo = getWechatSignInfo();
+    var wechatSign = getWechatSign(signInfo);
+    wechatConfig(signInfo, wechatSign);
+    wx.ready(function () {
+        openWXDeviceLib();
+        deleteDevice();
+    })
 
     // 初始化设备列表
     var deviceLists = getParameterByName('device_list');
@@ -210,7 +210,7 @@ $(document).ready(function () {
 
     /* 设备分享 */
     function shareDevice() {
-        $("#shareDevice").on("click", function () {
+        $(".deleteDevice").on("click", function () {
             //样式改了之后，这里可能有问题
             thisDeviceId = $(this).parents()[2].id;
             var requestHeader = {
