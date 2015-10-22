@@ -199,17 +199,16 @@ function getWechatSignInfo() {
 function getWechatUserInfo(accessToken, openId) {
     var user;
     $.ajax({
-        type: "GET",
+        type: "POST",
         async: false,
         url: "https://api.weixin.qq.com/cgi-bin/user/info?access_token=" + accessToken + "&openid=" + openId + "&lang=zh_CN",
-        headers: {},
-        cache: false,
         dataType: 'json',
         success: function (data) {
-            console.log(data);
+            alert('success:',JSON.stringify(data));
             user = data;
         },
         error: function (data) {
+            alert('error:',JSON.stringify(data));
             console.log(data);
         }
     });

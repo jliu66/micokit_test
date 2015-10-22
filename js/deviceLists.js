@@ -245,8 +245,9 @@ $(document).ready(function () {
             thisDeviceId = $(this).parents('.fade')[0].id;
             console.log(thisDeviceId);
             var users = getDeviceUser(thisDeviceId, requestHeader, userName);
-            $.each(users, function(e){
-               var user = getWechatUserInfo(wx_access_token, users.username);
+            $.each(users, function(e,_user){
+                console.log(_user);
+               var user = getWechatUserInfo(wx_access_token, _user.username);
                 alert('nickname:'+user.nickname);
                 alert('nickname:'+user.headimgurl);
             })
