@@ -20,8 +20,8 @@ $(document).ready(function () {
     wechatConfig(signInfo, wechatSign);
     wx.ready(function () {
         openWXDeviceLib();
-        //deleteDevice();
-         shareDevice();
+        deleteDevice();
+        shareDevice();
     })
 
     // 初始化设备列表
@@ -40,7 +40,6 @@ $(document).ready(function () {
                 var state = device[2];
                 //渲染设备列表
                 addDeviceLists(device_id, state, alias, bssid, url);
-
             }
         } catch (e) {
             alert(e);
@@ -51,7 +50,7 @@ $(document).ready(function () {
     onModifyName();
     manageDevice();
     //deleteDevice();
-    shareDevice();
+    //shareDevice();
     modifyDeviceName();
     autoReloadPage();
     /* 自动刷新列表 */
@@ -69,6 +68,7 @@ $(document).ready(function () {
 
     /* 刷新列表 */
     function reloadPage() {
+        alert('reload');
         $.ajax({
             type: "POST",
             url: "http://api.easylink.io/v1/device/devices",
@@ -92,7 +92,7 @@ $(document).ready(function () {
                     offClickEvent();
                     //添加设备管理click事件
                     manageDevice();
-                    //deleteDevice();
+                    deleteDevice();
                     shareDevice();
                     //添加修改名称click事件
                     onModifyName();
@@ -212,8 +212,8 @@ $(document).ready(function () {
 
     /* 设备分享 */
     function shareDevice() {
+        alert("share");
         $(".deleteDevice").on("click", function () {
-            alert('share');
             //样式改了之后，这里可能有问题
             thisDeviceId = $(this).parents()[2].id;
             alert(thisDeviceId);
