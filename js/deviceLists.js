@@ -26,34 +26,28 @@ $(document).ready(function () {
 
     // 初始化设备列表
     var deviceLists = getParameterByName('device_list');
-
     if (deviceLists !== null) {
-        try {
-            deviceLists = JSON.parse(deviceLists);
-            for (var i in deviceLists) {
-                var device = deviceLists[i];
-                if (device[0] === null) continue;
-                var device_id = device[0];
-                var bssid = device_id.split('/')[1];
-                var alias = device[3] ? device[3] : device_id;
-                var url = 'device.html?device_id=' + device_id + '&access_token=' + access_token + '&alias=' + alias;
-                var state = device[2];
-                //渲染设备列表
-                addDeviceLists(device_id, state, alias, bssid, url);
-            }
-        } catch (e) {
-            alert(e);
-        }
+        initPage();
+        //autoReloadPage();
+        //try {
+        //    deviceLists = JSON.parse(deviceLists);
+        //    for (var i in deviceLists) {
+        //        var device = deviceLists[i];
+        //        if (device[0] === null) continue;
+        //        var device_id = device[0];
+        //        var bssid = device_id.split('/')[1];
+        //        var alias = device[3] ? device[3] : device_id;
+        //        var url = 'device.html?device_id=' + device_id + '&access_token=' + access_token + '&alias=' + alias;
+        //        var state = device[2];
+        //        //渲染设备列表
+        //        addDeviceLists(device_id, state, alias, bssid, url);
+        //    }
+        //} catch (e) {
+        //    alert(e);
+        //}
     } else {
-        alert('请扫描设备二维码');
+        alert('设备未找到页面');
     }
-    onModifyName();
-    onManageDevice();
-    onRemoveDevice();
-    onShareDevice();
-    //onPermission();
-    modifyDeviceName();
-    autoReloadPage();
 
     /* 自动刷新列表 */
     function autoReloadPage() {
@@ -68,16 +62,14 @@ $(document).ready(function () {
         }, reloadInterval);
     }
 
-    /* 刷新列表 */
-    function reloadPage() {
+    /* 初始化列表 */
+    function initPage() {
         $.ajax({
             type: "POST",
             url: "http://api.easylink.io/v1/device/devices",
             headers: requestHeader,
             success: function (data) {
                 console.log(data);
-                //移除设备列表
-                $("#list").children().remove();
                 $.each(data, function (i, _data) {
                     var device_id = _data.id;
                     var product_id = device_id.split('/')[0];
@@ -89,16 +81,13 @@ $(document).ready(function () {
 
                     //渲染设备列表
                     addDeviceLists(device_id, state, alias, bssid, url, wxDevice_id);
-                    //移除设备管理click事件
-                    offClickEvent();
-                    //添加设备管理click事件
-                    onManageDevice();
-                    onRemoveDevice();
-                    onShareDevice();
-                    //onPermission();
-                    //添加修改名称click事件
-                    onModifyName();
                 });
+                onModifyName();
+                onManageDevice();
+                //onRemoveDevice();
+                //onShareDevice();
+                //onPermission();
+                modifyDeviceName();
             },
             error: function (data) {
                 console.log(data);
@@ -106,6 +95,30 @@ $(document).ready(function () {
         });
     }
 
+    /* 刷新列表 */
+    function reloadPage(){
+        $.ajax({
+            type: "POST",
+            url: "http://api.easylink.io/v1/device/devices",
+            headers: requestHeader,
+            success: function (data) {
+                console.log(data);
+                $.each(data, function (i, _data) {
+                    var device_id = _data.id;
+                    var product_id = device_id.split('/')[0];
+                    var bssid = _data.bssid;
+                    var alias = _data.alias;
+                    var url = 'device.html?device_id=' + device_id + '&access_token=' + access_token + '&alias=' + alias;
+                    var state = _data.online;
+
+
+                });
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    }
     /* 修改名称 */
     function modifyDeviceName() {
         $("#confirm").on("click", function () {
@@ -154,12 +167,12 @@ $(document).ready(function () {
         });
     }
 
-    /* 移除click事件 刷新页面需要 */
-    function offClickEvent() {
-        $(".modifyName").off("click");
-        $(".removeDevice").off("click");
-        $(".setUp").off("click");
-    }
+    ///* 移除click事件 刷新页面需要 */
+    //function offClickEvent() {
+    //    $(".modifyName").off("click");
+    //    $(".removeDevice").off("click");
+    //    $(".setUp").off("click");
+    //}
 
     /* 设备管理 */
     function onManageDevice() {
@@ -188,9 +201,6 @@ $(document).ready(function () {
                     $(this).next().find(".btn-group").eq(0).removeClass('disabled');
                 }
             }
-
-            // 得到微信access_token 用户管理中需要用到
-            var accessToken = getWechatAccessToken(requestHeader);
         })
     }
 
@@ -205,7 +215,7 @@ $(document).ready(function () {
                 if (!!err) return;
                 unbindDevice(requestHeader, thisDeviceId, ticket, function (err, res) {
                     if (!err && res.result == "success") {
-                        $("#" + deviceId).alert();
+                        $("#" + deviceId).remove();
                         alert("删除成功");
                     } else {
                         alert("删除失败");
@@ -227,6 +237,8 @@ $(document).ready(function () {
             console.log('ticket: ' + ticket);
         })
     }
+
+
 
     /**
      * 渲染设备列表
