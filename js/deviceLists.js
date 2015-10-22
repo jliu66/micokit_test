@@ -95,7 +95,7 @@ $(document).ready(function () {
                     onManageDevice();
                     onRemoveDevice();
                     onShareDevice();
-                    onPermission();
+                    //onPermission();
                     //添加修改名称click事件
                     onModifyName();
                 });
