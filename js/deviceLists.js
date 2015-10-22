@@ -190,7 +190,7 @@ $(document).ready(function () {
 
     /* 移除设备 */
     function deleteDevice() {
-        $(".deleteDevice").on("click", function () {
+        $(".eleteDevice").on("click", function () {
             //样式改了之后，这里可能有问题
             thisDeviceId = $(this).parents()[2].id;
             var deviceId = thisDeviceId.replace(/\//g, "\\\/");
@@ -212,6 +212,7 @@ $(document).ready(function () {
     /* 设备分享 */
     function shareDevice() {
         $(".deleteDevice").on("click", function () {
+            alert('share');
             //样式改了之后，这里可能有问题
             thisDeviceId = $(this).parents()[2].id;
             var requestHeader = {
