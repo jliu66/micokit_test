@@ -13,16 +13,17 @@ $(document).ready(function () {
         'X-Application-Id': appId,
         'X-Request-Sign': requestSign
     };
-
+    var wx_access_token = getWechatAccessToken(access_token);
+    var userName =getUserName (access_token, requestHeader);
     //微信jssdk配置 正式需打开
-    var signInfo = getWechatSignInfo();
-    var wechatSign = getWechatSign(signInfo);
-    wechatConfig(signInfo, wechatSign);
-    wx.ready(function () {
-        openWXDeviceLib();
-        onRemoveDevice();
-        onShareDevice();
-    })
+    //var signInfo = getWechatSignInfo();
+    //var wechatSign = getWechatSign(signInfo);
+    //wechatConfig(signInfo, wechatSign);
+    //wx.ready(function () {
+    //    openWXDeviceLib();
+    //    onRemoveDevice();
+    //    onShareDevice();
+    //})
 
     // 初始化设备列表
     var deviceLists = getParameterByName('device_list');
@@ -84,9 +85,9 @@ $(document).ready(function () {
                 });
                 onModifyName();
                 onManageDevice();
-                //onRemoveDevice();
-                //onShareDevice();
-                //onPermission();
+                onRemoveDevice();
+                onShareDevice();
+                onPermission();
                 modifyDeviceName();
             },
             error: function (data) {
@@ -173,17 +174,17 @@ $(document).ready(function () {
     //    $(".removeDevice").off("click");
     //    $(".setUp").off("click");
     //}
-
+    //var userName;
     /* 设备管理 */
     function onManageDevice() {
         $(".setUp").on("click", function () {
             $(this).next().children("#setUpContent").collapse('toggle');
-            var userName = getUserName(access_token, requestHeader);
+            //userName = !userName ? getUserName(access_token, requestHeader):userName;
+            //userName = getUserName(access_token, requestHeader);
             //样式改了之后，这里可能有问题
             thisDeviceId = $(this).parents('.fade')[0].id;
-            var role = getDeviceUser(thisDeviceId, requestHeader, userName);
+            var role = getDeviceUser(thisDeviceId, requestHeader, userName,'role');
             var customRole = getDeviceProperties(thisDeviceId, requestHeader, 'customRole');
-            console.log("role =" + role);
             // 设备主人
             if (role == "owner") {
                 //按钮 4个 （移除 修改 用户管理 设备分享）
@@ -238,8 +239,19 @@ $(document).ready(function () {
             shareAppMessage(ticket);
         })
     }
-
-
+    /* 用户权限管理 */
+    function onPermission(){
+        $(".permission").on("click", function () {
+            thisDeviceId = $(this).parents('.fade')[0].id;
+            console.log(thisDeviceId);
+            var users = getDeviceUser(thisDeviceId, requestHeader, userName);
+            $.each(users, function(e){
+               var user = getWechatUserInfo(wx_access_token, users.username);
+                alert('nickname:'+user.nickname);
+                alert('nickname:'+user.headimgurl);
+            })
+        });
+    }
 
     /**
      * 渲染设备列表

@@ -68,8 +68,9 @@ function getWechatAccessToken(requestHeader) {
  * @param userName
  * @returns {string}
  */
-function getDeviceUser(deviceId, requestHeader, userName) {
-    var role = "share";
+function getDeviceUser(deviceId, requestHeader, userName, type) {
+
+    var user;
     $.ajax({
         type: "GET",
         async: false,
@@ -78,16 +79,24 @@ function getDeviceUser(deviceId, requestHeader, userName) {
         headers: requestHeader,
         success: function (data) {
             console.log(data);
-            role = (_.find(data, function (_data) {
-                return _data.username == userName
-            })).role;
+            if (type == 'role') {
+                user = (_.find(data, function (_data) {
+                    return _data.username == userName
+                })).role;
+            } else {
+                user = data;
+            }
+
         },
         error: function (data) {
+            if (type == 'role') {
+                user = 'share'
+            }
             console.log(data);
         }
     });
-    console.log('role: ', role);
-    return role;
+    console.log('user: ', user);
+    return user;
 }
 
 
@@ -184,6 +193,29 @@ function getWechatSignInfo() {
     console.log('signInfo: ', signInfo);
     if (!!signInfo) {
         return signInfo;
+    }
+}
+
+function getWechatUserInfo(accessToken, openId) {
+    var user;
+    $.ajax({
+        type: "GET",
+        async: false,
+        url: "https://api.weixin.qq.com/cgi-bin/user/info?access_token=" + accessToken + "&openid=" + openId + "&lang=zh_CN",
+        headers: {},
+        cache: false,
+        dataType: 'json',
+        success: function (data) {
+            console.log(data);
+            user = data;
+        },
+        error: function (data) {
+            console.log(data);
+        }
+    });
+    console.log('wxuser: ', user);
+    if (!!user) {
+        return user;
     }
 }
 
