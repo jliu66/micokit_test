@@ -155,8 +155,8 @@ $(document).ready(function () {
     /* 移除click事件 刷新页面需要 */
     function offClickEvent() {
         $(".modifyName").off("click");
-        $("#deleteDevice").off("click");
-        $("#manageDevice").off("click");
+        $(".deleteDevice").off("click");
+        $(".manageDevice").off("click");
     }
 
     /* 设备管理 */
