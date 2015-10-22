@@ -15,13 +15,13 @@ $(document).ready(function () {
     };
 
     //微信jssdk配置 正式需打开
-    var signInfo = getWechatSignInfo();
-    var wechatSign = getWechatSign(signInfo);
-    wechatConfig(signInfo, wechatSign);
-    wx.ready(function () {
-        openWXDeviceLib();
-        deleteDevice();
-    })
+    //var signInfo = getWechatSignInfo();
+    //var wechatSign = getWechatSign(signInfo);
+    //wechatConfig(signInfo, wechatSign);
+    //wx.ready(function () {
+    //    openWXDeviceLib();
+    //    deleteDevice();
+    //})
 
     // 初始化设备列表
     var deviceLists = getParameterByName('device_list');
@@ -49,7 +49,8 @@ $(document).ready(function () {
     }
     onModifyName();
     manageDevice();
-    deleteDevice();
+    //deleteDevice();
+    shareDevice();
     modifyDeviceName();
     autoReloadPage();
     /* 自动刷新列表 */
@@ -90,7 +91,7 @@ $(document).ready(function () {
                     offClickEvent();
                     //添加设备管理click事件
                     manageDevice();
-                    deleteDevice();
+                    //deleteDevice();
                     shareDevice();
                     //添加修改名称click事件
                     onModifyName();
