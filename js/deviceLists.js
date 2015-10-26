@@ -194,11 +194,11 @@ $(document).ready(function () {
                 'Authorization': 'token ' + devAccessToken
             };
             var ticket = getDeviceQrcode(requestHeader, thisDeviceId);
-            alert('ticket: ' + ticket);
+            alert('分享URL: ' + location.hostname+'/shareDevice.html?ticket=' + ticket);
             var content = {
                 title: '设备分享',
                 desc: '设备分享设备分享设备分享',
-                link: '../shareDevice.html?ticket=' + ticket,
+                link: location.hostname+'/shareDevice.html?ticket=' + ticket,
                 imgUrl: 'http://demo.open.weixin.qq.com/jssdk/images/p2166127561.jpg'
             }
             shareAppMessage(content);
