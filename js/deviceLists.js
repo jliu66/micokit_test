@@ -2,7 +2,7 @@
  * Created by CJLIU on 2015/9/19.
  */
 $(document).ready(function () {
-    //$(".loading").show();
+    $(".loading").show();
     //当前设备ID
     var thisDeviceId;
     // 得到请求的sign
@@ -212,7 +212,9 @@ $(document).ready(function () {
                 imgUrl: 'http://demo.open.weixin.qq.com/jssdk/images/p2166127561.jpg'
             }
             var showGuide = $("#shareModal").modal('show');
-            shareAppMessage(content, showGuide);
+           var hideGuide =  $("#shareModal").modal('hide');
+            shareAppMessage(content, showGuide,hideGuide);
+            
         })
     }
 

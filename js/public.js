@@ -340,7 +340,7 @@ function getWxDeviceTicket(deviceId, callback) {
  * 获取“分享给朋友”按钮点击状态及自定义分享内容接口
  * @param ticket
  */
-function shareAppMessage(content, showGuide) {
+function shareAppMessage(content, showGuide,hideGuide) {
     wx.onMenuShareAppMessage({
         title: content.title,
         desc: content.desc,
@@ -351,10 +351,10 @@ function shareAppMessage(content, showGuide) {
             //alert('用户点击发送给朋友:' + JSON.stringify(res));
         },
         success: function (res) {
-
+			hideGuide;
         },
         cancel: function (res) {
-
+			hideGuide;
         },
         fail: function (res) {
             alert(JSON.stringify(res));
