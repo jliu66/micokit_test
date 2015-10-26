@@ -3,15 +3,6 @@
  */
 
 /**
- * 返回请求的签名
- */
-function getRequestSign() {
-    var now = Math.round(new Date().getTime() / 1000);
-    var sign = $.md5(appKey + now);
-    return sign + ", " + now;
-}
-
-/**
  * 得到微信openID
  * @param access_token
  * @param requestHeader
@@ -61,15 +52,60 @@ function getWechatAccessToken(requestHeader) {
     }
 
 }
+
+/**
+ * 得到用户所有设备的相关信息
+ * @param requestHeader
+ * @param callback
+ */
+function getDevices(requestHeader, callback) {
+    $.ajax({
+        type: "POST",
+        url: "http://api.easylink.io/v1/device/devices",
+        headers: requestHeader,
+        success: function (data) {
+            callback(null, data);
+        },
+        error: function (data) {
+            callback(data, null);
+        }
+    });
+}
+
+/**
+ * 修改设备别名
+ * @param requestHeader
+ * @param deviceId
+ * @param alias
+ * @param callback
+ */
+function modifyDeviceAlias(requestHeader, deviceId, alias, callback) {
+    $.ajax({
+        type: "POST",
+        url: "http://api.easylink.io/v1/device/modify",
+        data: {
+            "device_id": deviceId,
+            "alias": alias
+        },
+        headers: requestHeader,
+        success: function () {
+            callback(null);
+        },
+        error: function (data) {
+            callback(data);
+        }
+    });
+}
+
 /**
  * 得到设备的用户
  * @param deviceId
  * @param requestHeader
  * @param userName
- * @returns {string}
+ * @param type type=1时，返回用户列表，否则返回用户权限
+ * @returns {*}
  */
 function getDeviceUser(deviceId, requestHeader, userName, type) {
-
     var user;
     $.ajax({
         type: "GET",
@@ -79,12 +115,12 @@ function getDeviceUser(deviceId, requestHeader, userName, type) {
         headers: requestHeader,
         success: function (data) {
             console.log(data);
-            if (type == 'role') {
+            if (type == 1) {
+                user = data;
+            } else {
                 user = (_.find(data, function (_data) {
                     return _data.username == userName
                 })).role;
-            } else {
-                user = data;
             }
 
         },
@@ -99,8 +135,14 @@ function getDeviceUser(deviceId, requestHeader, userName, type) {
     return user;
 }
 
-
-function getDeviceProperties(deviceId, requestHeader, property) {
+/**
+ * 得到设备的自定义属性
+ * @param deviceId
+ * @param requestHeader
+ * @param property
+ */
+function getDeviceProperties(requestHeader, deviceId, property) {
+    var properties;
     $.ajax({
         type: "GET",
         async: false,
@@ -108,22 +150,51 @@ function getDeviceProperties(deviceId, requestHeader, property) {
         data: {"device_id": deviceId},
         headers: requestHeader,
         success: function (data) {
-            console.log(data);
-            properties = _.find(data, function (_data) {
-                return _data.name == property
-            });
-            console.log('properties:', properties);
+            if (!property) {
+                properties = data;
+            }
+            else {
+                properties = _.find(data, function (_data) {
+                    return _data.name == property
+                });
+                if(!!properties){
+                    properties = properties.value;
+                }
+
+            }
+
         },
         error: function (data) {
             console.log(data);
         }
     });
-
+    if (!!properties) {
+        return properties;
+    }
 }
 
-
+function setDeviceProperties(requestHeader, deviceId, property, value) {
+    $.ajax({
+        type: "POST",
+        url: "http://api.easylink.io/v2/devices/properties",
+        data: {"device_id": deviceId, "name": property, "value": value},
+        headers: requestHeader,
+        success: function (data) {
+            console.log(data);
+        },
+        error: function (data) {
+            console.log(data);
+        }
+    });
+}
+/**
+ * 解绑设备
+ * @param requestHeader
+ * @param deviceId
+ * @param ticket 由wxJS获得的deviceTicket
+ * @param callback
+ */
 function unbindDevice(requestHeader, deviceId, ticket, callback) {
-    alert('unbindDevice=====');
     $.ajax({
         type: "POST",
         async: true,
@@ -137,7 +208,6 @@ function unbindDevice(requestHeader, deviceId, ticket, callback) {
         error: function (data) {
             alert('unbind:' + JSON.stringify(data));
             callback("err", null);
-            console.log(data);
         }
     });
 
@@ -160,7 +230,6 @@ function getDeviceQrcode(requestHeader, deviceId) {
         data: {"product_id": product_id, 'app_id': appId, 'mac': mac},
         headers: requestHeader,
         success: function (data) {
-            alert(data[mac].ticket);
             ticket = data[mac].ticket;
         },
         error: function (data) {
@@ -172,6 +241,10 @@ function getDeviceQrcode(requestHeader, deviceId) {
     }
 }
 
+/**
+ * 从庆科获得微信签名信息
+ * @returns {string}
+ */
 function getWechatSignInfo() {
     var signInfo = "";
     $.ajax({
@@ -196,31 +269,9 @@ function getWechatSignInfo() {
     }
 }
 
-function getWechatUserInfo(accessToken, openId) {
-    var user;
-    $.ajax({
-        type: "POST",
-        async: false,
-        url: "https://api.weixin.qq.com/cgi-bin/user/info?access_token=" + accessToken + "&openid=" + openId + "&lang=zh_CN",
-        dataType: 'json',
-        success: function (data) {
-            alert('success:',JSON.stringify(data));
-            user = data;
-        },
-        error: function (data) {
-            alert('error:',JSON.stringify(data));
-            console.log(data);
-        }
-    });
-    console.log('wxuser: ', user);
-    if (!!user) {
-        return user;
-    }
-}
-
 /**
  * 得到微信签名
- * @param data
+ * @param signInfo 从庆科获得微信签名信息
  * @returns {*}
  */
 function getWechatSign(signInfo) {
@@ -234,6 +285,41 @@ function getWechatSign(signInfo) {
     return sign;
 }
 
+/**
+ * 使用wxJS 配置
+ * @param signInfo
+ * @param wechatSign
+ */
+function wechatConfig(signInfo, wechatSign) {
+    wx.config({
+        debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        appId: signInfo.appId, // 必填，公众号的唯一标识
+        timestamp: signInfo.timestamp, // 必填，生成签名的时间戳
+        nonceStr: signInfo.nonceStr, // 必填，生成签名的随机串
+        signature: wechatSign, // 必填，签名，见附录1
+        jsApiList: [
+            // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+            'openWXDeviceLib',
+            'getWXDeviceTicket',
+            'onMenuShareAppMessage'
+        ]
+    });
+}
+
+/**
+ * 通过wxJsapi初始化设备库
+ */
+function openWXDeviceLib() {
+    WeixinJSBridge.invoke('openWXDeviceLib', {}, function (res) {
+        //alert("wx.openWXDeviceLib " + JSON.stringify(res));
+    });
+}
+
+/**
+ * 通过wxJsapi得到微信设备的ticket（获取操作凭证）
+ * @param deviceId
+ * @param callback
+ */
 function getWxDeviceTicket(deviceId, callback) {
     WeixinJSBridge.invoke('getWXDeviceTicket', {
         'deviceId': deviceId,
@@ -250,18 +336,16 @@ function getWxDeviceTicket(deviceId, callback) {
     });
 }
 
-function openWXDeviceLib() {
-    WeixinJSBridge.invoke('openWXDeviceLib', {}, function (res) {
-        //alert("wx.openWXDeviceLib " + JSON.stringify(res));
-    });
-}
-
-function shareAppMessage(ticket) {
+/**
+ * 获取“分享给朋友”按钮点击状态及自定义分享内容接口
+ * @param ticket
+ */
+function shareAppMessage(content) {
     wx.onMenuShareAppMessage({
-        title: '设备分享',
-        desc: '设备分享设备分享设备分享',
-        link: 'http://www.u-gen.net/demo.html?ticket=' + ticket,
-        imgUrl: 'http://demo.open.weixin.qq.com/jssdk/images/p2166127561.jpg',
+        title: content.title,
+        desc: content.desc,
+        link: content.link,
+        imgUrl: content.imgUrl,
         trigger: function (res) {
             // 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
             alert('用户点击发送给朋友:' + JSON.stringify(res));
@@ -278,20 +362,14 @@ function shareAppMessage(ticket) {
     });
     alert("去右上角分享设备");
 }
-function wechatConfig(signInfo, wechatSign) {
-    wx.config({
-        debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-        appId: signInfo.appId, // 必填，公众号的唯一标识
-        timestamp: signInfo.timestamp, // 必填，生成签名的时间戳
-        nonceStr: signInfo.nonceStr, // 必填，生成签名的随机串
-        signature: wechatSign, // 必填，签名，见附录1
-        jsApiList: [
-            // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-            'openWXDeviceLib',
-            'getWXDeviceTicket',
-            'onMenuShareAppMessage'
-        ]
-    });
+
+/**
+ * 返回庆科云API请求的签名
+ */
+function getRequestSign() {
+    var now = Math.round(new Date().getTime() / 1000);
+    var sign = $.md5(appKey + now);
+    return sign + ", " + now;
 }
 
 /**
@@ -319,4 +397,23 @@ var getByteLen = function (val) {
     }
     ;
     return len;
+}
+
+/**
+ * 格式化分钟至 x小时x分钟
+ * @param value
+ * @returns {string}
+ */
+function formatMinutes(value) {
+    var minutes = parseInt(value);
+    var result = "";
+    var hours = parseInt(minutes / 60);
+    minutes = parseInt(minutes % 60);
+    if (minutes != 0) {
+        result = minutes + "分钟";
+    }
+    if (hours > 0) {
+        result = hours + "小时" + result;
+    }
+    return result;
 }

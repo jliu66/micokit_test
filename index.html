@@ -15,18 +15,16 @@
     <script type="text/javascript" src="js/underscore-min.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-    <script type="text/javascript" src="js/config.js"></script>
+    <script type="text/javascript" src="js/config.js?version=0.0.1"></script>
     <script type="text/javascript" src="js/public.js?version=0.0.1"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="js/deviceLists.js?version=0.0.2"></script>
-    <script type="text/javascript">
+    <script type="text/javascript" src="js/deviceLists.js?version=0.0.1"></script>
+    <!--<script type="text/javascript">
     $(document).ready(function(){
-        //删除设备
-//      $(".removeDevice").click(function(){
-//          $("#listTemp").alert();
-//      });
+
+       $("#permissionModal").modal('show');  
     })    
-    </script>
+    </script>-->
 </head>
 <body ontouchstart="">
 
@@ -67,26 +65,38 @@
 
 <!-- modal -->
 <div class="modal fade" id="inputModal">
-    <div class="modal-dialog">
-        <div class="modal-v-center">
-            <div class="modal-content center-block">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">修改名称</h4>
-                </div>
-                <div class="modal-body">
-                    <input type="text" class="form-control" id="modifyContent">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                    <button type="button" class="btn btn-primary" id="confirm">确认修改</button>
-                </div>
+    <div class="modal-dialog">        
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">修改名称</h4>
+            </div>
+            <div class="modal-body">
+                <input type="text" class="form-control" id="modifyContent">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="confirm">确认修改</button>
             </div>
         </div>
     </div>
 </div>
 <!-- /modal -->
+<div class="modal modal-permission fade" id="permissionModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <p>
+                <label>允许控制<input id="pmChecked" class="switch" type="checkbox"></label>
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- shareModal -->
+<div class="modal modal-share fade" id="shareModal"></div>
+<!-- /shareModal -->
+
 <div id="listTemp" class="alert fade in" style="display: none;">
 	<p class="text-center col-xs-2 setUp">
         <i id="porject" class="iconfont">&#xe600;</i>  
@@ -97,7 +107,8 @@
         <li id="setUpContent" class="collapse">
             <ul class="list-unstyled btn-group-justified list_parent">
                 <li class="btn-group disabled">
-                    <p class="removeDevice" >
+                    <!--<p class="removeDevice" data-dismiss="alert">-->
+                    <p class="removeDevice">
                         <i id="removeDevice" class="iconfont">&#xe601;</i>
                         <span>删除</span>
                     </p>

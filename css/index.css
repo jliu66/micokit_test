@@ -1,8 +1,4 @@
 @font-face {
-  font-family: myFont;
-  src: url('../font/number.TTF') format('truetype');
-}
-@font-face {
   font-family: 'iconfont';
   src: url('//at.alicdn.com/t/font_1445415139_5233579.eot');
   src: url('//at.alicdn.com/t/font_1445415139_5233579.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */ url('//at.alicdn.com/t/font_1445415139_5233579.woff') format('woff'), /* chrome、firefox */ url('//at.alicdn.com/t/font_1445415139_5233579.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/ url('//at.alicdn.com/t/font_1445415139_5233579.svg#iconfont') format('svg');
@@ -10,26 +6,9 @@
   /* IE9*/
   /* iOS 4.1- */
 }
-.iconfont {
-  font-family: "iconfont" !important;
-  font-size: 16px;
-  font-style: normal;
-  -webkit-font-smoothing: antialiased;
-  -webkit-text-stroke-width: 0.2px;
-  -moz-osx-font-smoothing: grayscale;
-}
-.modal .modal-dialog {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  display: table;
-}
-.modal .modal-dialog .modal-v-center {
-  display: table-cell;
-  vertical-align: middle;
-}
-.modal .modal-dialog .modal-v-center .modal-content {
-  width: 300px;
+@font-face {
+  font-family: myFont;
+  src: url('../font/number.TTF') format('truetype');
 }
 .loading {
   position: fixed;
@@ -177,6 +156,14 @@ body {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   background-color: #f5f5f5;
 }
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-stroke-width: 0.2px;
+  -moz-osx-font-smoothing: grayscale;
+}
 .container-fluid {
   padding: 0 0 40px;
 }
@@ -186,10 +173,12 @@ body {
   background: url("../img/gray_arrow_icon.png") no-repeat;
   background-size: 30px 30px;
   -webkit-background-size: 30px 30px;
-  background-position: 95% 23px;
+  background-position: 95% 22px;
   color: #999999;
   padding-left: 0;
+  padding-right: 0;
   margin-bottom: 0;
+  border: 0;
   overflow: hidden;
   position: relative;
 }
@@ -248,7 +237,7 @@ body {
   font-weight: bold;
   position: absolute;
   top: 12px;
-  right: 10%;
+  right: 15%;
 }
 .container-fluid .alert:after {
   content: "";
@@ -266,8 +255,8 @@ body {
 .container-fluid .alert.row-online-state .rowRight:after {
   content: "在线";
 }
-.container-fluid .alert.row-online-state.row-online-state-shadow {
-  background-color: #E1E1E1;
+.container-fluid .alert.row-online-state.row-online-state-bg {
+  background-color: #e1e1e1;
 }
 .footer {
   height: 40px;
@@ -283,4 +272,90 @@ body {
 }
 .footer a:hover {
   text-decoration: none;
+}
+.modal .modal-dialog {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 300px;
+  height: 188px;
+}
+.modal-permission .modal-dialog {
+  height: 108px;
+}
+.modal-permission .modal-dialog p {
+  padding: 40px 15px;
+  margin-bottom: 0;
+}
+.modal-permission .modal-dialog p label {
+  margin-bottom: 0;
+  display: block;
+  font-size: 18px;
+}
+.modal-permission .modal-dialog p label .switch {
+  width: 47px;
+  height: 30px;
+  position: relative;
+  border: 2px solid #dddddd;
+  background-color: #ffffff;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  -webkit-border-top-left-radius: 20px;
+  -webkit-border-top-right-radius: 20px;
+  -webkit-border-bottom-left-radius: 20px;
+  -webkit-border-bottom-right-radius: 20px;
+  background-clip: padding-box;
+  -webkit-appearance: none;
+  outline: none;
+  -webkit-transition: ease-in-out 0.2s;
+  transition: ease-in-out 0.2s;
+  transition-property: background-color, border;
+  -webkit-transition-property: background-color, border;
+  float: right;
+  top: -5px;
+}
+.modal-permission .modal-dialog p label .switch:before {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  top: -1px;
+  left: -1px;
+  width: 28px;
+  height: 28px;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+  -webkit-border-top-left-radius: 16px;
+  -webkit-border-top-right-radius: 16px;
+  -webkit-border-bottom-left-radius: 16px;
+  -webkit-border-bottom-right-radius: 16px;
+  background-color: #ffffff;
+  background-clip: padding-box;
+  transform: translate(0px, 0px);
+  -webkit-transform: translate(0px, 0px);
+  box-shadow: 0 2px 5px 1px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0 2px 5px 1px rgba(0, 0, 0, 0.5);
+  transition: 0.2s ease-in-out;
+  -webkit-transition: 0.2s ease-in-out;
+  transition-property: transform,width,left;
+  -webkit-transition-property: -webkit-transform, width, left;
+}
+.modal-permission .modal-dialog p label .switch:checked {
+  border-color: #4cd964;
+  background-color: #4cd964;
+}
+.modal-permission .modal-dialog p label .switch:checked:before {
+  transform: translate(16px, 0px);
+  -webkit-transform: translate(16px, 0px);
+}
+.modal-share {
+  background: url("../img/share.png") no-repeat 70% 20px;
+  background-size: 237px 181px;
+  -webkit-background-size: 237px 181px;
 }

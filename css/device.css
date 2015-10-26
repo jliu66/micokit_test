@@ -1,8 +1,4 @@
 @font-face {
-  font-family: myFont;
-  src: url('../font/number.TTF') format('truetype');
-}
-@font-face {
   font-family: 'iconfont';
   src: url('//at.alicdn.com/t/font_1445415139_5233579.eot');
   src: url('//at.alicdn.com/t/font_1445415139_5233579.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */ url('//at.alicdn.com/t/font_1445415139_5233579.woff') format('woff'), /* chrome、firefox */ url('//at.alicdn.com/t/font_1445415139_5233579.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/ url('//at.alicdn.com/t/font_1445415139_5233579.svg#iconfont') format('svg');
@@ -10,26 +6,26 @@
   /* IE9*/
   /* iOS 4.1- */
 }
-.iconfont {
-  font-family: "iconfont" !important;
-  font-size: 16px;
-  font-style: normal;
-  -webkit-font-smoothing: antialiased;
-  -webkit-text-stroke-width: 0.2px;
-  -moz-osx-font-smoothing: grayscale;
+@font-face {
+  font-family: myFont;
+  src: url('../font/number.TTF') format('truetype');
 }
-.modal .modal-dialog {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  display: table;
+.role{
+	position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1040;
+  display: none;
+  background-color: rgba(0, 0, 0, 0.5);
 }
-.modal .modal-dialog .modal-v-center {
-  display: table-cell;
-  vertical-align: middle;
-}
-.modal .modal-dialog .modal-v-center .modal-content {
-  width: 300px;
+.role div{
+	  top: 110px;
+    position: relative;
+    float: right;
+    color: #fff;
+    margin-right: 20px;
 }
 .loading {
   position: fixed;
@@ -176,6 +172,14 @@ body {
   tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   background-color: #f5f5f5;
+}
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-stroke-width: 0.2px;
+  -moz-osx-font-smoothing: grayscale;
 }
 .jumbotron {
   padding-left: 15px;
