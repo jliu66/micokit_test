@@ -22,17 +22,17 @@ $(document).ready(function () {
     var wechatSign = getWechatSign(signInfo);
     wechatConfig(signInfo, wechatSign);
     wx.ready(function () {
-        wx.checkJsApi({
-            jsApiList: [
-                'openWXDeviceLib',
-                'getWXDeviceTicket',
-                'onMenuShareAppMessage'
-            ],
-            success: function(res) {
-                $(".loading").hide();
-            }
-        });
-        openWXDeviceLib();
+       wx.checkJsApi({
+           jsApiList: [
+               'openWXDeviceLib',
+               'getWXDeviceTicket',
+               'onMenuShareAppMessage'
+           ],
+           success: function(res) {
+               $(".loading").hide();
+           }
+       });
+       openWXDeviceLib();
     });
 
     // 得到庆科返回的deviceLists
@@ -211,7 +211,12 @@ $(document).ready(function () {
                 link: 'http://' + document.domain + '/shareDevice.html?ticket=' + ticket,
                 imgUrl: 'http://demo.open.weixin.qq.com/jssdk/images/p2166127561.jpg'
             }
-            shareAppMessage(content);
+            var showGuide = $("#shareModal").modal('show');
+            var showSuccess = function(){
+                alert('设备已分享')
+            };
+            var showCancel = alert('您已取消了分享');
+            shareAppMessage(content, showGuide,showSuccess,showCancel);
         })
     }
 

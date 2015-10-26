@@ -157,7 +157,7 @@ function getDeviceProperties(requestHeader, deviceId, property) {
                 properties = _.find(data, function (_data) {
                     return _data.name == property
                 });
-                if(!!properties){
+                if (!!properties) {
                     properties = properties.value;
                 }
 
@@ -340,7 +340,7 @@ function getWxDeviceTicket(deviceId, callback) {
  * 获取“分享给朋友”按钮点击状态及自定义分享内容接口
  * @param ticket
  */
-function shareAppMessage(content) {
+function shareAppMessage(content, showGuide, showSuccess, showCancel) {
     wx.onMenuShareAppMessage({
         title: content.title,
         desc: content.desc,
@@ -351,16 +351,16 @@ function shareAppMessage(content) {
             //alert('用户点击发送给朋友:' + JSON.stringify(res));
         },
         success: function (res) {
-            alert('设备已分享');
+            showSuccess;
         },
         cancel: function (res) {
-            alert('您已取消了分享设备');
+            showCancel;
         },
         fail: function (res) {
             alert(JSON.stringify(res));
         }
     });
-    alert("去右上角分享设备");
+    showGuide;
 }
 
 /**
