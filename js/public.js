@@ -263,7 +263,7 @@ function getWechatSignInfo() {
             console.log(data);
         }
     });
-    alert('signInfo: '+signInfo);
+    //alert('signInfo: '+signInfo);
     if (!!signInfo) {
         return signInfo;
     }
@@ -281,7 +281,7 @@ function getWechatSign(signInfo) {
     var url = document.location.href.split('#')[0];
     var rawString = 'jsapi_ticket=' + ticket + '&noncestr=' + nonceStr + '&timestamp=' + timestamp + '&url=' + url;
     var sign = hex_sha1(rawString);
-    alert('sign: ' + sign);
+    //alert('sign: ' + sign);
     return sign;
 }
 
@@ -292,7 +292,7 @@ function getWechatSign(signInfo) {
  */
 function wechatConfig(signInfo, wechatSign) {
     wx.config({
-        debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
         appId: signInfo.appId, // 必填，公众号的唯一标识
         timestamp: signInfo.timestamp, // 必填，生成签名的时间戳
         nonceStr: signInfo.nonceStr, // 必填，生成签名的随机串
@@ -348,13 +348,13 @@ function shareAppMessage(content) {
         imgUrl: content.imgUrl,
         trigger: function (res) {
             // 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
-            alert('用户点击发送给朋友:' + JSON.stringify(res));
+            //alert('用户点击发送给朋友:' + JSON.stringify(res));
         },
         success: function (res) {
-            alert('已分享:' + JSON.stringify(res));
+            alert('设备已分享');
         },
         cancel: function (res) {
-            alert('已取消:' + JSON.stringify(res));
+            alert('您已取消了分享设备');
         },
         fail: function (res) {
             alert(JSON.stringify(res));
