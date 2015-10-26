@@ -194,11 +194,11 @@ $(document).ready(function () {
                 'Authorization': 'token ' + devAccessToken
             };
             var ticket = getDeviceQrcode(requestHeader, thisDeviceId);
-            alert('分享URL: ' + location.hostname+'/shareDevice.html?ticket=' + ticket);
+            alert('分享URL: ' + 'http://' + document.domain + '/shareDevice.html?ticket=' + ticket);
             var content = {
                 title: '设备分享',
                 desc: '设备分享设备分享设备分享',
-                link: location.hostname+'/shareDevice.html?ticket=' + ticket,
+                link: 'http://' + document.domain + '/shareDevice.html?ticket=' + ticket,
                 imgUrl: 'http://demo.open.weixin.qq.com/jssdk/images/p2166127561.jpg'
             }
             shareAppMessage(content);
@@ -212,18 +212,18 @@ $(document).ready(function () {
             thisDeviceId = $(this).parents('.fade')[0].id;
             var deviceControl = getDeviceProperties(requestHeader, thisDeviceId, 'deviceControl');
             console.log('deviceControl:', deviceControl);
-            $("#permissionModal").modal('show'); 
+            $("#permissionModal").modal('show');
             if (!!deviceControl && deviceControl == 0) {
                 pmChecked.attr('checked', false);
-            }else{
-            	pmChecked.attr('checked', 'true');
+            } else {
+                pmChecked.attr('checked', 'true');
             }
         });
         pmChecked.on('change', function () {
-        	var permissionSwitch = 1;
+            var permissionSwitch = 1;
             if (!$(this)[0].checked) {
                 permissionSwitch = 0;
-            } 
+            }
             console.log('权限开关:', permissionSwitch);
             setPermission(thisDeviceId, permissionSwitch)
         })
@@ -279,8 +279,8 @@ $(document).ready(function () {
         $(divName).find("#bssid").text(bssid);
         $("#list").append(divName);
     }
-    
-	/**
+
+    /**
      * 刷新后渲染设备列表
      * @param device_id
      * @param state
