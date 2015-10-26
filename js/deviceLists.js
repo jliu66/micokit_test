@@ -18,22 +18,22 @@ $(document).ready(function () {
     // 得到微信openID
     var userName = getUserName(access_token, requestHeader);
     //微信jssdk配置 正式需打开
-    //var signInfo = getWechatSignInfo();
-    //var wechatSign = getWechatSign(signInfo);
-    //wechatConfig(signInfo, wechatSign);
-    //wx.ready(function () {
-    //    wx.checkJsApi({
-    //        jsApiList: [
-    //            'openWXDeviceLib',
-    //            'getWXDeviceTicket',
-    //            'onMenuShareAppMessage'
-    //        ],
-    //        success: function(res) {
-    //            $(".loading").hide();
-    //        }
-    //    });
-    //    openWXDeviceLib();
-    //});
+    var signInfo = getWechatSignInfo();
+    var wechatSign = getWechatSign(signInfo);
+    wechatConfig(signInfo, wechatSign);
+    wx.ready(function () {
+       wx.checkJsApi({
+           jsApiList: [
+               'openWXDeviceLib',
+               'getWXDeviceTicket',
+               'onMenuShareAppMessage'
+           ],
+           success: function(res) {
+               $(".loading").hide();
+           }
+       });
+       openWXDeviceLib();
+    });
 
     // 得到庆科返回的deviceLists
     var deviceLists = getParameterByName('device_list');
@@ -204,7 +204,7 @@ $(document).ready(function () {
                 'Authorization': 'token ' + devAccessToken
             };
             var ticket = getDeviceQrcode(requestHeader, thisDeviceId);
-            alert('分享URL: ' + 'http://' + document.domain + '/shareDevice.html?ticket=' + ticket);
+            //alert('分享URL: ' + 'http://' + document.domain + '/shareDevice.html?ticket=' + ticket);
             var content = {
                 title: '设备分享',
                 desc: '设备分享设备分享设备分享',

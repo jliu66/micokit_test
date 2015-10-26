@@ -202,11 +202,11 @@ function unbindDevice(requestHeader, deviceId, ticket, callback) {
         data: {"ticket": ticket, "app_id": appId, "device_id": deviceId},
         headers: requestHeader,
         success: function (data) {
-            alert('unbind:' + JSON.stringify(data));
+            //alert('unbind:' + JSON.stringify(data));
             callback(null, data);
         },
         error: function (data) {
-            alert('unbind:' + JSON.stringify(data));
+            //alert('unbind:' + JSON.stringify(data));
             callback("err", null);
         }
     });
@@ -327,7 +327,7 @@ function getWxDeviceTicket(deviceId, callback) {
     }, function (res) {
         if (res.err_msg == 'getWXDeviceTicket:ok') {
             var ticket = res.ticket;
-            alert('ticket: ' + ticket);
+            //alert('ticket: ' + ticket);
             callback(null, ticket);
         } else {
             callback('err', null);
