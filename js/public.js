@@ -263,7 +263,7 @@ function getWechatSignInfo() {
             console.log(data);
         }
     });
-    console.log('signInfo: ', signInfo);
+    alert('signInfo: '+signInfo);
     if (!!signInfo) {
         return signInfo;
     }
@@ -281,7 +281,7 @@ function getWechatSign(signInfo) {
     var url = document.location.href.split('#')[0];
     var rawString = 'jsapi_ticket=' + ticket + '&noncestr=' + nonceStr + '&timestamp=' + timestamp + '&url=' + url;
     var sign = hex_sha1(rawString);
-    console.log('sign: ' + sign);
+    alert('sign: ' + sign);
     return sign;
 }
 
