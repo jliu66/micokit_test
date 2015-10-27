@@ -1,8 +1,8 @@
 /**
  * Created by CJLIU on 2015/9/19.
  */
-$(document).ready(function () {
-    $(".loading").show();
+$(document).ready(function() {
+     $(".loading").show();
     //当前设备ID
     var thisDeviceId;
     // 得到请求的sign
@@ -48,12 +48,12 @@ $(document).ready(function () {
 
     /* 初始化列表 */
     function initPage() {
-        getDevices(requestHeader, function (err, data) {
+        getDevices(requestHeader, function(err, data) {
             if (!!err) {
                 console.error(data);
                 return;
             }
-            $.each(data, function (i, _data) {
+            $.each(data, function(i, _data) {
                 var device_id = _data.id;
                 var product_id = device_id.split('/')[0];
                 var bssid = _data.bssid;
@@ -76,7 +76,7 @@ $(document).ready(function () {
     function autoReloadPage() {
         // 初始刷新列表次数
         var reloadTimers = 0;
-        var reloadTimer = setInterval(function () {
+        var reloadTimer = setInterval(function() {
             reloadTimers++;
             reloadPage();
             if (reloadTimers == maxReloadTimers) {
@@ -87,13 +87,13 @@ $(document).ready(function () {
 
     /* 刷新列表 */
     function reloadPage() {
-        getDevices(requestHeader, function (err, data) {
+        getDevices(requestHeader, function(err, data) {
             if (!!err) {
                 console.error(data);
                 return;
             }
             console.log(data);
-            $.each(data, function (i, _data) {
+            $.each(data, function(i, _data) {
                 var device_id = _data.id;
                 var product_id = device_id.split('/')[0];
                 var bssid = _data.bssid;
@@ -109,14 +109,14 @@ $(document).ready(function () {
 
     /* 添加修改名称的click事件 */
     function onModifyName() {
-        $(".modifyName").on("click", function (e) {
+        $(".modifyName").on("click", function(e) {
             //模态框显示
             $("#inputModal").modal("show");
             //样式改了之后，这里可能有问题
             thisDeviceId = $(this).parents('.alert')[0].id;
         });
 
-        $("#confirm").on("click", function () {
+        $("#confirm").on("click", function() {
             var modifyContent = $("#modifyContent").val();
             console.log('modifyContent:', modifyContent);
             if (!modifyContent) {
@@ -124,15 +124,15 @@ $(document).ready(function () {
             } else if (getByteLen(modifyContent) > 16) {
                 alert('超过字数咯');
             } else {
-                modifyDeviceAlias(requestHeader, thisDeviceId, modifyContent, function (err) {
-                    if (!!err) {
-                        alert("修改名称失败");
-                        return;
-                    }
-                    thisDeviceId = thisDeviceId.replace(/\//g, "\\\/");
-                    $("#" + thisDeviceId + " #alias").html(modifyContent);
-                })
-                //模态框隐藏
+                modifyDeviceAlias(requestHeader, thisDeviceId, modifyContent, function(err) {
+                        if (!!err) {
+                            alert("修改名称失败");
+                            return;
+                        }
+                        thisDeviceId = thisDeviceId.replace(/\//g, "\\\/");
+                        $("#" + thisDeviceId + " #alias").html(modifyContent);
+                    })
+                    //模态框隐藏
                 $("#inputModal").modal("hide");
                 //清除输入框内容
                 $("#modifyContent").val('');
@@ -142,7 +142,7 @@ $(document).ready(function () {
 
     /* 设备管理 */
     function onManageDevice() {
-        $(".collapse").on('show.bs.collapse', function () {
+        $(".collapse").on('show.bs.collapse', function() {
             thisDeviceId = $(this).parents('.alert')[0].id;
             var role = getDeviceUser(thisDeviceId, requestHeader, userName);
             var deviceControl = getDeviceProperties(requestHeader, thisDeviceId, 'deviceControl');
@@ -166,23 +166,23 @@ $(document).ready(function () {
             }
 
         });
-        $(".setUp").on("click", function () {
+        $(".setUp").on("click", function() {
             $(this).next().children("#setUpContent").collapse('toggle');
         })
     }
 
     /* 移除设备 */
     function onRemoveDevice() {
-        $(".removeDevice").on("click", function () {
+        $(".removeDevice").on("click", function() {
             var r = confirm("是否确定移除？");
             if (r == true) {
                 //样式改了之后，这里可能有问题
                 thisDeviceId = $(this).parents('.alert')[0].id;
                 var deviceId = thisDeviceId.replace(/\//g, "\\\/");
                 var wxDeviceId = $("#" + deviceId).data('wxdeviceid');
-                getWxDeviceTicket(wxDeviceId, function (err, ticket) {
+                getWxDeviceTicket(wxDeviceId, function(err, ticket) {
                     if (!!err) return;
-                    unbindDevice(requestHeader, thisDeviceId, ticket, function (err, res) {
+                    unbindDevice(requestHeader, thisDeviceId, ticket, function(err, res) {
                         if (!err && res.result == "success") {
                             alert("删除成功");
                             $("#" + deviceId).remove();
@@ -197,7 +197,7 @@ $(document).ready(function () {
 
     /* 设备分享 */
     function onShareDevice() {
-        $(".share").on("click", function () {
+        $(".share").on("click", function() {
             //样式改了之后，这里可能有问题
             thisDeviceId = $(this).parents('.alert')[0].id;
             var requestHeader = {
@@ -211,17 +211,21 @@ $(document).ready(function () {
                 link: 'http://' + document.domain + '/shareDevice.html?ticket=' + ticket,
                 imgUrl: 'http://demo.open.weixin.qq.com/jssdk/images/p2166127561.jpg'
             }
-            var showGuide = $("#shareModal").modal('show');
-           var hideGuide =  $("#shareModal").modal('hide');
-            shareAppMessage(content, showGuide,hideGuide);
-            
+            var showGuide = function() {
+                $("#shareModal").modal('show')
+            };
+            var hideGuide = function() {
+                $("#shareModal").modal('hide')
+            };
+            shareAppMessage(content, showGuide, hideGuide);
+
         })
     }
 
     /* 用户权限管理 */
     function onPermission() {
         var pmChecked = $("#pmChecked");
-        $(".permission").on("click", function () {
+        $(".permission").on("click", function() {
             thisDeviceId = $(this).parents('.fade')[0].id;
             var deviceControl = getDeviceProperties(requestHeader, thisDeviceId, 'deviceControl');
             console.log('deviceControl:', deviceControl);
@@ -232,7 +236,7 @@ $(document).ready(function () {
                 pmChecked.attr('checked', 'true');
             }
         });
-        pmChecked.on('change', function () {
+        pmChecked.on('change', function() {
             var permissionSwitch = 1;
             if (!$(this)[0].checked) {
                 permissionSwitch = 0;
@@ -273,15 +277,15 @@ $(document).ready(function () {
 
     function addDeviceListsData(divName, state, alias, bssid, url) {
         var equipmentName;
-        $(divName).on('click', function (e) {
+        $(divName).on('click', function(e) {
             if ($(e.target).attr('id') == "alias") {
                 $(e.target).parents('.alert').addClass('row-online-state-bg');
                 equipmentName = $(e.target).parents('.alert').find('ul #alias').text();
                 console.log($(e.target));
-                setTimeout(function () {
+                setTimeout(function() {
                     $(e.target).parents('.alert').removeClass('row-online-state-bg');
                 }, 200);
-                setTimeout(function () {
+                setTimeout(function() {
                     var equipmentUrl = url.split("alias=")[0];
                     window.location.href = equipmentUrl + "alias=" + equipmentName;
                 }, 300);
@@ -314,4 +318,3 @@ $(document).ready(function () {
         list.find("#alias").text(alias);
     }
 });
-
