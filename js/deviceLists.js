@@ -179,6 +179,7 @@ $(document).ready(function () {
         	$("#confirmButton").on('click',function(){
                 var deviceId = thisDeviceId.replace(/\//g, "\\\/");
                 var wxDeviceId = $("#" + deviceId).data('wxdeviceid');
+                $("#confirmModal").modal('hide');
                 getWxDeviceTicket(wxDeviceId, function (err, ticket) {
                     if (!!err) return;
                     unbindDevice(requestHeader, thisDeviceId, ticket, function (err, res) {
