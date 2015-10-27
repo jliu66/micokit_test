@@ -184,9 +184,11 @@ $(document).ready(function () {
                     if (!!err) return;
                     unbindDevice(requestHeader, thisDeviceId, ticket, function (err, res) {
                         if (!err && res.result == "success") {
+                        	alert('success');
 			        		ModalInitializationOne('删除成功');
                             $("#" + deviceId).remove();
                         } else {
+                        	alert('error');
                             modalInitializationOne('删除失败');
                         }
                     });
