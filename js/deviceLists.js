@@ -175,7 +175,7 @@ $(document).ready(function () {
     function onRemoveDevice() {
         $(".removeDevice").on("click", function () {
         	thisDeviceId = $(this).parents('.alert')[0].id;
-        	modalInitializationTwo('确认删除？');
+        	modalInitializationTwo('真的要移除设备吗？');
         	$("#confirmButton").on('click',function(){
                 var deviceId = thisDeviceId.replace(/\//g, "\\\/");
                 var wxDeviceId = $("#" + deviceId).data('wxdeviceid');
@@ -184,10 +184,10 @@ $(document).ready(function () {
                     if (!!err) return;
                     unbindDevice(requestHeader, thisDeviceId, ticket, function (err, res) {
                         if (!err && res.result == "success") {
-			        		modalInitializationOne('删除成功');
+			        		modalInitializationOne('移除设备成功');
                             $("#" + deviceId).remove();
                         } else {
-                            modalInitializationOne('删除失败');
+                            modalInitializationOne('移除设备失败');
                         }
                     });
                 });
@@ -211,9 +211,11 @@ $(document).ready(function () {
                 link: 'http://' + document.domain + '/shareDevice.html?ticket=' + ticket,
                 imgUrl: 'http://demo.open.weixin.qq.com/jssdk/images/p2166127561.jpg'
             }
+            // 显示引导页面
             var showGuide = function () {
                 $("#shareModal").modal('show')
             };
+            // 隐藏引导页面
             var hideGuide = function () {
                 $("#shareModal").modal('hide')
             };
