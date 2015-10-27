@@ -174,9 +174,9 @@ $(document).ready(function () {
     /* 移除设备 */
     function onRemoveDevice() {
         $(".removeDevice").on("click", function () {
+        	thisDeviceId = $(this).parents('.alert')[0].id;
         	modalInitializationTwo('确认删除？');
         	$("#confirmButton").on('click',function(){
-        		thisDeviceId = $(".removeDevice").parents('.alert')[0].id;
                 var deviceId = thisDeviceId.replace(/\//g, "\\\/");
                 var wxDeviceId = $("#" + deviceId).data('wxdeviceid');
                 getWxDeviceTicket(wxDeviceId, function (err, ticket) {

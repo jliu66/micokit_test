@@ -167,7 +167,7 @@
 }
 .modal-dialog .btn-group-justified .btn {
   color: #000000;
-  font-weight: bold;
+  /*font-weight: bold;*/
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   -webkit-border-top-left-radius: 0;
