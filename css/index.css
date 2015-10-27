@@ -144,6 +144,46 @@
     -webkit-transform: scale(1);
   }
 }
+.modal-dialog {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 280px;
+  height: 100px;
+}
+.modal-dialog p {
+  color: #000000;
+  font-size: 16px;
+  margin-bottom: 0;
+}
+.modal-dialog p:nth-child(1) {
+  padding: 15px 20px;
+}
+.modal-dialog .btn-group-justified {
+  border-top: 1px solid #dadada;
+}
+.modal-dialog .btn-group-justified .btn {
+  color: #000000;
+  font-weight: bold;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  -webkit-border-top-left-radius: 0;
+  -webkit-border-top-right-radius: 0;
+}
+.modal-dialog .btn-group-justified .btn:nth-child(2) {
+  border-left-color: #dadada;
+}
+.modal-dialog .btn-group-justified .btn:active {
+  background-color: #e7eaed;
+  box-shadow: none;
+  -webkit-box-shadow: none;
+}
+.modal-dialog .btn-group-justified .btn:focus {
+  outline: 0;
+}
 html,
 body {
   width: 100%;
@@ -273,14 +313,7 @@ body {
 .footer a:hover {
   text-decoration: none;
 }
-.modal .modal-dialog {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: auto;
-  width: 300px;
+.modal-modifyName .modal-dialog {
   height: 188px;
 }
 .modal-permission .modal-dialog {
@@ -288,7 +321,6 @@ body {
 }
 .modal-permission .modal-dialog p {
   padding: 40px 15px;
-  margin-bottom: 0;
 }
 .modal-permission .modal-dialog p label {
   margin-bottom: 0;

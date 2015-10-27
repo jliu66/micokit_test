@@ -40,7 +40,7 @@ $(document).ready(function () {
     $(".loading").show();
     setTimeout(function () {
         if ($(".loading").is(":visible")) {
-            alert("连接未成功，请重试...");
+            modalInitializationOne("连接未成功，请重试...");
         }
     }, loadingTime);
 
@@ -78,7 +78,7 @@ $(document).ready(function () {
         client = new Paho.MQTT.Client(wsbroker, wsport, "v1-web-" + parseInt(Math.random() * 1000000, 12));
         mqttClientInit();
 
-        function mqttClientInit(){
+        function mqttClientInit() {
             // 基本参数配置
             // 连接丢失所对应的callback函数
             client.onConnectionLost = onConnectionLost;
@@ -119,7 +119,7 @@ $(document).ready(function () {
                 }
                 if (reconnectNum > 100) {
                     clearInterval(connectTimer);
-                    alert("连接丢失，请重新连接...");
+                    modalInitializationOne("连接丢失，请重新连接...");
                     client = new Paho.MQTT.Client(wsbroker, wsport, "v1-web-" + parseInt(Math.random() * 1000000, 12));
                     mqttClientInit();
                 }
@@ -174,7 +174,7 @@ $(document).ready(function () {
     function displayInfo(info) {
         if (_.has(info, 'deviceControl') && info.deviceControl == 0) {
             var role = getDeviceUser(device_id, requestHeader, userName);
-            if(role == 'share'){
+            if (role == 'share') {
                 $(".role").show();
             }
         }
@@ -264,7 +264,7 @@ $(document).ready(function () {
 
     /* 设置温度减少 */
     function setTmpLeft() {
-        $("#tmpLeft").on("touchstart", function(){
+        $("#tmpLeft").on("touchstart", function () {
             if (setTemperature <= 10) {
                 return;
             }
@@ -276,7 +276,7 @@ $(document).ready(function () {
 
     /* 设置温度增加 */
     function setTmpRight() {
-        $("#tmpRight").on("touchstart", function(){
+        $("#tmpRight").on("touchstart", function () {
             if (setTemperature >= 60) {//温度大于60度则返回无法继续点击
                 return;
             }
@@ -310,9 +310,9 @@ $(document).ready(function () {
     function setTimeMode() {
         $("#finalTime").get(0).selectedIndex = -1;//设置预约定时下拉框默认为无选择
         $('#finalTime').change(function () {
-            var r = confirm("确定" + $("#finalTime").children('option:selected').val() + "?")
-            if (r == true) {
-                var showTime = onOffTime.data("time");//定时时间（小时）
+			modalInitializationTwo("确定" + $("#finalTime").children('option:selected').val() + "?");
+			$("#confirmButton").on('click',function(){
+				var showTime = onOffTime.data("time");//定时时间（小时）
                 showTime = $("#finalTime").children('option:selected').val().split('小')[0];
                 onOffTime.data('time', showTime);
                 if (showTime != 0) {
@@ -322,7 +322,10 @@ $(document).ready(function () {
                     client.publish(topic, commond);
                 }
                 onOffSwitch(showTime, onOffTime);
-            }
+                $("#confirmModal").modal('hide');
+			});
+                
+//          }
         });
     }
 
@@ -424,5 +427,5 @@ $(document).ready(function () {
 
         });
     }
-
+    
 })

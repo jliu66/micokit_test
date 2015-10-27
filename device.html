@@ -8,15 +8,20 @@
     <meta name="format-detection" content="telephone=no"/>
     <title></title>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="css/device.css?version=0.0.2">
+    <link rel="stylesheet" type="text/css" href="css/device.css?version=0.0.1">
     <script type="text/javascript" src="http://api.easylink.io/assets/js/mqttws31.js"></script>
     <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/jquery.md5.js"></script>
     <script type="text/javascript" src="js/underscore-min.js"></script>
-    <script type="text/javascript" src="js/config.js?version=0.0.2"></script>
-    <script type="text/javascript" src="js/public.js?version=0.0.2"></script>
-    <script type="text/javascript" src="js/device.js?version=0.0.2"></script>
-
+    <script type="text/javascript" src="js/config.js?version=0.0.1"></script>
+    <script type="text/javascript" src="js/public.js?version=0.0.1"></script>
+    <script type="text/javascript" src="js/device.js?version=0.0.1"></script>
+	<!--<script type="text/javascript">
+		$(document).ready(function(){
+			$("#confirmModal").modal('show');
+		})
+	</script>-->
 </head>
 <body>
 
@@ -118,6 +123,21 @@
     <!--电源关闭时的蒙版-->
     <div id="mask" class="mask"></div>
 </div>
+
+<!-- 确定modal -->
+<div class="modal fade" id="confirmModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <p id="confirmTxt" class="text-center"></p>
+            <p class="btn-group btn-group-justified">
+                <a id="cancelButton" href="#" class="btn btn-lg" role="button" data-dismiss="modal">取消</a> 
+                <a id="confirmButton" href="#" class="btn btn-lg" role="button">确定</a>
+            </p>
+        </div>
+    </div>
+</div>
+<!-- /确定modal -->
+
 <!--无权限时的蒙版-->
 <div class="role">
 	<div class="">

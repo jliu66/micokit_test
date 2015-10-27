@@ -17,10 +17,10 @@ function getUserName(access_token, requestHeader) {
             "token": access_token
         },
         headers: requestHeader,
-        success: function(data) {
+        success: function (data) {
             uname = data[0].username;
         },
-        error: function(data) {
+        error: function (data) {
             console.log(data);
         }
     });
@@ -43,10 +43,10 @@ function getWechatAccessToken(requestHeader) {
             "app_id": appId
         },
         headers: requestHeader,
-        success: function(data) {
+        success: function (data) {
             accessToken = data.access_token;
         },
-        error: function(data) {
+        error: function (data) {
             console.log(data);
         }
     });
@@ -67,10 +67,10 @@ function getDevices(requestHeader, callback) {
         type: "POST",
         url: "http://api.easylink.io/v1/device/devices",
         headers: requestHeader,
-        success: function(data) {
+        success: function (data) {
             callback(null, data);
         },
-        error: function(data) {
+        error: function (data) {
             callback(data, null);
         }
     });
@@ -92,10 +92,10 @@ function modifyDeviceAlias(requestHeader, deviceId, alias, callback) {
             "alias": alias
         },
         headers: requestHeader,
-        success: function() {
+        success: function () {
             callback(null);
         },
-        error: function(data) {
+        error: function (data) {
             callback(data);
         }
     });
@@ -119,18 +119,18 @@ function getDeviceUser(deviceId, requestHeader, userName, type) {
             "device_id": deviceId
         },
         headers: requestHeader,
-        success: function(data) {
+        success: function (data) {
             console.log(data);
             if (type == 1) {
                 user = data;
             } else {
-                user = (_.find(data, function(_data) {
+                user = (_.find(data, function (_data) {
                     return _data.username == userName
                 })).role;
             }
 
         },
-        error: function(data) {
+        error: function (data) {
             if (type == 'role') {
                 user = 'share'
             }
@@ -157,11 +157,11 @@ function getDeviceProperties(requestHeader, deviceId, property) {
             "device_id": deviceId
         },
         headers: requestHeader,
-        success: function(data) {
+        success: function (data) {
             if (!property) {
                 properties = data;
             } else {
-                properties = _.find(data, function(_data) {
+                properties = _.find(data, function (_data) {
                     return _data.name == property
                 });
                 if (!!properties) {
@@ -171,7 +171,7 @@ function getDeviceProperties(requestHeader, deviceId, property) {
             }
 
         },
-        error: function(data) {
+        error: function (data) {
             console.log(data);
         }
     });
@@ -190,10 +190,10 @@ function setDeviceProperties(requestHeader, deviceId, property, value) {
             "value": value
         },
         headers: requestHeader,
-        success: function(data) {
+        success: function (data) {
             console.log(data);
         },
-        error: function(data) {
+        error: function (data) {
             console.log(data);
         }
     });
@@ -216,11 +216,11 @@ function unbindDevice(requestHeader, deviceId, ticket, callback) {
             "device_id": deviceId
         },
         headers: requestHeader,
-        success: function(data) {
+        success: function (data) {
             //alert('unbind:' + JSON.stringify(data));
             callback(null, data);
         },
-        error: function(data) {
+        error: function (data) {
             //alert('unbind:' + JSON.stringify(data));
             callback("err", null);
         }
@@ -248,10 +248,10 @@ function getDeviceQrcode(requestHeader, deviceId) {
             'mac': mac
         },
         headers: requestHeader,
-        success: function(data) {
+        success: function (data) {
             ticket = data[mac].ticket;
         },
-        error: function(data) {
+        error: function (data) {
             alert(JSON.stringify(data));
         }
     })
@@ -274,11 +274,11 @@ function getWechatSignInfo() {
         headers: {},
         cache: false,
         dataType: 'json',
-        success: function(data) {
+        success: function (data) {
             console.log(data);
             signInfo = data;
         },
-        error: function(data) {
+        error: function (data) {
             console.log(data);
         }
     });
@@ -329,7 +329,7 @@ function wechatConfig(signInfo, wechatSign) {
  * 通过wxJsapi初始化设备库
  */
 function openWXDeviceLib() {
-    WeixinJSBridge.invoke('openWXDeviceLib', {}, function(res) {
+    WeixinJSBridge.invoke('openWXDeviceLib', {}, function (res) {
         //alert("wx.openWXDeviceLib " + JSON.stringify(res));
     });
 }
@@ -343,7 +343,7 @@ function getWxDeviceTicket(deviceId, callback) {
     WeixinJSBridge.invoke('getWXDeviceTicket', {
         'deviceId': deviceId,
         'type': '2'
-    }, function(res) {
+    }, function (res) {
         if (res.err_msg == 'getWXDeviceTicket:ok') {
             var ticket = res.ticket;
             //alert('ticket: ' + ticket);
@@ -365,18 +365,18 @@ function shareAppMessage(content, showGuide, hideGuide) {
         desc: content.desc,
         link: content.link,
         imgUrl: content.imgUrl,
-        trigger: function(res) {
+        trigger: function (res) {
             hideGuide();
             // 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
             //alert('用户点击发送给朋友:' + JSON.stringify(res));
         },
-        success: function(res) {
+        success: function (res) {
             // hideGuide();
         },
-        cancel: function(res) {
+        cancel: function (res) {
             // hideGuide();
         },
-        fail: function(res) {
+        fail: function (res) {
             alert(JSON.stringify(res));
         }
     });
@@ -407,14 +407,15 @@ function getParameterByName(name) {
  * @param val
  * @returns {number}
  */
-var getByteLen = function(val) {
+var getByteLen = function (val) {
     var len = 0;
     for (var i = 0; i < val.length; i++) {
         if (val[i].match(/[^x00-xff]/ig) != null) //全角
             len += 2;
         else
             len += 1;
-    };
+    }
+    ;
     return len;
 }
 
@@ -435,4 +436,22 @@ function formatMinutes(value) {
         result = hours + "小时" + result;
     }
     return result;
+}
+
+/* 弹出框双选择初始化*/
+function modalInitializationTwo(confirmTxt){
+    $("#confirmTxt").html(confirmTxt);
+    $("#cancelButton").show();
+    $("#confirmButton").off();//移除所有绑定事件
+    $("#confirmModal").modal('show');
+}
+/* 弹出框单选择初始化*/
+function modalInitializationOne(confirmTxt){
+    $("#confirmTxt").html(confirmTxt);
+    $("#cancelButton").hide();
+    $("#confirmButton").off();//移除所有绑定事件
+    $("#confirmModal").modal('show');
+    $("#confirmButton").on('click',function(){
+        $("#confirmModal").modal('hide');
+    });
 }
