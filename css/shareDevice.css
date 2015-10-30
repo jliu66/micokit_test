@@ -226,12 +226,15 @@ body {
 .bindDevice ul li img {
   width: 300px;
   height: 150px;
+  position: relative;
+  z-index: 1;
 }
 .bindDevice ul li:nth-child(2) {
   position: absolute;
   top: 0;
   right: 0;
   width: 50%;
+  z-index: 0;
 }
 .bindDevice ul li:nth-child(2) p {
   margin-bottom: 0;

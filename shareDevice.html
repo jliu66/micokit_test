@@ -8,62 +8,25 @@
     <meta name="format-detection" content="telephone=no"/>
 	<title>绑定设备</title>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="css/shareDevice.css">
+    <link rel="stylesheet" type="text/css" href="css/shareDevice.css?version=0.0.1">
     <script type="text/javascript" src="js/jquery.min.js"></script>
 	<script type="text/javascript" src="js/qrcode.min.js"></script>
-	<script type="text/javascript" src="js/public.js"></script>	
-	<script src="js/shareDevice.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" src="js/public.js?version=0.0.4"></script>	
+	<script type="text/javascript" src="js/shareDevice.js?version=0.0.1" charset="utf-8"></script>
 </head>
 <body>
-
-<div class="bindDevice">
-	<ul class="list-unstyled text-center center-block">
-		<li>
-			<img id="shareImg" src=""/>
-		</li>
-		<li>
-			<p></p>
-			<p>长按识别二维码<br>绑定设备</p>
-		</li>
-	</ul>
-	<div class="qrcode" id="qrcode" style="display: none;"></div>
-	<canvas id="shareCanvas" backgroundAlpha = "0" width="300" height="150" style="display: none;"></canvas>
-</div>
-
-<!--<script type="text/javascript">
-	window.onload = function(){
-		//获得二维码URL
-		var ticket =  getParameterByName('ticket');
-		if(ticket == null){
-		ticket = "http://we.qq.com/d/AQDeiYG3fNLNqeE7joD34HhwGVadjgnt1oGQFS6C#97256c69-6723-43fb-87dc-167eaf9dc501";
-			
-		}
-		console.log("ticket:"+ticket);
-		
-		//动态创建二维码
-		var qrcode = $('#qrcode');
-		$('#qrcode').qrcode({ 
-		    render: "canvas", //canvas方式 
-		    width: 150, //宽度 
-		    height:150, //高度 
-		    text: ticket //任意内容 
-		});
-		var img = document.getElementById("shareImg");
-		//获取动态创建的二维码canvas,由于该canvas创建时设置宽度整个二维码会拉伸撑满。
-		//创建后修改宽度，已绘制的图案会被刷新。因此另外需要用到一个设定好样式的canvas
-		var cav = $("canvas").get(0);
-		var ctx = cav.getContext("2d");			
-		var cavx = document.getElementById("shareCanvas");
-		var ctxx = cavx.getContext('2d');
-		//将二维码转成imageData
-		var cavData = ctx.getImageData(0,0,150,150);
-		//将取出的imageData添加到自建canvas左边
-		ctxx.putImageData(cavData,0,0);
-		var imgData = ctxx.getImageData(0,0,300,150);
-		var imgURL = cavx.toDataURL("image/png");
-      	img.src=imgURL;
-	}
-</script>-->
-
+	<div class="bindDevice">
+		<ul class="list-unstyled text-center center-block">
+			<li>
+				<img id="shareImg" src=""/>
+			</li>
+			<li>
+				<p></p>
+				<p>长按识别二维码<br>绑定设备</p>
+			</li>
+		</ul>
+		<div class="qrcode" id="qrcode" style="display: none;"></div>
+		<canvas id="shareCanvas" backgroundAlpha = "0" width="300" height="150" style="display: none;"></canvas>
+	</div>
 </body>
 </html>

@@ -308,24 +308,25 @@ $(document).ready(function () {
 
     /* 设置定时模式 */
     function setTimeMode() {
-        $("#finalTime").get(0).selectedIndex = -1;//设置预约定时下拉框默认为无选择
         $('#finalTime').change(function () {
-			modalInitializationTwo("确定" + $("#finalTime").children('option:selected').val() + "?");
+//			var showTime = onOffTime.data("time");//定时时间（小时）
+//          showTime = $("#finalTime").children('option:selected').val().split('小')[0];
+			var showTime=$("#finalTime").get(0).selectedIndex
+            if(showTime=="0"){
+            	modalInitializationTwo("确定取消定时?");
+            }else{
+				modalInitializationTwo("确定" + $("#finalTime").children('option:selected').val() + "后关机?");
+            }
 			$("#confirmButton").on('click',function(){
-				var showTime = onOffTime.data("time");//定时时间（小时）
-                showTime = $("#finalTime").children('option:selected').val().split('小')[0];
                 onOffTime.data('time', showTime);
-                if (showTime != 0) {
                     //下发定时关机
-                    var topic = device_id + '/in/';
-                    var commond = '{"FT":"' + showTime + '"}';
-                    client.publish(topic, commond);
-                }
+                var topic = device_id + '/in/';
+                var commond = '{"FT":"' + showTime + '"}';
+                client.publish(topic, commond);
+//              }
                 onOffSwitch(showTime, onOffTime);
                 $("#confirmModal").modal('hide');
 			});
-                
-//          }
         });
     }
 

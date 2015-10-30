@@ -2,7 +2,7 @@
  * Created by CJLIU on 2015/9/19.
  */
 $(document).ready(function () {
-  $(".loading").show();
+$(".loading").show();
     //当前设备ID
     var thisDeviceId;
     // 得到请求的sign
@@ -18,22 +18,22 @@ $(document).ready(function () {
     // 得到微信openID
     var userName = getUserName(access_token, requestHeader);
 //  //微信jssdk配置 正式需打开
-  var signInfo = getWechatSignInfo();
-  var wechatSign = getWechatSign(signInfo);
-  wechatConfig(signInfo, wechatSign);
-  wx.ready(function () {
-      wx.checkJsApi({
-          jsApiList: [
-              'openWXDeviceLib',
-              'getWXDeviceTicket',
-              'onMenuShareAppMessage'
-          ],
-          success: function (res) {
-              $(".loading").hide();
-          }
-      });
-      openWXDeviceLib();
-  });
+var signInfo = getWechatSignInfo();
+var wechatSign = getWechatSign(signInfo);
+wechatConfig(signInfo, wechatSign);
+wx.ready(function () {
+   wx.checkJsApi({
+       jsApiList: [
+           'openWXDeviceLib',
+           'getWXDeviceTicket',
+           'onMenuShareAppMessage'
+       ],
+       success: function (res) {
+           $(".loading").hide();
+       }
+   });
+   openWXDeviceLib();
+});
 
     // 得到庆科返回的deviceLists
     var deviceLists = getParameterByName('device_list');
@@ -54,6 +54,10 @@ $(document).ready(function () {
             if (!!err) {
                 console.error(data);
                 return;
+            }
+            if(_.size(data)==0){
+            	$("#noDevice").show();
+				$("#footer").hide();
             }
             $.each(data, function (i, _data) {
                 var device_id = _data.id;
