@@ -8,16 +8,16 @@
     <meta name="format-detection" content="telephone=no"/>  
     <title>我的设备</title>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="css/index.css?version=0.0.2">
+    <link rel="stylesheet" type="text/css" href="css/index.css?version=0.0.4">
     <script type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/jquery.md5.js"></script>
     <script type="text/javascript" src="js/sha1.js"></script>
     <script type="text/javascript" src="js/underscore-min.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-    <script type="text/javascript" src="js/config.js?version=0.0.2"></script>
-    <script type="text/javascript" src="js/public.js?version=0.0.2"></script>
-    <script type="text/javascript" src="js/deviceLists.js?version=0.0.2"></script>
+    <script type="text/javascript" src="js/config.js?version=0.0.4"></script>
+    <script type="text/javascript" src="js/public.js?version=0.0.4"></script>
+    <script type="text/javascript" src="js/deviceLists.js?version=0.0.4"></script>
     <!--<script type="text/javascript">
     $(document).ready(function(){
 
@@ -55,7 +55,7 @@
 <!-- /设备list -->
 
 <!-- 固定于底部 -->
-<footer class="footer navbar-fixed-bottom">
+<footer id="footer" class="footer navbar-fixed-bottom">
     <!--<a href="http://97256c69-6723-43fb-87dc-167eaf9dc501.app.easylink.io/redirect.php?wxappid=wxb4ee08c8823d1555&airkiss=1" class="text-center">测试号设备配网</a>-->
     <a href="http://f31b460a-8a8d-4ffc-97c1-054a8c4b27cf.app.easylink.io/redirect.php?wxappid=wxdf2a57ea9717b5ad&airkiss=1"
        class="text-center">设备配网</a>
@@ -75,8 +75,8 @@
                 <input type="text" class="form-control" id="modifyContent">
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary" id="confirm">确认修改</button>
+                <button type="button" class="btn btn-cancel" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-confirm" id="confirm">确认修改</button>
             </div>
         </div>
     </div>
@@ -185,5 +185,12 @@
     </ul>
 </div>
 <!-- /loading -->
+
+<!-- 设备list 无内容 -->
+<div id="noDevice" class="text-center noDevice">
+    <p>&nbsp;&nbsp;请扫设备二维码进行绑定，</p>
+    <p>或到泰和美官网逛逛</p>
+</div>
+<!-- /设备list 无内容 -->
 </body>
 </html>

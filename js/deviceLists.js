@@ -2,7 +2,7 @@
  * Created by CJLIU on 2015/9/19.
  */
 $(document).ready(function () {
-    $(".loading").show();
+  $(".loading").show();
     //当前设备ID
     var thisDeviceId;
     // 得到请求的sign
@@ -18,22 +18,22 @@ $(document).ready(function () {
     // 得到微信openID
     var userName = getUserName(access_token, requestHeader);
 //  //微信jssdk配置 正式需打开
-    var signInfo = getWechatSignInfo();
-    var wechatSign = getWechatSign(signInfo);
-    wechatConfig(signInfo, wechatSign);
-    wx.ready(function () {
-        wx.checkJsApi({
-            jsApiList: [
-                'openWXDeviceLib',
-                'getWXDeviceTicket',
-                'onMenuShareAppMessage'
-            ],
-            success: function (res) {
-                $(".loading").hide();
-            }
-        });
-        openWXDeviceLib();
-    });
+  var signInfo = getWechatSignInfo();
+  var wechatSign = getWechatSign(signInfo);
+  wechatConfig(signInfo, wechatSign);
+  wx.ready(function () {
+      wx.checkJsApi({
+          jsApiList: [
+              'openWXDeviceLib',
+              'getWXDeviceTicket',
+              'onMenuShareAppMessage'
+          ],
+          success: function (res) {
+              $(".loading").hide();
+          }
+      });
+      openWXDeviceLib();
+  });
 
     // 得到庆科返回的deviceLists
     var deviceLists = getParameterByName('device_list');
@@ -43,7 +43,9 @@ $(document).ready(function () {
         // 自动刷新列表
         autoReloadPage();
     } else {
-        alert('设备未找到页面');
+//      alert('设备未找到页面');
+		$("#noDevice").show();
+		$("#footer").hide();
     }
 
     /* 初始化列表 */
@@ -164,7 +166,6 @@ $(document).ready(function () {
                     $(this).find(".btn-group").eq(0).removeClass('disabled');
                 }
             }
-
         });
         $(".setUp").on("click", function () {
             $(this).next().children("#setUpContent").collapse('toggle');
@@ -200,6 +201,9 @@ $(document).ready(function () {
         $(".share").on("click", function () {
             //样式改了之后，这里可能有问题
             thisDeviceId = $(this).parents('.alert')[0].id;
+            var name = $(this).parents('.alert').find("#alias").text();
+            var MAC = $(this).parents('.alert').find("#bssid").text();
+            var desc = "("+name+"/"+MAC+")"+"已被分享，快来点击";
             var requestHeader = {
                 'Authorization': 'token ' + devAccessToken
             };
@@ -207,9 +211,9 @@ $(document).ready(function () {
             //alert('分享URL: ' + 'http://' + document.domain + '/shareDevice.html?ticket=' + ticket);
             var content = {
                 title: '设备分享',
-                desc: '设备分享设备分享设备分享',
+                desc: desc,
                 link: 'http://' + document.domain + '/shareDevice.html?ticket=' + ticket,
-                imgUrl: 'http://demo.open.weixin.qq.com/jssdk/images/p2166127561.jpg'
+                imgUrl: 'http://demo.open.weixin.qq.com/jssdk/images/share.jpg'
             }
             // 显示引导页面
             var showGuide = function () {
@@ -280,7 +284,7 @@ $(document).ready(function () {
     function addDeviceListsData(divName, state, alias, bssid, url) {
         var equipmentName;
         $(divName).on('click', function (e) {
-            if ($(e.target).attr('id') == "alias") {
+            if ($(e.target).attr('id') == "alias"||$(e.target).attr('id') == "bssid") {
                 $(e.target).parents('.alert').addClass('row-online-state-bg');
                 equipmentName = $(e.target).parents('.alert').find('ul #alias').text();
                 console.log($(e.target));

@@ -10,6 +10,7 @@
   font-family: myFont;
   src: url('../font/number.TTF') format('truetype');
 }
+/* loading */
 .loading {
   position: fixed;
   top: 0;
@@ -21,7 +22,7 @@
   background-color: rgba(0, 0, 0, 0.5);
 }
 .loading ul {
-  position: fixed;
+  position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
@@ -144,6 +145,8 @@
     -webkit-transform: scale(1);
   }
 }
+/* /loading */
+/* 确定modal */
 .modal-dialog {
   position: absolute;
   top: 0;
@@ -167,7 +170,6 @@
 }
 .modal-dialog .btn-group-justified .btn {
   color: #000000;
-  /*font-weight: bold;*/
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   -webkit-border-top-left-radius: 0;
@@ -184,6 +186,7 @@
 .modal-dialog .btn-group-justified .btn:focus {
   outline: 0;
 }
+/* /确定modal */
 html,
 body {
   width: 100%;
@@ -207,7 +210,8 @@ body {
 .container-fluid {
   padding: 0 0 40px;
 }
-.container-fluid .alert {
+/* list row style */
+.alert {
   width: 100%;
   height: auto;
   background: url("../img/gray_arrow_icon.png") no-repeat;
@@ -222,64 +226,7 @@ body {
   overflow: hidden;
   position: relative;
 }
-.container-fluid .alert p {
-  height: 44px;
-  margin-bottom: 0;
-}
-.container-fluid .alert p .iconfont {
-  font-size: 25px;
-}
-.container-fluid .alert .rowRight {
-  padding: 0;
-}
-.container-fluid .alert .rowRight li {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.container-fluid .alert .rowRight li.deviceName {
-  line-height: 24px;
-  font-size: 22px;
-}
-.container-fluid .alert .rowRight li .btn-group-justified {
-  padding-top: 10px;
-}
-.container-fluid .alert .rowRight li .btn-group-justified .btn-group {
-  color: #333333;
-  font-size: 12px;
-}
-.container-fluid .alert .rowRight li .btn-group-justified .btn-group p .iconfont {
-  font-size: 20px;
-  margin-left: 2px;
-}
-.container-fluid .alert .rowRight li .btn-group-justified .btn-group p span {
-  display: block;
-}
-.container-fluid .alert .rowRight li .btn-group-justified .btn-group p:nth-child(2) {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1;
-  display: none;
-}
-.container-fluid .alert .rowRight li .btn-group-justified .btn-group:active {
-  color: #8fb9df;
-}
-.container-fluid .alert .rowRight li .btn-group-justified .btn-group.disabled {
-  color: #b9b9b9;
-}
-.container-fluid .alert .rowRight li .btn-group-justified .btn-group.disabled p:nth-child(2) {
-  display: block;
-}
-.container-fluid .alert .rowRight:after {
-  content: "离线";
-  font-weight: bold;
-  position: absolute;
-  top: 12px;
-  right: 15%;
-}
-.container-fluid .alert:after {
+.alert:after {
   content: "";
   position: absolute;
   bottom: 0;
@@ -288,16 +235,76 @@ body {
   height: 1px;
   background-color: #000000;
 }
-.container-fluid .alert.row-online-state {
+.alert p {
+  height: 44px;
+  margin-bottom: 0;
+}
+.alert p .iconfont {
+  font-size: 25px;
+}
+.alert .rowRight {
+  padding: 0;
+}
+.alert .rowRight li {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.alert .rowRight li.deviceName {
+  line-height: 24px;
+  font-size: 22px;
+}
+.alert .rowRight:after {
+  content: "离线";
+  font-weight: bold;
+  position: absolute;
+  top: 12px;
+  right: 15%;
+}
+.alert.row-online-state {
   color: #f46652;
   background-image: url("../img/red_arrow_icon.png");
 }
-.container-fluid .alert.row-online-state .rowRight:after {
+.alert.row-online-state .rowRight:after {
   content: "在线";
 }
-.container-fluid .alert.row-online-state.row-online-state-bg {
+.alert.row-online-state.row-online-state-bg {
   background-color: #e1e1e1;
 }
+/* /list row style */
+/* 设备管理 折叠层 */
+.btn-group-justified {
+  padding-top: 10px;
+}
+.btn-group-justified .btn-group {
+  color: #333333;
+  font-size: 12px;
+}
+.btn-group-justified .btn-group p .iconfont {
+  font-size: 20px;
+  margin-left: 2px;
+}
+.btn-group-justified .btn-group p span {
+  display: block;
+}
+.btn-group-justified .btn-group p:nth-child(2) {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1;
+  display: none;
+}
+.btn-group-justified .btn-group:active {
+  color: #8fb9df;
+}
+.btn-group-justified .btn-group.disabled {
+  color: #b9b9b9;
+}
+.btn-group-justified .btn-group.disabled p:nth-child(2) {
+  display: block;
+}
+/* /设备管理 折叠层 */
 .footer {
   height: 40px;
   line-height: 40px;
@@ -313,9 +320,29 @@ body {
 .footer a:hover {
   text-decoration: none;
 }
+/* 改名modal */
 .modal-modifyName .modal-dialog {
   height: 188px;
 }
+.modal-modifyName .modal-dialog .btn-cancel {
+  background-color: #ffffff;
+  border-color: #dadada;
+}
+.modal-modifyName .modal-dialog .btn-cancel:active {
+  background-color: #e1e1e1;
+  border-color: #b9b9b9;
+}
+.modal-modifyName .modal-dialog .btn-confirm {
+  color: #ffffff;
+  background-color: #337ab7;
+  border-color: #2e6da4;
+}
+.modal-modifyName .modal-dialog .btn-confirm:active {
+  background-color: #286090;
+  border-color: #204d74;
+}
+/* /改名modal */
+/* 权限modal */
 .modal-permission .modal-dialog {
   height: 108px;
 }
@@ -327,7 +354,16 @@ body {
   display: block;
   font-size: 18px;
 }
-.modal-permission .modal-dialog p label .switch {
+/* /权限modal */
+/* shareModal */
+.modal-share {
+  background: url("../img/share.png") no-repeat 80% 15px;
+  background-size: 210px 185px;
+  -webkit-background-size: 210px 185px;
+}
+/* /shareModal */
+/* switch */
+.switch {
   width: 47px;
   height: 30px;
   position: relative;
@@ -351,7 +387,7 @@ body {
   float: right;
   top: -5px;
 }
-.modal-permission .modal-dialog p label .switch:before {
+.switch:before {
   content: '';
   position: absolute;
   z-index: 1;
@@ -378,16 +414,46 @@ body {
   transition-property: transform,width,left;
   -webkit-transition-property: -webkit-transform, width, left;
 }
-.modal-permission .modal-dialog p label .switch:checked {
+.switch:checked {
   border-color: #4cd964;
   background-color: #4cd964;
 }
-.modal-permission .modal-dialog p label .switch:checked:before {
+.switch:checked:before {
   transform: translate(16px, 0px);
   -webkit-transform: translate(16px, 0px);
 }
-.modal-share {
-  background: url("../img/share.png") no-repeat 70% 20px;
-  background-size: 237px 181px;
-  -webkit-background-size: 237px 181px;
+/* /switch */
+/*设备list 无内容*/
+.noDevice {
+  width: 300px;
+  padding: 20px;
+  color: #ffffff;
+  font-size: 20px;
+  border: 2px dashed #ffffff;
+  background-color: #f46652;
+  box-shadow: 0 0 0 4px #f46652, 2px 1px 6px 4px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0 0 0 4px #f46652, 2px 1px 6px 4px rgba(0, 0, 0, 0.5);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -60px 0 0 -150px;
+  display: none;
+}
+/*权限蒙版*/
+.role{
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1040;
+  display: none;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+.role div{
+    top: 110px;
+    position: relative;
+    float: right;
+    color: #fff;
+    margin-right: 20px;
 }
