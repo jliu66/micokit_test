@@ -213,7 +213,7 @@ $(document).ready(function () {
                 title: '设备分享',
                 desc: desc,
                 link: 'http://' + document.domain + '/shareDevice.html?ticket=' + ticket,
-                imgUrl: 'http://demo.open.weixin.qq.com/jssdk/images/share.jpg'
+                imgUrl: 'http://' + document.domain + '/img/share.jpg'
             }
             // 显示引导页面
             var showGuide = function () {
