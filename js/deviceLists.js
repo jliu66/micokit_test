@@ -243,7 +243,7 @@ wx.ready(function () {
                 link: 'http://wap.koudaitong.com/v2/showcase/homepage?alias=9c8qy9px',
                 imgUrl: 'http://' + document.domain + '/img/share.jpg'
             }
-            shareTimeline(content);
+            shareTimeline(content, hideGuide);
 
         })
     }
