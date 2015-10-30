@@ -397,6 +397,11 @@ function shareTimeline(content, hideGuide){
         title: content.title,
         link: content.link,
         imgUrl: content.imgUrl,
+        trigger: function (res) {
+            if(!!hideGuide){
+                hideGuide();
+            }
+        },
         success: function () {
             // 用户确认分享后执行的回调函数
             if(!!hideGuide){
@@ -422,6 +427,11 @@ function shareQQ (content, hideGuide){
         desc: content.desc,
         link: content.link,
         imgUrl: content.imgUrl,
+        trigger: function (res) {
+            if(!!hideGuide){
+                hideGuide();
+            }
+        },
         success: function () { 
             if(!!hideGuide){
                 hideGuide();
