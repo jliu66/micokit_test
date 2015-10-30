@@ -27,7 +27,10 @@ wx.ready(function () {
            'openWXDeviceLib',
            'getWXDeviceTicket',
            'onMenuShareAppMessage',
-           'onMenuShareTimeline'
+           'onMenuShareTimeline'，
+           'onMenuShareQQ',
+           'onMenuShareWeibo',
+           'onMenuShareQZone'
        ],
        success: function (res) {
            $(".loading").hide();
@@ -39,7 +42,10 @@ wx.ready(function () {
            }
            shareAppMessage(content);
            shareTimeline(content);
-       }
+           shareQQ(content);
+           shareWeibo(content);
+           shareQZone(content);
+      	}
    });
     openWXDeviceLib();
 
@@ -244,7 +250,9 @@ wx.ready(function () {
                 imgUrl: 'http://' + document.domain + '/img/share.jpg'
             }
             shareTimeline(content, hideGuide);
-
+            shareQQ(content, hideGuide);
+            shareWeibo(content, hideGuide);
+            shareQZone(content, hideGuide);
         })
     }
 

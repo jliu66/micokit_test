@@ -321,10 +321,13 @@ function wechatConfig(signInfo, wechatSign) {
             'openWXDeviceLib',
             'getWXDeviceTicket',
             'onMenuShareAppMessage',
-            'onMenuShareTimeline'
+            'onMenuShareTimeline'，
+            'onMenuShareQQ',
+            'onMenuShareWeibo',
+            'onMenuShareQZone'
         ]
     });
-}
+
 
 /**
  * 通过wxJsapi初始化设备库
@@ -389,6 +392,10 @@ function shareAppMessage(content, showGuide, hideGuide) {
     }
 }
 
+/**
+ * 获取“分享朋友圈”按钮点击状态及自定义分享内容接口
+ * @param ticket
+ */
 function shareTimeline(content, hideGuide){
     alert('shareTimeline');
     wx.onMenuShareTimeline({
@@ -409,6 +416,76 @@ function shareTimeline(content, hideGuide){
         }
     });
 }
+
+/**
+ * 获取“分享给QQ”按钮点击状态及自定义分享内容接口
+ * @param ticket
+ */
+function shareQQ (content, hideGuide){
+    wx.onMenuShareQQ({
+        title: content.title,
+        desc: content.desc,
+        link: content.link,
+        imgUrl: content.imgUrl,
+        success: function () { 
+            if(!!hideGuide){
+                hideGuide();
+            }
+        },
+        cancel: function () { 
+            if(!!hideGuide){
+                hideGuide();
+            }
+        }
+    });
+}
+
+/**
+ * 获取“分享腾讯微博”按钮点击状态及自定义分享内容接口
+ * @param ticket
+ */
+function shareWeibo(){
+    wx.onMenuShareWeibo({
+        title: content.title,
+        desc: content.desc,
+        link: content.link,
+        imgUrl: content.imgUrl,
+        success: function () { 
+            if(!!hideGuide){
+                hideGuide();
+            }
+        },
+        cancel: function () { 
+            if(!!hideGuide){
+                hideGuide();
+            }
+        }
+    });
+}
+
+/**
+ * 获取“分享给QQ空间”按钮点击状态及自定义分享内容接口
+ * @param ticket
+ */
+function shareQZone(){
+    wx.onMenuShareQZone({
+        title: content.title,
+        desc: content.desc,
+        link: content.link,
+        imgUrl: content.imgUrl,
+        success: function () { 
+            if(!!hideGuide){
+                hideGuide();
+            }
+        },
+        cancel: function () { 
+            if(!!hideGuide){
+                hideGuide();
+            }
+        }
+    });
+}
+
 /**
  * 返回庆科云API请求的签名
  */
