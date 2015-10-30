@@ -321,14 +321,13 @@ function wechatConfig(signInfo, wechatSign) {
             'openWXDeviceLib',
             'getWXDeviceTicket',
             'onMenuShareAppMessage',
-            'onMenuShareTimeline'，
+            'onMenuShareTimeline',
             'onMenuShareQQ',
             'onMenuShareWeibo',
             'onMenuShareQZone'
         ]
     });
-
-
+}
 /**
  * 通过wxJsapi初始化设备库
  */
