@@ -37,6 +37,7 @@ wx.ready(function () {
                imgUrl: 'http://' + document.domain + '/img/share.jpg'
            }
            shareAppMessage(content);
+           shareTimeline(content);
        }
    });
     openWXDeviceLib();
@@ -236,6 +237,12 @@ wx.ready(function () {
                 $("#shareModal").modal('hide')
             };
             shareAppMessage(content, showGuide, hideGuide);
+            var content = {
+                title: '逛逛官网',
+                link: 'http://wap.koudaitong.com/v2/showcase/homepage?alias=9c8qy9px',
+                imgUrl: 'http://' + document.domain + '/img/share.jpg'
+            }
+            shareTimeline(content);
 
         })
     }

@@ -388,6 +388,25 @@ function shareAppMessage(content, showGuide, hideGuide) {
     }
 }
 
+function shareTimeline(content, hideGuide){
+    wx.onMenuShareTimeline({
+        title: content.title,
+        link: content.link,
+        imgUrl: content.imgUrl,
+        success: function () {
+            // 用户确认分享后执行的回调函数
+            if(!!hideGuide()){
+                hideGuide();
+            }
+        },
+        cancel: function () {
+            // 用户取消分享后执行的回调函数
+            if(!!hideGuide()){
+                hideGuide();
+            }
+        }
+    });
+}
 /**
  * 返回庆科云API请求的签名
  */
