@@ -417,7 +417,6 @@ function shareTimeline(content, hideGuide){
  * @param ticket
  */
 function shareQQ (content, hideGuide){
-    alert('shareQQ');
     wx.onMenuShareQQ({
         title: content.title,
         desc: content.desc,
