@@ -2,6 +2,10 @@
  * Created by CJLIU on 2015/9/20.
  */
 $(document).ready(function () {
+    //  //微信jssdk配置 正式需打开
+    var signInfo = getWechatSignInfo();
+    var wechatSign = getWechatSign(signInfo);
+    wechatConfig(signInfo, wechatSign);
     wx.ready(function () {
         //禁止分享功能
         WeixinJSBridge.call('hideOptionMenu');
