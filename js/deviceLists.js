@@ -27,7 +27,7 @@ wx.ready(function () {
            'openWXDeviceLib',
            'getWXDeviceTicket',
            'onMenuShareAppMessage',
-           'onMenuShareTimeline'，
+           'onMenuShareTimeline',
            'onMenuShareQQ',
            'onMenuShareWeibo',
            'onMenuShareQZone'
