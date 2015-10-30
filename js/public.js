@@ -361,7 +361,7 @@ function getWxDeviceTicket(deviceId, callback) {
  * @param ticket
  */
 function shareAppMessage(content, showGuide, hideGuide) {
-    alert('aaaa');
+    alert('shareAppMessage');
     wx.onMenuShareAppMessage({
         title: content.title,
         desc: content.desc,
@@ -390,6 +390,7 @@ function shareAppMessage(content, showGuide, hideGuide) {
 }
 
 function shareTimeline(content, hideGuide){
+    alert('shareTimeline');
     wx.onMenuShareTimeline({
         title: content.title,
         link: content.link,
