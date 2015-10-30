@@ -368,7 +368,7 @@ function shareAppMessage(content, showGuide, hideGuide) {
         link: content.link,
         imgUrl: content.imgUrl,
         trigger: function (res) {
-            if(!!hideGuide{
+            if(!!hideGuide){
                 hideGuide();
             }
             // 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
@@ -384,7 +384,7 @@ function shareAppMessage(content, showGuide, hideGuide) {
             alert(JSON.stringify(res));
         }
     });
-    if(!!showGuide{
+    if(!!showGuide){
         showGuide();
     }
 }
@@ -397,13 +397,13 @@ function shareTimeline(content, hideGuide){
         imgUrl: content.imgUrl,
         success: function () {
             // 用户确认分享后执行的回调函数
-            if(!!hideGuide{
+            if(!!hideGuide){
                 hideGuide();
             }
         },
         cancel: function () {
             // 用户取消分享后执行的回调函数
-            if(!!hideGuide{
+            if(!!hideGuide){
                 hideGuide();
             }
         }
