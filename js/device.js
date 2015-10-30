@@ -2,7 +2,10 @@
  * Created by CJLIU on 2015/9/20.
  */
 $(document).ready(function () {
-
+    wx.ready(function () {
+        //禁止分享功能
+        WeixinJSBridge.call('hideOptionMenu');
+    })
     var colors;//保存温度色码的数组
     var bars;//温度条件面板总div
     var colorBars;//色彩温度条的选择器
