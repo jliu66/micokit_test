@@ -5,7 +5,6 @@ $(document).ready(function () {
     //微信jssdk配置 正式需打开
     var signInfo = getWechatSignInfo();
     var wechatSign = getWechatSign(signInfo);
-    alert(wechatSign);
     wechatConfig(signInfo, wechatSign);
     wx.ready(function () {
         //禁止分享功能
