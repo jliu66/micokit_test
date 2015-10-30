@@ -30,16 +30,17 @@ wx.ready(function () {
        ],
        success: function (res) {
            $(".loading").hide();
+           var content = {
+               title: '逛逛官网',
+               desc: '玩玩',
+               link: 'http://wap.koudaitong.com/v2/showcase/homepage?alias=9c8qy9px',
+               imgUrl: 'http://' + document.domain + '/img/share.jpg'
+           }
+           shareAppMessage(content);
        }
    });
     openWXDeviceLib();
-    var content = {
-        title: '逛逛官网',
-        desc: '玩玩',
-        link: 'http://wap.koudaitong.com/v2/showcase/homepage?alias=9c8qy9px',
-        imgUrl: 'http://' + document.domain + '/img/share.jpg'
-    }
-    shareAppMessage(content);
+
 });
 
     // 得到庆科返回的deviceLists
