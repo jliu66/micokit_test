@@ -360,6 +360,7 @@ function getWxDeviceTicket(deviceId, callback) {
  * @param ticket
  */
 function shareAppMessage(content, showGuide, hideGuide) {
+    alert('aaaa');
     wx.onMenuShareAppMessage({
         title: content.title,
         desc: content.desc,
