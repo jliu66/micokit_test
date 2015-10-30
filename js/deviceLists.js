@@ -26,7 +26,8 @@ wx.ready(function () {
        jsApiList: [
            'openWXDeviceLib',
            'getWXDeviceTicket',
-           'onMenuShareAppMessage'
+           'onMenuShareAppMessage',
+           'onMenuShareTimeline'
        ],
        success: function (res) {
            $(".loading").hide();
