@@ -22,6 +22,7 @@ $(document).ready(function () {
     var wechatSign = getWechatSign(signInfo);
     wechatConfig(signInfo, wechatSign);
     wx.ready(function () {
+        WeixinJSBridge.call('hideOptionMenu');
         wx.checkJsApi({
             jsApiList: [
                 'openWXDeviceLib',
