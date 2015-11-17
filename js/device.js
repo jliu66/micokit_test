@@ -19,7 +19,6 @@ $(document).ready(function () {
                 'onMenuShareQQ'
             ],
             success: function (res) {
-            	alert('WX wxRes:'+wxRes);
             	if (wxRes) {
 	                $(".loading").hide();
 	            }else{
@@ -104,14 +103,13 @@ $(document).ready(function () {
     if(!owner){
 //      console.log(alias+'('+device_id.split('/')[1]+')已被主人删除!');
         // console.log('index.html?access_token='+access_token+'&device_list=[]');
-        // 弹出只有确定按钮的模态框
-		modalInitializationOne(alias+'('+device_id.split('/')[1]+')已被主人删除!');
-        alert('owner wxRes:'+wxRes);
     	if (wxRes) {
             $(".loading").hide();
         }else{
     		wxRes = true;
         }
+        // 弹出只有确定按钮的模态框
+		modalInitializationOne(alias+'('+device_id.split('/')[1]+')已被主人删除!');
         $("#confirmButton").on('click', function () {
 	        //按确定之后 调用删除设备接口
 	        getWxDeviceTicket(wxDeviceId, function (err, ticket) {
@@ -123,6 +121,7 @@ $(document).ready(function () {
 	                    var url = 'index.html?access_token='+access_token+'&device_list=[]';
 	                	window.location.href = url;
 	                } else {
+	                	alert('移除设备失败');
 	                    modalInitializationOne('移除设备失败');
 
 	                }
@@ -317,7 +316,6 @@ $(document).ready(function () {
         }
         //当前水温
         if (_.has(info, "CT")) {
-        	alert('info wxRes:'+wxRes);
         	if(wxRes){
         		if(info.CT){
         			$(".loading").hide();
