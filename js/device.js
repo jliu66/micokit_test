@@ -118,8 +118,8 @@ $(document).ready(function () {
 	                if (!err && res.result == "success") {
 	                    modalInitializationOne('移除设备成功');
 	                    //跳转到列表页面
-	                    var url = 'index.html?access_token='+access_token+'&device_list=[]';
-	                	window.location.href = url;
+	                 //    var url = 'index.html?access_token='+access_token+'&device_list=[]';
+	                	// window.location.href = url;
 	                } else {
 	                    modalInitializationOne('移除设备失败');
 
