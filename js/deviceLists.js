@@ -77,7 +77,7 @@ $(document).ready(function () {
                 var device_id = _data.id;
                 var product_id = device_id.split('/')[0];
                 var bssid = _data.bssid;
-                var alias = _data.alias;
+                var alias = !!_data.alias?_data.alias:device_id.split('/')[0];
                 var wxDevice_id = _data.wx_device_id;
                 var url = 'device.html?device_id=' + device_id + '&access_token=' + access_token + '&wx_device_id=' + wxDevice_id + '&alias=' + alias;
                 var state = _data.online;
@@ -117,7 +117,7 @@ $(document).ready(function () {
                 var device_id = _data.id;
                 var product_id = device_id.split('/')[0];
                 var bssid = _data.bssid;
-                var alias = _data.alias;
+                var alias = !!_data.alias?_data.alias:device_id.split('/')[0];
                 var wxDevice_id = _data.wx_device_id;
                 var url = 'device.html?device_id=' + device_id + '&access_token=' + access_token + '&wx_device_id=' + wxDevice_id + '&alias=' + alias;
                 var state = _data.online;
