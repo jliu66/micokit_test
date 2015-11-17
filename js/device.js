@@ -107,25 +107,27 @@ $(document).ready(function () {
             $(".loading").hide();
         }else{
     		wxRes = true;
-        }
-        // 弹出只有确定按钮的模态框
+        }        // 弹出只有确定按钮的模态框
 		modalInitializationOne(alias+'('+device_id.split('/')[1]+')已被主人删除!');
         $("#confirmButton").on('click', function () {
+            setTimeout(function(){  
 	        //按确定之后 调用删除设备接口
-	        getWxDeviceTicket(wxDeviceId, function (err, ticket) {
-	            if (!!err) return;
-	            unbindDevice(requestHeader, device_id, ticket, function (err, res) {
-	                if (!err && res.result == "success") {
-	                    modalInitializationOne('移除设备成功');
-	                    //跳转到列表页面
-	                 //    var url = 'index.html?access_token='+access_token+'&device_list=[]';
-	                	// window.location.href = url;
-	                } else {
-	                    modalInitializationOne('移除设备失败');
-
-	                }
-	            });
-	        });
+    	        getWxDeviceTicket(wxDeviceId, function (err, ticket) {
+    	            if (!!err) return;                                
+    	            unbindDevice(requestHeader, device_id, ticket, function (err, res) {
+    	                if (!err && res.result == "success") {
+    	                    modalInitializationOne('移除设备成功');
+                             $("#confirmButton").on('click',function(){
+                                //跳转到列表页面
+                                url = 'index.html?access_token='+access_token+'&device_list=[]';
+                                window.location.href = url;
+                             });              
+    	                } else {
+    	                    modalInitializationOne('移除设备失败');	
+    	                }                  
+    	            });                   
+    	        });
+            },1000);
 	    });
 
         return;
@@ -453,7 +455,7 @@ $(document).ready(function () {
         $('#finalTime').change(function () {
             showTime = $("#finalTime").get(0).selectedIndex;//获取预约option的下标
         });
-        $("#confirmFooter #confirmButton").on('click', function (){
+        $("#confirmFooter #finalTimeButton").on('click', function (){
         	var topic = device_id + '/in/';
             var commond = '{"FT":"' + showTime + '"}';
             client.publish(topic, commond);
