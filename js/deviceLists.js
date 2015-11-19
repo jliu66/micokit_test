@@ -2,7 +2,8 @@
  * Created by CJLIU on 2015/9/19.
  */
 $(document).ready(function () {
-  $(".loading").show();
+    // 测试环境注释
+    //$(".loading").show();
     //当前设备ID
     var thisDeviceId;
     // 得到请求的sign
@@ -19,35 +20,35 @@ $(document).ready(function () {
     var userName = getUserName(access_token, requestHeader);
 
     //微信jssdk配置 正式需打开
- var signInfo = getWechatSignInfo();
- var wechatSign = getWechatSign(signInfo);
- wechatConfig(signInfo, wechatSign);
- wx.ready(function () {
-     //禁止分享功能
-     //WeixinJSBridge.call('hideOptionMenu');
-     wx.checkJsApi({
-         jsApiList: [
-             'openWXDeviceLib',
-             'getWXDeviceTicket',
-             'onMenuShareAppMessage',
-             'onMenuShareTimeline',
-             'onMenuShareQQ'
-         ],
-         success: function (res) {
-             $(".loading").hide();
-             var content = {
-                 title: '泰和美商城',
-                 desc: '去商城逛逛吧',
-                 link: 'http://wap.koudaitong.com/v2/showcase/homepage?alias=9c8qy9px',
-                 imgUrl: 'http://' + document.domain + '/img/webshare.jpg'
-             }
-             shareAppMessage(content);
-             shareTimeline(content);
-             shareQQ(content)
-         }
-     });
-     openWXDeviceLib();
- });
+    //var signInfo = getWechatSignInfo();
+    //var wechatSign = getWechatSign(signInfo);
+    //wechatConfig(signInfo, wechatSign);
+    //wx.ready(function () {
+    //    //禁止分享功能
+    //    //WeixinJSBridge.call('hideOptionMenu');
+    //    wx.checkJsApi({
+    //        jsApiList: [
+    //            'openWXDeviceLib',
+    //            'getWXDeviceTicket',
+    //            'onMenuShareAppMessage',
+    //            'onMenuShareTimeline',
+    //            'onMenuShareQQ'
+    //        ],
+    //        success: function (res) {
+    //            $(".loading").hide();
+    //            var content = {
+    //                title: '泰和美商城',
+    //                desc: '去商城逛逛吧',
+    //                link: 'http://wap.koudaitong.com/v2/showcase/homepage?alias=9c8qy9px',
+    //                imgUrl: 'http://' + document.domain + '/img/webshare.jpg'
+    //            }
+    //            shareAppMessage(content);
+    //            shareTimeline(content);
+    //            shareQQ(content)
+    //        }
+    //    });
+    //    openWXDeviceLib();
+    //});
 
     // 得到庆科返回的deviceLists
     var deviceLists = getParameterByName('device_list');
@@ -77,12 +78,27 @@ $(document).ready(function () {
                 var device_id = _data.id;
                 var product_id = device_id.split('/')[0];
                 var bssid = _data.bssid;
-                var alias = !!_data.alias?_data.alias:device_id.split('/')[0];
+                var alias = !!_data.alias ? _data.alias : device_id.split('/')[0];
                 var wxDevice_id = _data.wx_device_id;
                 var url = 'device.html?device_id=' + device_id + '&access_token=' + access_token + '&wx_device_id=' + wxDevice_id + '&alias=' + alias;
                 var state = _data.online;
                 //渲染设备列表
                 addDeviceLists(state, alias, url, device_id, bssid, wxDevice_id);
+                // 获得设备主人属性
+                var owner = getDeviceProperties(requestHeader, device_id, userName);
+                console.log('owner:'+ owner);
+                // 如果没有设备主人属性，或者属性为null
+                if(!owner || owner == 'null'){
+                    // 得到设备的所有用户
+                    var role = getDeviceUser(device_id, requestHeader, userName, 1);
+                    // 得到设备的主人
+                    var _owner = _.find(role,function(data){ return data.role == 'owner'});
+                    // 如果有主人的话 设置主人属性
+                    if(!!_owner){
+                        _owner = _owner.username;
+                        setDeviceProperties(requestHeader, device_id, userName, _owner);
+                    }
+                }
             });
             onManageDevice();
             onRemoveDevice();
@@ -117,7 +133,7 @@ $(document).ready(function () {
                 var device_id = _data.id;
                 var product_id = device_id.split('/')[0];
                 var bssid = _data.bssid;
-                var alias = !!_data.alias?_data.alias:device_id.split('/')[0];
+                var alias = !!_data.alias ? _data.alias : device_id.split('/')[0];
                 var wxDevice_id = _data.wx_device_id;
                 var url = 'device.html?device_id=' + device_id + '&access_token=' + access_token + '&wx_device_id=' + wxDevice_id + '&alias=' + alias;
                 var state = _data.online;
@@ -204,6 +220,8 @@ $(document).ready(function () {
                     if (!!err) return;
                     unbindDevice(requestHeader, thisDeviceId, ticket, function (err, res) {
                         if (!err && res.result == "success") {
+                            // 设置主人属性为null
+                            setDeviceProperties(requestHeader, thisDeviceId, userName, 'null');
                             modalInitializationOne('移除设备成功');
                             $("#" + deviceId).remove();
                         } else {

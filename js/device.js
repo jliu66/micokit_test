@@ -2,6 +2,7 @@
  * Created by CJLIU on 2015/9/20.
  */
 $(document).ready(function () {
+    // 是否可以hide loading 标记 （条件收到CT 并且微信config 注册成功）
     var wxRes = false;
     //微信jssdk配置 正式需打开
     var signInfo = getWechatSignInfo();
@@ -24,8 +25,6 @@ $(document).ready(function () {
                 } else {
                     wxRes = true;
                 }
-                // 标记 可以去除loading
-                //$(".loading").hide();
                 var content = {
                     title: '泰和美商城',
                     desc: '去商城逛逛吧',
@@ -85,7 +84,7 @@ $(document).ready(function () {
     var userName = getUserName(access_token, requestHeader);
     // 如果设备ID为空
     if (device_id == null) return;
-
+    // 测试环境注释
     $(".loading").show();
     setTimeout(function () {
         if ($(".loading").is(":visible")) {
@@ -102,7 +101,10 @@ $(document).ready(function () {
     var owner = _.find(role, function (_role) {
         return _role.role == 'owner'
     });
-    if (!owner) {
+    // 获得主人(前)的属性
+    var beforeowner = getDeviceProperties(requestHeader, device_id, userName);
+    // 如果没有主人，或者的名字不等于前主人  提示删除
+    if (!owner || owner.username != beforeowner) {
 //      console.log(alias+'('+device_id.split('/')[1]+')已被主人删除!');
         // console.log('index.html?access_token='+access_token+'&device_list=[]');
         if (wxRes) {
@@ -120,6 +122,8 @@ $(document).ready(function () {
                     unbindDevice(requestHeader, device_id, ticket, function (err, res) {
 
                         if (!err && res.result == "success") {
+                            // 设置主人属性为空
+                            setDeviceProperties(requestHeader, device_id, userName, 'null');
                             listFref('移除设备成功');
                         } else {
                             listFref('移除设备失败');
