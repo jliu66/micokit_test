@@ -24,30 +24,30 @@ $(document).ready(function () {
     var wechatSign = getWechatSign(signInfo);
     wechatConfig(signInfo, wechatSign);
     wx.ready(function () {
-       //禁止分享功能
-       //WeixinJSBridge.call('hideOptionMenu');
-       wx.checkJsApi({
-           jsApiList: [
-               'openWXDeviceLib',
-               'getWXDeviceTicket',
-               'onMenuShareAppMessage',
-               'onMenuShareTimeline',
-               'onMenuShareQQ'
-           ],
-           success: function (res) {
-               $(".loading").hide();
-               var content = {
-                   title: '泰和美商城',
-                   desc: '去商城逛逛吧',
-                   link: 'http://wap.koudaitong.com/v2/showcase/homepage?alias=9c8qy9px',
-                   imgUrl: 'http://' + document.domain + '/img/webshare.jpg'
-               }
-               shareAppMessage(content);
-               shareTimeline(content);
-               shareQQ(content)
-           }
-       });
-       openWXDeviceLib();
+        //禁止分享功能
+        //WeixinJSBridge.call('hideOptionMenu');
+        wx.checkJsApi({
+            jsApiList: [
+                'openWXDeviceLib',
+                'getWXDeviceTicket',
+                'onMenuShareAppMessage',
+                'onMenuShareTimeline',
+                'onMenuShareQQ'
+            ],
+            success: function (res) {
+                $(".loading").hide();
+                var content = {
+                    title: '泰和美商城',
+                    desc: '去商城逛逛吧',
+                    link: 'http://wap.koudaitong.com/v2/showcase/homepage?alias=9c8qy9px',
+                    imgUrl: 'http://' + document.domain + '/img/webshare.jpg'
+                }
+                shareAppMessage(content);
+                shareTimeline(content);
+                shareQQ(content)
+            }
+        });
+        openWXDeviceLib();
     });
 
     // 得到庆科返回的deviceLists
@@ -213,6 +213,8 @@ $(document).ready(function () {
             thisDeviceId = $(this).parents('.alert')[0].id;
             modalInitializationTwo('真的要移除设备吗？');
             $("#confirmButton").on('click', function () {
+                // 设置主人属性为null
+                setDeviceProperties(requestHeader, thisDeviceId, userName, 'null');
                 var deviceId = thisDeviceId.replace(/\//g, "\\\/");
                 var wxDeviceId = $("#" + deviceId).data('wxdeviceid');
                 $("#confirmModal").modal('hide');
@@ -220,8 +222,6 @@ $(document).ready(function () {
                     if (!!err) return;
                     unbindDevice(requestHeader, thisDeviceId, ticket, function (err, res) {
                         if (!err && res.result == "success") {
-                            // 设置主人属性为null
-                            setDeviceProperties(requestHeader, thisDeviceId, userName, 'null');
                             modalInitializationOne('移除设备成功');
                             $("#" + deviceId).remove();
                         } else {

@@ -115,6 +115,8 @@ $(document).ready(function () {
         // 弹出只有确定按钮的模态框
         modalInitializationOne(alias + '(' + device_id.split('/')[1] + ')已被主人删除!');
         $("#confirmButton").on('click', function () {
+            // 设置主人属性为空
+            setDeviceProperties(requestHeader, device_id, userName, 'null');
             setTimeout(function () {
                 //按确定之后 调用删除设备接口
                 getWxDeviceTicket(wxDeviceId, function (err, ticket) {
@@ -122,8 +124,7 @@ $(document).ready(function () {
                     unbindDevice(requestHeader, device_id, ticket, function (err, res) {
 
                         if (!err && res.result == "success") {
-                            // 设置主人属性为空
-                            setDeviceProperties(requestHeader, device_id, userName, 'null');
+
                             listFref('移除设备成功');
                         } else {
                             listFref('移除设备失败');
