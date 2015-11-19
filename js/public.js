@@ -192,9 +192,11 @@ function setDeviceProperties(requestHeader, deviceId, property, value) {
         headers: requestHeader,
         success: function (data) {
             console.log(data);
+            alert(JSON.stringify(data));
         },
         error: function (data) {
             console.log(data);
+            alert(JSON.stringify(data));
         }
     });
 }
