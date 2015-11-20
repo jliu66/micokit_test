@@ -9,34 +9,34 @@ $(document).ready(function () {
     var wechatSign = getWechatSign(signInfo);
     wechatConfig(signInfo, wechatSign);
     wx.ready(function () {
-       //禁止分享功能
-       // WeixinJSBridge.call('hideOptionMenu');
-       wx.checkJsApi({
-           jsApiList: [
-               'openWXDeviceLib',
-               'getWXDeviceTicket',
-               'onMenuShareAppMessage',
-               'onMenuShareTimeline',
-               'onMenuShareQQ'
-           ],
-           success: function (res) {
-               if (wxRes) {
-                   $(".loading").hide();
-               } else {
-                   wxRes = true;
-               }
-               var content = {
-                   title: '泰和美商城',
-                   desc: '去商城逛逛吧',
-                   link: 'http://wap.koudaitong.com/v2/showcase/homepage?alias=9c8qy9px',
-                   imgUrl: 'http://' + document.domain + '/img/webshare.jpg'
-               }
-               shareAppMessage(content);
-               shareTimeline(content);
-               shareQQ(content)
-           }
-       });
-       openWXDeviceLib();
+        //禁止分享功能
+        // WeixinJSBridge.call('hideOptionMenu');
+        wx.checkJsApi({
+            jsApiList: [
+                'openWXDeviceLib',
+                'getWXDeviceTicket',
+                'onMenuShareAppMessage',
+                'onMenuShareTimeline',
+                'onMenuShareQQ'
+            ],
+            success: function (res) {
+                if (wxRes) {
+                    $(".loading").hide();
+                } else {
+                    wxRes = true;
+                }
+                var content = {
+                    title: '泰和美商城',
+                    desc: '去商城逛逛吧',
+                    link: 'http://wap.koudaitong.com/v2/showcase/homepage?alias=9c8qy9px',
+                    imgUrl: 'http://' + document.domain + '/img/webshare.jpg'
+                }
+                shareAppMessage(content);
+                shareTimeline(content);
+                shareQQ(content)
+            }
+        });
+        openWXDeviceLib();
     });
 
     var colors;//保存温度色码的数组
@@ -85,12 +85,6 @@ $(document).ready(function () {
     // 如果设备ID为空
     if (device_id == null) return;
     // 测试环境注释
-    $(".loading").show();
-    setTimeout(function () {
-        if ($(".loading").is(":visible")) {
-            modalInitializationOne("连接未成功，请重试...");
-        }
-    }, loadingTime);
 
     var onOffPower = $(".onOff_Power");
     var onOffSleep = $(".onOff_sleep");
@@ -98,56 +92,54 @@ $(document).ready(function () {
     var onOffTime = $(".onOff_time");
     var onFinesleep = $(".onOff_finesleep");
     var url = 'index.html?access_token=' + access_token + '&device_list=[]';//列表页面url
-
+    // 得到设备的所有用户
     var users = getDeviceUser(device_id, requestHeader, userName, 1);
+    // 得到设备主人信息
     var owner = _.find(users, function (user) {
         return user.role == 'owner'
     });
-    // 获得用户属性
-    var userProperty = getDeviceProperties(requestHeader, device_id, userName);
-    //获得设备密码
-    var password = getDeviceProperties(requestHeader, device_id, 'password');
-    
-    if(owner.username != userName){
-	    // 没有用户属性 或者用户属性为null  弹出密码框
-	    if(!userProperty || userProperty == 'null'){
-	        // 弹出密码框
-	        inputPwd();
-	        // 用户属性为0， 删除设备
-	    }else if (userProperty == '0') {
-	
-	        if (wxRes) {
-	            $(".loading").hide();
-	        } else {
-	            wxRes = true;
-	        }
-	        // 弹出只有确定按钮的模态框
-	        modalInitializationOne(alias + '(' + device_id.split('/')[1] + ')已被主人删除!');
-	        $("#confirmButton").on('click', function () {
-	            // 设置用户属性为null
-	            setDeviceProperties(requestHeader, device_id, userName, 'null');
-	            setTimeout(function () {
-	                //按确定之后 调用删除设备接口
-	                getWxDeviceTicket(wxDeviceId, function (err, ticket) {
-	                    if (!!err) return;
-	                    unbindDevice(requestHeader, device_id, ticket, function (err, res) {
-	
-	                        if (!err && res.result == "success") {
-	
-	                            listFref('移除设备成功');
-	                        } else {
-	                            listFref('移除设备失败');
-	                        }
-	
-	                    });
-	                });
-	            }, 1000);
-	        });
-	    }
+    // 如果设备没有主人，当前用户不是主人
+    if (!owner || owner.username != userName) {
+        // 获得用户属性
+        var userProperty = getDeviceProperties(requestHeader, device_id, userName);
+        //获得设备密码
+        var password = getDeviceProperties(requestHeader, device_id, 'password');
+        // 没有用户属性 或者用户属性为null  弹出密码框
+        if (!userProperty || userProperty == 'null') {
+            // 弹出密码框
+            inputPwd();
+            return;
+            // 用户属性为0， 删除设备
+        } else if (userProperty == '0') {
+            // 弹出只有确定按钮的模态框
+            modalInitializationOne(alias + '(' + device_id.split('/')[1] + ')已被主人删除!');
+            $("#confirmButton").on('click', function () {
+                setTimeout(function () {
+                    //按确定之后 调用删除设备接口
+                    getWxDeviceTicket(wxDeviceId, function (err, ticket) {
+                        if (!!err) return;
+                        unbindDevice(requestHeader, device_id, ticket, function (err, res) {
+                            if (!err && res.result == "success") {
+                                // 设置用户属性为null
+                                setDeviceProperties(requestHeader, device_id, userName, 'null');
+                                listFref('移除设备成功');
+                            } else {
+                                listFref('移除设备失败');
+                            }
+                        });
+                    });
+                }, 1000);
+            });
+            return;
+        }
     }
-    
+    $(".loading").show();
+    setTimeout(function () {
+        if ($(".loading").is(":visible")) {
+            modalInitializationOne("连接未成功，请重试...");
+        }
+    }, loadingTime);
 
-	
     // 初始化温度调节面板
     initializationPanel();
     // 从云端得到设备历史数据
@@ -289,44 +281,44 @@ $(document).ready(function () {
             }
         }
     };
-	/* 输入密码弹出框*/
-	function inputPwd() {
+    /* 输入密码弹出框*/
+    function inputPwd() {
         //模态框显示
         $("#inputPassWordModal").modal("show");
 
-    	var count = 0;
-    	$("#pwdCancel").on('click',function(){
-    		window.location.href = url;
-    	});
+        var count = 0;
+        $("#pwdCancel").on('click', function () {
+            window.location.href = url;
+        });
         $("#confirm").on("click", function () {
             var modifyContent = $("#modifyContent").val();
             console.log('modifyContent:', modifyContent);
             if (!modifyContent) {
                 modalInitializationOne('密码不能为空');
             } else {
-            	if(modifyContent!=password){
-            		count+=1;
-            		if(count<3){
-            			modalInitializationOne('密码错误');
-            		}else{
-            			modalInitializationOne('输入失败3次，将回到列表页面');
-            			$("#confirmButton").on('click', function () {
-	            			//跳转到列表页面
-	            			window.location.href = url;
-					    });
-            		}
-            	}else{
-	                // 密码正确，用户属性设置为1
-	        		setDeviceProperties(requestHeader, device_id, userName, '1');
-	                //模态框隐藏
-	                $("#inputPassWordModal").modal("hide");
-            	}
+                if (modifyContent != password) {
+                    count += 1;
+                    if (count < 3) {
+                        modalInitializationOne('密码错误');
+                    } else {
+                        modalInitializationOne('输入失败3次，将回到列表页面');
+                        $("#confirmButton").on('click', function () {
+                            //跳转到列表页面
+                            window.location.href = url;
+                        });
+                    }
+                } else {
+                    // 密码正确，用户属性设置为1
+                    setDeviceProperties(requestHeader, device_id, userName, '1');
+                    //模态框隐藏
+                    $("#inputPassWordModal").modal("hide");
+                }
                 //清除输入框内容
                 $("#modifyContent").val('');
             }
         });
     }
-    
+
     /* 设备离线样式 （上半部分显示成灰色） */
     function displayOffline() {
         $("#err").html('<span></span>' + "设备已离线");

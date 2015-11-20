@@ -84,35 +84,6 @@ $(document).ready(function () {
                 var state = _data.online;
                 //渲染设备列表
                 addDeviceLists(state, alias, url, device_id, bssid, wxDevice_id);
-                //
-                //var role = getDeviceUser(device_id, requestHeader, userName, 1);
-                //var owner = _.find(role,function(data){ return data.role == 'owner'});
-                //$.each(role, function (i, _data) {
-                //    var ownerProperty = getDeviceProperties(requestHeader, device_id, _data.username);
-                //    console.log(ownerProperty);
-                //    if (!ownerProperty || ownerProperty == 'null') {
-                //        if (!!owner) {
-                //            console.log('ste',_data.username);
-                //            setDeviceProperties(requestHeader, device_id, _data.username, owner.username);
-                //        }
-                //    }
-                //});
-                //
-                //// 获得设备主人属性
-                //var owner = getDeviceProperties(requestHeader, device_id, userName);
-                //console.log('owner:'+ owner);
-                //// 如果没有设备主人属性，或者属性为null
-                //if(!owner || owner == 'null'){
-                //    // 得到设备的所有用户
-                //    var role = getDeviceUser(device_id, requestHeader, userName, 1);
-                //    // 得到设备的主人
-                //    var _owner = _.find(role,function(data){ return data.role == 'owner'});
-                //    // 如果有主人的话 设置主人属性
-                //    if(!!_owner){
-                //        _owner = _owner.username;
-                //        setDeviceProperties(requestHeader, device_id, userName, _owner);
-                //    }
-                //}
             });
             onManageDevice();
             onRemoveDevice();
@@ -227,26 +198,6 @@ $(document).ready(function () {
             thisDeviceId = $(this).parents('.alert')[0].id;
             modalInitializationTwo('真的要移除设备吗？');
             $("#confirmButton").on('click', function () {
-                // 获取设备的用户
-                var users = getDeviceUser(thisDeviceId, requestHeader, userName, 1);
-                // 获取设备主任信息
-                var owner = _.find(users, function (_role) {
-                    return _role.role == 'owner'
-                })
-                console.log(owner);
-                // 如果移除设备的用户是设备的主人
-                if (owner.username == userName) {
-                    // 修改设备密码
-                    var password = getRandomStr(6);
-                    setDeviceProperties(requestHeader, thisDeviceId, 'password', password);
-                    // 将设备的用户标识设置为0 可删除
-                    users.forEach(function(_role){
-                        setDeviceProperties(requestHeader, thisDeviceId, _role.username, '0');
-                    })
-                } else {
-                    // 用户移除设备，将用户属性设置为 null
-                    setDeviceProperties(requestHeader, thisDeviceId, userName, 'null');
-                }
                 var deviceId = thisDeviceId.replace(/\//g, "\\\/");
                 var wxDeviceId = $("#" + deviceId).data('wxdeviceid');
                 $("#confirmModal").modal('hide');
@@ -254,7 +205,25 @@ $(document).ready(function () {
                     if (!!err) return;
                     unbindDevice(requestHeader, thisDeviceId, ticket, function (err, res) {
                         if (!err && res.result == "success") {
-
+                            // 获取设备的用户
+                            var users = getDeviceUser(thisDeviceId, requestHeader, userName, 1);
+                            // 获取设备主任信息
+                            var owner = _.find(users, function (_role) {
+                                return _role.role == 'owner'
+                            })
+                            // 如果移除设备的用户是设备的主人
+                            if (!!owner && owner.username == userName) {
+                                // 修改设备密码
+                                var password = getRandomStr(6);
+                                setDeviceProperties(requestHeader, thisDeviceId, 'password', password);
+                                // 将设备的用户标识设置为0 可删除
+                                users.forEach(function(_role){
+                                    setDeviceProperties(requestHeader, thisDeviceId, _role.username, '0');
+                                })
+                            } else {
+                                // 用户移除设备，将用户属性设置为 null
+                                setDeviceProperties(requestHeader, thisDeviceId, userName, 'null');
+                            }
 
                             modalInitializationOne('移除设备成功');
                             $("#" + deviceId).remove();
@@ -282,13 +251,14 @@ $(document).ready(function () {
             if (!password) {
                 password = getRandomStr(6);
                 setDeviceProperties(requestHeader, thisDeviceId, 'password', password);
+                console.log(password);
             }
 
             var _requestHeader = {
                 'Authorization': 'token ' + devAccessToken
             };
             var ticket = getDeviceQrcode(_requestHeader, thisDeviceId);
-            // alert('分享URL: ' + 'http://' + document.domain + '/shareDevice.html?ticket=' + ticket + '&pwd=' + password);
+            //alert('分享URL: ' + 'http://' + document.domain + '/shareDevice.html?ticket=' + ticket + '&pwd=' + password);
             var content = {
                 title: '设备分享',
                 desc: desc,
