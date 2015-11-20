@@ -198,6 +198,12 @@ $(document).ready(function () {
             thisDeviceId = $(this).parents('.alert')[0].id;
             modalInitializationTwo('真的要移除设备吗？');
             $("#confirmButton").on('click', function () {
+                // 获取设备的用户
+                var users = getDeviceUser(thisDeviceId, requestHeader, userName, 1);
+                // 获取设备主任信息
+                var owner = _.find(users, function (_role) {
+                    return _role.role == 'owner'
+                })
                 var deviceId = thisDeviceId.replace(/\//g, "\\\/");
                 var wxDeviceId = $("#" + deviceId).data('wxdeviceid');
                 $("#confirmModal").modal('hide');
@@ -205,12 +211,6 @@ $(document).ready(function () {
                     if (!!err) return;
                     unbindDevice(requestHeader, thisDeviceId, ticket, function (err, res) {
                         if (!err && res.result == "success") {
-                            // 获取设备的用户
-                            var users = getDeviceUser(thisDeviceId, requestHeader, userName, 1);
-                            // 获取设备主任信息
-                            var owner = _.find(users, function (_role) {
-                                return _role.role == 'owner'
-                            })
                             // 如果移除设备的用户是设备的主人
                             if (!!owner && owner.username == userName) {
                                 // 修改设备密码
