@@ -232,7 +232,10 @@ body {
   position: absolute;
   top: 0;
   right: 0;
+        /*margin-top: -145px;
+    margin-left: inherit;*/
   width: 50%;
+  z-index: 1;
 }
 .bindDevice ul li:nth-child(2) p {
   margin-bottom: 0;
@@ -246,11 +249,13 @@ body {
   background-position: center right;
   margin-bottom: 5px;
 }
+.bindDevice .li-shareImg{
+	    position: absolute;
+	z-index: 3;
+}
 .password-label{
-	line-height: 10px;
-	margin-top: 40%;
-	text-align: center;
-	font-family: "微软雅黑";
+	position: relative;
+	top: 20%;
 }
 .pwd{
 }

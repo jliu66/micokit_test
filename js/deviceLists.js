@@ -211,6 +211,9 @@ $(document).ready(function () {
                     if (!!err) return;
                     unbindDevice(requestHeader, thisDeviceId, ticket, function (err, res) {
                         if (!err && res.result == "success") {
+                            var _requestHeader = requestHeader;
+                            _requestHeader.Authorization = devAccessToken;
+                            
                             // 如果移除设备的用户是设备的主人
                             if (!!owner && owner.username == userName) {
                                 // 修改设备密码
