@@ -213,19 +213,19 @@ $(document).ready(function () {
                         if (!err && res.result == "success") {
                             var _requestHeader = requestHeader;
                             _requestHeader.Authorization = devAccessToken;
-                            
+
                             // 如果移除设备的用户是设备的主人
                             if (!!owner && owner.username == userName) {
                                 // 修改设备密码
                                 var password = getRandomStr(6);
-                                setDeviceProperties(requestHeader, thisDeviceId, 'password', password);
+                                setDeviceProperties(_requestHeader, thisDeviceId, 'password', password);
                                 // 将设备的用户标识设置为0 可删除
                                 users.forEach(function(_role){
-                                    setDeviceProperties(requestHeader, thisDeviceId, _role.username, '0');
+                                    setDeviceProperties(_requestHeader, thisDeviceId, _role.username, '0');
                                 })
                             } else {
                                 // 用户移除设备，将用户属性设置为 null
-                                setDeviceProperties(requestHeader, thisDeviceId, userName, 'null');
+                                setDeviceProperties(_requestHeader, thisDeviceId, userName, 'null');
                             }
 
                             modalInitializationOne('移除设备成功');
