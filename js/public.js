@@ -538,6 +538,14 @@ function formatMinutes(value) {
     return result;
 }
 
+function getRandomStr(len) {
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    for( var i=0; i < len; i++ )
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    return text;
+}
+
 /* 弹出框双选择初始化*/
 function modalInitializationTwo(confirmTxt) {
     $("#confirmTxt").html(confirmTxt);
