@@ -282,18 +282,17 @@ $(document).ready(function () {
             if (!password) {
                 password = getRandomStr(6);
                 setDeviceProperties(requestHeader, thisDeviceId, 'password', password);
-                console.log(password);
             }
 
             var _requestHeader = {
                 'Authorization': 'token ' + devAccessToken
             };
             var ticket = getDeviceQrcode(_requestHeader, thisDeviceId);
-            alert('分享URL: ' + 'http://' + document.domain + '/shareDevice.html?ticket=' + ticket + '&pwd=' + password);
+            // alert('分享URL: ' + 'http://' + document.domain + '/shareDevice.html?ticket=' + ticket + '&pwd=' + password);
             var content = {
                 title: '设备分享',
                 desc: desc,
-                link: 'http://' + document.domain + '/shareDevice.html?ticket=' + ticket + '&pwd=' + password,
+                link: 'http://' + document.domain + '/shareDevice.html?pwd=' + password + '&ticket=' + ticket,
                 imgUrl: 'http://' + document.domain + '/img/share.jpg'
             }
             // 显示引导页面
