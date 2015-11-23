@@ -1004,3 +1004,8 @@ input[type=checkbox]:focus,
   border-color: #204d74;
 }
 /* /输入密码modal */
+
+.ban-close{
+	height: 100%;
+	width: 100%;
+}

@@ -192,11 +192,11 @@ function setDeviceProperties(requestHeader, deviceId, property, value) {
         headers: requestHeader,
         success: function (data) {
             console.log(data);
-            alert(JSON.stringify(data));
+            //alert(JSON.stringify(data));
         },
         error: function (data) {
             console.log(data);
-            alert(JSON.stringify(data));
+            //alert(JSON.stringify(data));
         }
     });
 }
@@ -540,7 +540,8 @@ function formatMinutes(value) {
 
 function getRandomStr(len) {
     var text = "";
-    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    var possible = "0123456789";
+    //var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     for( var i=0; i < len; i++ )
         text += possible.charAt(Math.floor(Math.random() * possible.length));
     return text;

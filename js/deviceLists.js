@@ -24,30 +24,30 @@ $(document).ready(function () {
     var wechatSign = getWechatSign(signInfo);
     wechatConfig(signInfo, wechatSign);
     wx.ready(function () {
-       //禁止分享功能
-       //WeixinJSBridge.call('hideOptionMenu');
-       wx.checkJsApi({
-           jsApiList: [
-               'openWXDeviceLib',
-               'getWXDeviceTicket',
-               'onMenuShareAppMessage',
-               'onMenuShareTimeline',
-               'onMenuShareQQ'
-           ],
-           success: function (res) {
-               $(".loading").hide();
-               var content = {
-                   title: '泰和美商城',
-                   desc: '去商城逛逛吧',
-                   link: 'http://wap.koudaitong.com/v2/showcase/homepage?alias=9c8qy9px',
-                   imgUrl: 'http://' + document.domain + '/img/webshare.jpg'
-               }
-               shareAppMessage(content);
-               shareTimeline(content);
-               shareQQ(content)
-           }
-       });
-       openWXDeviceLib();
+      //禁止分享功能
+      //WeixinJSBridge.call('hideOptionMenu');
+      wx.checkJsApi({
+          jsApiList: [
+              'openWXDeviceLib',
+              'getWXDeviceTicket',
+              'onMenuShareAppMessage',
+              'onMenuShareTimeline',
+              'onMenuShareQQ'
+          ],
+          success: function (res) {
+              $(".loading").hide();
+              var content = {
+                  title: '泰和美商城',
+                  desc: '去商城逛逛吧',
+                  link: 'http://wap.koudaitong.com/v2/showcase/homepage?alias=9c8qy9px',
+                  imgUrl: 'http://' + document.domain + '/img/webshare.jpg'
+              }
+              shareAppMessage(content);
+              shareTimeline(content);
+              shareQQ(content)
+          }
+      });
+      openWXDeviceLib();
     });
 
     // 得到庆科返回的deviceLists
@@ -204,6 +204,30 @@ $(document).ready(function () {
                 var owner = _.find(users, function (_role) {
                     return _role.role == 'owner'
                 })
+                // （以下部分内容应该在移除成功后设置，但是移除成功后 设备与用户解绑，接口调用无权限，解决方法，此处设置属性，移除失败的话再将属性改回去）
+                // 保存旧密码以及旧的属性
+                var oldProperty = {};
+                var oldPassword;
+                // 如果移除设备的用户是设备的主人
+                if (!!owner && owner.username == userName) {
+                    oldPassword = getDeviceProperties(requestHeader, thisDeviceId, 'password');
+                    // 修改设备的密码
+                    var password = getRandomStr(6);
+                    setDeviceProperties(requestHeader, thisDeviceId, 'password', password);
+
+                    // 将设备的用户标识设置为0 （需删除）
+                    users.forEach(function (_role) {
+                        if (_role.username != userName) {
+                            oldProperty[_role.username] = getDeviceProperties(requestHeader, thisDeviceId, _role.username);
+                            setDeviceProperties(requestHeader, thisDeviceId, _role.username, '0');
+                        }
+                    })
+                } else {
+                    // 用户移除设备，将用户属性设置为 null
+                    oldProperty[userName] = getDeviceProperties(requestHeader, thisDeviceId, userName);
+                    setDeviceProperties(requestHeader, thisDeviceId, userName, 'null');
+                }
+
                 var deviceId = thisDeviceId.replace(/\//g, "\\\/");
                 var wxDeviceId = $("#" + deviceId).data('wxdeviceid');
                 $("#confirmModal").modal('hide');
@@ -211,26 +235,25 @@ $(document).ready(function () {
                     if (!!err) return;
                     unbindDevice(requestHeader, thisDeviceId, ticket, function (err, res) {
                         if (!err && res.result == "success") {
-                            var _requestHeader = requestHeader;
-                            _requestHeader.Authorization = devAccessToken;
-
-                            // 如果移除设备的用户是设备的主人
-                            if (!!owner && owner.username == userName) {
-                                // 修改设备密码
-                                var password = getRandomStr(6);
-                                setDeviceProperties(_requestHeader, thisDeviceId, 'password', password);
-                                // 将设备的用户标识设置为0 可删除
-                                users.forEach(function(_role){
-                                    setDeviceProperties(_requestHeader, thisDeviceId, _role.username, '0');
-                                })
-                            } else {
-                                // 用户移除设备，将用户属性设置为 null
-                                setDeviceProperties(_requestHeader, thisDeviceId, userName, 'null');
-                            }
-
                             modalInitializationOne('移除设备成功');
                             $("#" + deviceId).remove();
                         } else {
+                            // 还原设置
+                            if (!!owner && owner.username == userName) {
+                                if (!!oldPassword) {
+                                    setDeviceProperties(requestHeader, thisDeviceId, 'password', oldPassword);
+                                }
+                                // 将设备的用户标识设置为0 可删除
+                                users.forEach(function (_role) {
+                                    if (_role.username != userName) {
+                                        console.log(oldProperty[_role.username]);
+                                        setDeviceProperties(requestHeader, thisDeviceId, _role.username, oldProperty[_role.username]);
+                                    }
+                                })
+                            } else {
+                                console.log(oldProperty[userName]);
+                                setDeviceProperties(requestHeader, thisDeviceId, userName, oldProperty[userName]);
+                            }
                             modalInitializationOne('移除设备失败');
                         }
                     });
